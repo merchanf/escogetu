@@ -4,7 +4,9 @@ body {
   font-family: "lato";
   margin: 0;
   padding: 0;
-  background-color: #fdfefe;
+  background-color: #FFFDFD;
+  height: 100%; 
+  overflow: hidden;
 }
 
 a {
@@ -20,4 +22,8 @@ a {
   font-size: 62.5%;
   overflow-x: hidden;
   position: relative;
+}
+
+#__next{
+  height: 100%;
 }
