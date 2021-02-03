@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
 import Layout from '../app/components/Layout/Layout';
+import Card from '../app/components/Card/Card';
 
 export default function Home() {
   return (
@@ -16,10 +17,6 @@ export default function Home() {
       <Layout>
       
       </Layout>
-
-      
-
-      
     </div>
   )
 }
