@@ -2,67 +2,65 @@ import CardList from "./CardList";
 
 export default {
   component: CardList,
-  title: 'CardList',
+  title: "CardList",
 };
 
-const db = [
+export const db = [
   {
-    name: 'El corral',
-    distance: '3 Km',
-    pictures:[
-      'https://via.placeholder.com/300x465/9B59B6?text=El%20Corral',
-      'https://via.placeholder.com/300x465/2E86C1?text=El%20Corral',
-      'https://via.placeholder.com/300x465/1ABC9C?text=El%20Corral',
-      'https://via.placeholder.com/300x465/F1C40F?text=El%20Corral',
-      'https://via.placeholder.com/300x465/7F8C8D?text=El%20Corral',
-    ]
+    name: "El corral",
+    distance: "3 Km",
+    pictures: [
+      "https://via.placeholder.com/600x930/9B59B6?text=El%20Corral",
+      "https://via.placeholder.com/600x930/2E86C1?text=El%20Corral",
+      "https://via.placeholder.com/600x930/1ABC9C?text=El%20Corral",
+      "https://via.placeholder.com/600x930/F1C40F?text=El%20Corral",
+      "https://via.placeholder.com/600x930/7F8C8D?text=El%20Corral",
+    ],
   },
   {
-    name: 'Sierra nevada',
-    distance: '4 Km',
-    pictures:[
-      'https://via.placeholder.com/300x465/9B59B6?text=Sierra%20nevada',
-      'https://via.placeholder.com/300x465/2E86C1?text=Sierra%20nevada',
-      'https://via.placeholder.com/300x465/1ABC9C?text=Sierra%20nevada',
-      'https://via.placeholder.com/300x465/F1C40F?text=Sierra%20nevada',
-      'https://via.placeholder.com/300x465/7F8C8D?text=Sierra%20nevada',
-    ]
+    name: "Sierra nevada",
+    distance: "4 Km",
+    pictures: [
+      "https://via.placeholder.com/600x930/9B59B6?text=Sierra%20nevada",
+      "https://via.placeholder.com/600x930/2E86C1?text=Sierra%20nevada",
+      "https://via.placeholder.com/600x930/1ABC9C?text=Sierra%20nevada",
+      "https://via.placeholder.com/600x930/F1C40F?text=Sierra%20nevada",
+      "https://via.placeholder.com/600x930/7F8C8D?text=Sierra%20nevada",
+    ],
   },
   {
-    name: 'La jugueteria',
-    distance: '5 Km',
-    pictures:[
-      'https://via.placeholder.com/300x465/9B59B6?text=La%20jugueteria',
-      'https://via.placeholder.com/300x465/2E86C1?text=La%20jugueteria',
-      'https://via.placeholder.com/300x465/1ABC9C?text=La%20jugueteria',
-      'https://via.placeholder.com/300x465/F1C40F?text=La%20jugueteria',
-      'https://via.placeholder.com/300x465/7F8C8D?text=La%20jugueteria',
-    ]
+    name: "La jugueteria",
+    distance: "5 Km",
+    pictures: [
+      "https://via.placeholder.com/600x930/9B59B6?text=La%20jugueteria",
+      "https://via.placeholder.com/600x930/2E86C1?text=La%20jugueteria",
+      "https://via.placeholder.com/600x930/1ABC9C?text=La%20jugueteria",
+      "https://via.placeholder.com/600x930/F1C40F?text=La%20jugueteria",
+      "https://via.placeholder.com/600x930/7F8C8D?text=La%20jugueteria",
+    ],
   },
   {
-    name: 'Sandwich Qbano',
-    distance: '6 Km',
-    pictures:[
-      'https://via.placeholder.com/300x465/9B59B6?text=Sandwich%20Qbano',
-      'https://via.placeholder.com/300x465/2E86C1?text=Sandwich%20Qbano',
-      'https://via.placeholder.com/300x465/1ABC9C?text=Sandwich%20Qbano',
-      'https://via.placeholder.com/300x465/F1C40F?text=Sandwich%20Qbano',
-      'https://via.placeholder.com/300x465/7F8C8D?text=Sandwich%20Qbano',
-    ]
+    name: "Sandwich Qbano",
+    distance: "6 Km",
+    pictures: [
+      "https://via.placeholder.com/600x930/9B59B6?text=Sandwich%20Qbano",
+      "https://via.placeholder.com/600x930/2E86C1?text=Sandwich%20Qbano",
+      "https://via.placeholder.com/600x930/1ABC9C?text=Sandwich%20Qbano",
+      "https://via.placeholder.com/600x930/F1C40F?text=Sandwich%20Qbano",
+      "https://via.placeholder.com/600x930/7F8C8D?text=Sandwich%20Qbano",
+    ],
   },
   {
-    name: 'KO Asian kitchen',
-    distance: '7 Km',
-    pictures:[
-      'https://via.placeholder.com/300x465/9B59B6?text=KO%20Asian%20kitchen',
-      'https://via.placeholder.com/300x465/2E86C1?text=KO%20Asian%20kitchen',
-      'https://via.placeholder.com/300x465/1ABC9C?text=KO%20Asian%20kitchen',
-      'https://via.placeholder.com/300x465/F1C40F?text=KO%20Asian%20kitchen',
-      'https://via.placeholder.com/300x465/7F8C8D?text=KO%20Asian%20kitchen',
-    ]
-  }
-]
+    name: "KO Asian kitchen",
+    distance: "7 Km",
+    pictures: [
+      "https://via.placeholder.com/600x930/9B59B6?text=KO%20Asian%20kitchen",
+      "https://via.placeholder.com/600x930/2E86C1?text=KO%20Asian%20kitchen",
+      "https://via.placeholder.com/600x930/1ABC9C?text=KO%20Asian%20kitchen",
+      "https://via.placeholder.com/600x930/F1C40F?text=KO%20Asian%20kitchen",
+      "https://via.placeholder.com/600x930/7F8C8D?text=KO%20Asian%20kitchen",
+    ],
+  },
+];
 
-export const Default = () => (
-  <CardList list={db}/>
-);
+export const Default = () => <CardList list={db} />;

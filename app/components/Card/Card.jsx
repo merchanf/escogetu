@@ -3,7 +3,7 @@ import TinderCard from "react-tinder-card";
 
 import styles from "./Card.module.scss";
 
-const Card = ({ name, distance, pictures, onSwipe, index }) => {
+const Card = ({ name, distance, pictures, onSwipe, index, width, height }) => {
   const [selectedPicture, setSelectedPicture] = useState(0);
 
   const handleRightButton = () => {
@@ -18,48 +18,54 @@ const Card = ({ name, distance, pictures, onSwipe, index }) => {
     console.log("clicked left");
   };
 
+  console.log(width, height);
+
   return (
-    <div style={{
-      position: 'absolute',
-      zIndex: 10 - index
-    }}>
+    <div
+      style={{
+        position: "absolute",
+        zIndex: 10 - index,
+        height: height * 0.9,
+      }}
+    >
       <TinderCard
-        className={styles.Container}
+        className={styles.Wrapper}
         onSwipe={(dir) => onSwipe(dir, name)}
       >
-        <div className={styles.Wrapper}>
-          <img
-            className={styles.Wrapper__Card}
-            src={pictures[selectedPicture]}
-            alt={`${name} - ${selectedPicture}`}
-          />
-          <p className={styles.Wrapper__Name}>
-            <b>{name}</b>, {distance}
-          </p>
-          <div className={styles.Wrapper__Buttons}>
-            {selectedPicture - 1 >= 0 ? (
-              <button
-                className={styles.Wrapper__Buttons__Button}
-                onClick={handleLeftButton}
-              >
-                {"<"}
-              </button>
-            ) : (
-              <div></div>
-            )}
-            {selectedPicture + 1 < pictures.length && (
-              <button
-                className={styles.Wrapper__Buttons__Button}
-                onClick={handleRightButton}
-              >
-                {">"}
-              </button>
-            )}
-          </div>
+        <img
+          className={styles.Wrapper__Image}
+          src={pictures[selectedPicture]}
+          alt={`${name} - ${selectedPicture}`}
+          style={{
+            height: height * 0.9,
+            width: "auto",
+          }}
+        />
+        <p className={styles.Wrapper__Name}>
+          <b>{name}</b>, {distance}
+        </p>
+        <div className={styles.Wrapper__Buttons}>
+          {selectedPicture - 1 >= 0 ? (
+            <button
+              className={styles.Wrapper__Buttons__Button}
+              onClick={handleLeftButton}
+            >
+              {"<"}
+            </button>
+          ) : (
+            <div></div>
+          )}
+          {selectedPicture + 1 < pictures.length && (
+            <button
+              className={styles.Wrapper__Buttons__Button}
+              onClick={handleRightButton}
+            >
+              {">"}
+            </button>
+          )}
         </div>
       </TinderCard>
     </div>
-    
   );
 };
 

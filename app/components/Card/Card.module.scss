@@ -1,13 +1,18 @@
 @import "../../styles/main.scss";
 
-.Container{
-  position: absolute;
-}
-
-.Wrapper{
+.Wrapper {
+  display: flex;
   position: relative;
-  
-  .Wrapper__Name{
+  height: 100%;
+  width: auto;
+
+  .Wrapper__Image {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .Wrapper__Name {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -20,7 +25,7 @@
     width: 100%;
   }
 
-  .Wrapper__Buttons{
+  .Wrapper__Buttons {
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -32,7 +37,7 @@
     z-index: 1;
     padding: 0 1.2rem;
 
-    .Wrapper__Buttons__Button{
+    .Wrapper__Buttons__Button {
       display: block;
       height: 30px;
       width: 30px;
@@ -43,6 +48,4 @@
       font-weight: 700;
     }
   }
-
-  
 }
