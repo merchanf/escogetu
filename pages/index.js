@@ -33,7 +33,7 @@ export default function Home() {
           <CardList list={db} />
           <div className={styles.Home__Buttons}>
             <LikeIconButton size="large" color="green" />
-            <ShareIconButton />
+            <ShareIconButton color="blue"/>
             <CrossIconButton size="large" color="red" />
           </div>
         </div>
