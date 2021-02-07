@@ -4,7 +4,18 @@ import TinderCard from "react-tinder-card";
 import styles from "./Card.module.scss";
 
 const Card = forwardRef(
-  ({ name, distance, pictures, onSwipe, index, width, height }, ref) => {
+  (
+    {
+      name,
+      distance,
+      pictures,
+      onSwipe,
+      index,
+      height,
+      onCardLeftScreen,
+    },
+    ref
+  ) => {
     const [selectedPicture, setSelectedPicture] = useState(0);
 
     const handleRightButton = () => {
@@ -33,6 +44,7 @@ const Card = forwardRef(
           className={styles.TinderCard}
           onSwipe={(dir) => onSwipe(dir, name)}
           ref={ref}
+          onCardLeftScreen={onCardLeftScreen}
         >
           <div
             className={styles.Card}

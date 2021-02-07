@@ -2,13 +2,10 @@ import { useRef, useEffect, useState } from "react";
 import Card from "../Card/Card";
 import styles from "./CardList.module.scss";
 
-const CardList = ({ list, refs }) => {
+const CardList = ({ list, refs, onSwipe, onCardLeftScreen }) => {
   const ref = useRef(null);
   const [width, setWidth] = useState();
   const [height, setHeight] = useState();
-  const onSwipe = (direction, nameToDelete) => {
-    console.log(nameToDelete, direction);
-  };
 
   useEffect(() => {
     setWidth(ref.current.clientWidth);
@@ -28,6 +25,8 @@ const CardList = ({ list, refs }) => {
           width={width}
           height={height}
           ref={refs && refs[index]}
+          onSwipe={onSwipe}
+          onCardLeftScreen={onCardLeftScreen}
         />
       ))}
     </div>
