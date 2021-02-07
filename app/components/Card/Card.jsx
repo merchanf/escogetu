@@ -23,8 +23,8 @@ const Card = forwardRef(
       <div
         style={{
           position: "absolute",
-          zIndex: 10 - index,
-          height: height * 0.9,
+          zIndex: index,
+          height: height && Math.trunc(height * 0.9),
         }}
       >
         <TinderCard
@@ -37,7 +37,7 @@ const Card = forwardRef(
             src={pictures[selectedPicture]}
             alt={`${name} - ${selectedPicture}`}
             style={{
-              height: height * 0.9,
+              height: height && Math.trunc(height * 0.9),
               width: "auto",
             }}
           />

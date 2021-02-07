@@ -8,7 +8,7 @@ const LikeButton = icons.withIconButton(icons.LikeIcon);
 
 export const Call = () => <icons.CallIcon />;
 
-export const Close = () => <icons.CloseIcon />;
+export const Cross = () => <icons.CrossIcon />;
 
 export const like = () => <icons.LikeIcon />;
 

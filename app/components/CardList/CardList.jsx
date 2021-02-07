@@ -27,7 +27,7 @@ const CardList = ({ list, refs }) => {
           index={list.length - index}
           width={width}
           height={height}
-          ref={refs[index]}
+          ref={refs && refs[index]}
         />
       ))}
     </div>
