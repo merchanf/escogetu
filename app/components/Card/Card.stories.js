@@ -18,5 +18,5 @@ const pictures = [
 ]
 
 export const Default = () => (
-  <Card name="El corral" distance="3 Km" pictures={pictures} onSwipe={onSwipe}/>
+  <Card name="El corral" distance="3 Km" pictures={pictures} onSwipe={onSwipe} height={500} width={500}/>
 );

@@ -1,18 +1,40 @@
 @import "../../styles/main.scss";
 
-.Wrapper {
-  display: flex;
-  position: relative;
-  height: 100%;
-  width: auto;
+.TinderCard {
+  position: absolute;
+}
 
-  .Wrapper__Image {
-    display: block;
-    height: 100%;
+.Card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $red_bg_soft;
+
+  .Card__Buttons {
+    position: absolute;
+    display: flex;
     width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 1;
+    padding: 0 1.2rem;
+
+    .Card__Buttons__Button {
+      display: block;
+      height: 4.8rem;
+      width: 4.8rem;
+      border-radius: 50%;
+      border: 0;
+      background-color: $white_a05;
+      color: $black_a05;
+      font-weight: 700;
+    }
   }
 
-  .Wrapper__Name {
+  .Card__Name {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -23,29 +45,5 @@
     padding: 1.6rem;
     margin: 0;
     width: 100%;
-  }
-
-  .Wrapper__Buttons {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    z-index: 1;
-    padding: 0 1.2rem;
-
-    .Wrapper__Buttons__Button {
-      display: block;
-      height: 4.8rem;
-      width: 4.8rem;
-      border-radius: 50%;
-      border: 0;
-      background-color: $white_a05;
-      color: $black_a05;
-      font-weight: 700;
-    }
   }
 }

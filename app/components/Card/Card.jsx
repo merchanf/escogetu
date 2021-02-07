@@ -20,52 +20,32 @@ const Card = forwardRef(
     };
 
     return (
-      <div
-        style={{
-          position: "absolute",
-          zIndex: index,
-          height: height && Math.trunc(height * 0.9),
-        }}
+      <TinderCard
+        className={styles.TinderCard}
+        onSwipe={(dir) => onSwipe(dir, name)}
+        ref={ref}
       >
-        <TinderCard
-          className={styles.Wrapper}
-          onSwipe={(dir) => onSwipe(dir, name)}
-          ref={ref}
+        <div
+          className={styles.Card}
+          style={{
+            height: height && Math.trunc(height * 0.9),
+            width: height && Math.trunc(height * 0.54), // 60% of 90%
+          }}
         >
           <img
-            className={styles.Wrapper__Image}
+            className={styles.Card__Image}
             src={pictures[selectedPicture]}
             alt={`${name} - ${selectedPicture}`}
             style={{
-              height: height && Math.trunc(height * 0.9),
+              maxHeight: height && Math.trunc(height * 0.9),
+              maxWidth: height && Math.trunc(height * 0.54), // 60% of 90%
               width: "auto",
+              height: "auto",
             }}
           />
-          <p className={styles.Wrapper__Name}>
-            <b>{name}</b>, {distance}
-          </p>
-          <div className={styles.Wrapper__Buttons}>
-            {selectedPicture - 1 >= 0 ? (
-              <button
-                className={styles.Wrapper__Buttons__Button}
-                onClick={handleLeftButton}
-              >
-                {"<"}
-              </button>
-            ) : (
-              <div></div>
-            )}
-            {selectedPicture + 1 < pictures.length && (
-              <button
-                className={styles.Wrapper__Buttons__Button}
-                onClick={handleRightButton}
-              >
-                {">"}
-              </button>
-            )}
-          </div>
-        </TinderCard>
-      </div>
+          
+        </div>
+      </TinderCard>
     );
   }
 );
