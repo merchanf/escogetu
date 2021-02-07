@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import Card from "../Card/Card";
 import styles from "./CardList.module.scss";
 
-const CardList = ({ list }) => {
+const CardList = ({ list, refs }) => {
   const ref = useRef(null);
   const [width, setWidth] = useState();
   const [height, setHeight] = useState();
@@ -27,6 +27,7 @@ const CardList = ({ list }) => {
           index={list.length - index}
           width={width}
           height={height}
+          ref={refs[index]}
         />
       ))}
     </div>
