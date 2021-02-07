@@ -20,32 +20,64 @@ const Card = forwardRef(
     };
 
     return (
-      <TinderCard
-        className={styles.TinderCard}
-        onSwipe={(dir) => onSwipe(dir, name)}
-        ref={ref}
+      <div
+        style={{
+          display: "flex",
+          position: "absolute",
+          zIndex: index,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
-        <div
-          className={styles.Card}
-          style={{
-            height: height && Math.trunc(height * 0.9),
-            width: height && Math.trunc(height * 0.54), // 60% of 90%
-          }}
+        <TinderCard
+          className={styles.TinderCard}
+          onSwipe={(dir) => onSwipe(dir, name)}
+          ref={ref}
         >
-          <img
-            className={styles.Card__Image}
-            src={pictures[selectedPicture]}
-            alt={`${name} - ${selectedPicture}`}
+          <div
+            className={styles.Card}
             style={{
-              maxHeight: height && Math.trunc(height * 0.9),
-              maxWidth: height && Math.trunc(height * 0.54), // 60% of 90%
-              width: "auto",
-              height: "auto",
+              height: height && Math.trunc(height * 0.9),
+              width: height && Math.trunc(height * 0.54), // 60% of 90%
             }}
-          />
-          
-        </div>
-      </TinderCard>
+          >
+            <img
+              className={styles.Card__Image}
+              src={pictures[selectedPicture]}
+              alt={`${name} - ${selectedPicture}`}
+              style={{
+                maxHeight: height && Math.trunc(height * 0.9),
+                maxWidth: height && Math.trunc(height * 0.54), // 60% of 90%
+                width: "auto",
+                height: "auto",
+              }}
+            />
+            <div className={styles.Card__Buttons}>
+              {selectedPicture - 1 >= 0 ? (
+                <button
+                  className={styles.Card__Buttons__Button}
+                  onClick={handleLeftButton}
+                >
+                  {"<"}
+                </button>
+              ) : (
+                <div></div>
+              )}
+              {selectedPicture + 1 < pictures.length && (
+                <button
+                  className={styles.Card__Buttons__Button}
+                  onClick={handleRightButton}
+                >
+                  {">"}
+                </button>
+              )}
+            </div>
+            <p className={styles.Card__Name}>
+              <b>{name}</b>, {distance}
+            </p>
+          </div>
+        </TinderCard>
+      </div>
     );
   }
 );
