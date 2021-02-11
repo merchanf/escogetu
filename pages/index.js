@@ -31,7 +31,7 @@ const getPlaceDetailsEndpoint = (placeId) =>
 export default function Home() {
   const card = useRef(0);
   const [loading, setLoading] = useState(true);
-  const [list, setList] = useState();
+  const [list, setList] = useState([]);
   const childRefs = useMemo(
     () =>
       Array(db.length)
@@ -44,21 +44,25 @@ export default function Home() {
     setLoading(true);
     navigator.geolocation.getCurrentPosition(
       async (position) => {
-        const lat = position.coords.latitude;
-        const long = position.coords.longitude;
+        const userLat = position.coords.latitude;
+        const userLong = position.coords.longitude;
         const {
           data: { results },
         } = await axios.get(
-          nearbyRestaurantsEndpoint(lat, long, defaultRadius, gMapsApiKey)
+          nearbyRestaurantsEndpoint(
+            userLat,
+            userLong,
+            defaultRadius,
+            gMapsApiKey
+          )
         );
-        //console.log(results);
+
         const db = results
           .map(({ place_id, name, photos, geometry: { lat, lng } }) => {
             if (!photos) return null;
-            const response = axios
-              .get(getPlaceDetailsEndpoint(place_id))
-              .then(({ data: { result: { photos } } }) => console.log(photos));
+
             return {
+              placeId: place_id,
               name: name,
               distance: "3 Km",
               pictures: photos.map(({ photo_reference, height }) =>
@@ -68,9 +72,24 @@ export default function Home() {
             };
           })
           .filter((result) => result != null);
-        console.log(db);
-        //setList(db);
-        //setLoading(false);
+
+        db.forEach(async (result) => {
+          const {
+            data: {
+              result: { photos },
+            },
+          } = await axios.get(getPlaceDetailsEndpoint(result.placeId));
+
+          const pictures_ = photos.map(({ photo_reference, height }) =>
+            placePhotoSrc(photo_reference, height)
+          );
+
+          setList((prevState) => [
+            ...prevState,
+            { ...result, pictures: pictures_ },
+          ]);
+        });
+        setLoading(false);
       },
       () => console.log("Denied")
     );
