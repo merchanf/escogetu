@@ -11,7 +11,7 @@ import {
   ShareIcon,
   withIconButton,
 } from "../app/components/Icons/Icons";
-import { db } from "../app/components/CardList/CardList.stories";
+import { distance } from "../app/utils/utils";
 
 const gMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
 const defaultRadius = 2500;
@@ -32,13 +32,13 @@ export default function Home() {
   const card = useRef(0);
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
-  const childRefs = useMemo(
+  /*const childRefs = useMemo(
     () =>
       Array(db.length)
         .fill(0)
         .map((i) => createRef()),
     []
-  );
+  );*/
 
   useEffect(() => {
     setLoading(true);
@@ -58,19 +58,27 @@ export default function Home() {
         );
 
         const db = results
-          .map(({ place_id, name, photos, geometry: { lat, lng } }) => {
-            if (!photos) return null;
-
-            return {
-              placeId: place_id,
-              name: name,
-              distance: "3 Km",
-              pictures: photos.map(({ photo_reference, height }) =>
-                placePhotoSrc(photo_reference, height)
-              ),
-              ref: createRef(),
-            };
-          })
+          .map(
+            ({
+              place_id,
+              name,
+              photos,
+              geometry: {
+                location: { lat, lng },
+              },
+            }) => {
+              if (!photos) return null;
+              return {
+                placeId: place_id,
+                name: name,
+                distance: distance(userLat, userLong, lat, lng),
+                pictures: photos.map(({ photo_reference, height }) =>
+                  placePhotoSrc(photo_reference, height)
+                ),
+                ref: createRef(),
+              };
+            }
+          )
           .filter((result) => result != null);
 
         db.forEach(async (result) => {
@@ -121,7 +129,7 @@ export default function Home() {
           {loading ? (
             <h3>Loading ... </h3>
           ) : (
-            <CardList list={list} refs={childRefs} onSwipe={swiped} />
+            <CardList list={list} onSwipe={swiped} />
           )}
           <div className={styles.Home__Buttons}>
             <CrossIconButton
