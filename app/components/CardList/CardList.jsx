@@ -14,7 +14,7 @@ const CardList = ({ list, refs, onSwipe, onCardLeftScreen }) => {
 
   return (
     <div className={styles.Container} ref={ref}>
-      {list.map(({ name, pictures, distance }, index) => (
+      {list.map(({ name, pictures, distance, ref }, index) => (
         <Card
           name={name}
           pictures={pictures}
@@ -24,7 +24,7 @@ const CardList = ({ list, refs, onSwipe, onCardLeftScreen }) => {
           index={list.length - index}
           width={width}
           height={height}
-          ref={refs && refs[index]}
+          ref={ref}
           onSwipe={onSwipe}
           onCardLeftScreen={onCardLeftScreen}
         />

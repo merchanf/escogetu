@@ -32,13 +32,6 @@ export default function Home() {
   const card = useRef(0);
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
-  /*const childRefs = useMemo(
-    () =>
-      Array(db.length)
-        .fill(0)
-        .map((i) => createRef()),
-    []
-  );*/
 
   useEffect(() => {
     setLoading(true);
