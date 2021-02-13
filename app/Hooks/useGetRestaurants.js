@@ -14,72 +14,74 @@ const getPlaceDetailsEndpoint = (placeId) =>
 const gMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
 const defaultRadius = 2500;
 
-const useGetRestaurants = () => {
+/*
+    
+        */
+
+const useGetRestaurants = (latitude, longitude) => {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    setLoading(true);
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const userLat = position.coords.latitude;
-        const userLong = position.coords.longitude;
+    (async () => {
+      setLoading(true);
+
+      if (!latitude || !longitude) return;
+
+      const {
+        data: { results },
+      } = await axios.get(
+        nearbyRestaurantsEndpoint(
+          latitude,
+          longitude,
+          defaultRadius,
+          gMapsApiKey
+        )
+      );
+
+      const db = results
+        .map(
+          ({
+            place_id,
+            name,
+            photos,
+            geometry: {
+              location: { lat, lng },
+            },
+          }) => {
+            if (!photos) return null;
+            return {
+              placeId: place_id,
+              name: name,
+              distance: distance(latitude, longitude, lat, lng),
+              pictures: photos.map(({ photo_reference, height }) =>
+                placePhotoSrc(photo_reference, height)
+              ),
+              ref: createRef(),
+            };
+          }
+        )
+        .filter((result) => result != null);
+
+      db.forEach(async (result) => {
         const {
-          data: { results },
-        } = await axios.get(
-          nearbyRestaurantsEndpoint(
-            userLat,
-            userLong,
-            defaultRadius,
-            gMapsApiKey
-          )
+          data: {
+            result: { photos },
+          },
+        } = await axios.get(getPlaceDetailsEndpoint(result.placeId));
+
+        const pictures_ = photos.map(({ photo_reference, height }) =>
+          placePhotoSrc(photo_reference, height)
         );
 
-        const db = results
-          .map(
-            ({
-              place_id,
-              name,
-              photos,
-              geometry: {
-                location: { lat, lng },
-              },
-            }) => {
-              if (!photos) return null;
-              return {
-                placeId: place_id,
-                name: name,
-                distance: distance(userLat, userLong, lat, lng),
-                pictures: photos.map(({ photo_reference, height }) =>
-                  placePhotoSrc(photo_reference, height)
-                ),
-                ref: createRef(),
-              };
-            }
-          )
-          .filter((result) => result != null);
-
-        db.forEach(async (result) => {
-          const {
-            data: {
-              result: { photos },
-            },
-          } = await axios.get(getPlaceDetailsEndpoint(result.placeId));
-
-          const pictures_ = photos.map(({ photo_reference, height }) =>
-            placePhotoSrc(photo_reference, height)
-          );
-
-          setList((prevState) => [
-            ...prevState,
-            { ...result, pictures: pictures_ },
-          ]);
-        });
-        setLoading(false);
-      },
-      () => console.log("Denied")
-    );
-  }, []);
+        setList((prevState) => [
+          ...prevState,
+          { ...result, pictures: pictures_ },
+        ]);
+      });
+      setLoading(false);
+    })();
+  }, [latitude, longitude]);
 
   return [list, loading];
 };

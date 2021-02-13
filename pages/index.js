@@ -19,18 +19,34 @@ const CrossIconButton = withIconButton(CrossIcon);
 
 export default function Home() {
   const card = useRef(0);
-  const [list, loading] = useGetRestaurants();
+  const [position, setPosition] = useState();
+  const [list, loading] = useGetRestaurants(
+    position?.latitude,
+    position?.longitude
+  );
   const [userUid, _] = useState(uid());
   const [sessionId, setSessionId] = useState();
   const { db } = firebase;
 
   useEffect(() => {
-    const docRef = db.collection("session").doc();
-    setSessionId(docRef.id);
-    docRef.set({
-      [userUid]: [],
+    navigator.geolocation.getCurrentPosition((position) => {
+      setPosition({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
     });
   }, []);
+
+  useEffect(() => {
+    if (position) {
+      const docRef = db.collection("session").doc();
+      setSessionId(docRef.id);
+      docRef.set({
+        [userUid]: [],
+        location: position,
+      });
+    }
+  }, [position]);
 
   const swiped = async (direction, name) => {
     if (direction === "right") {
