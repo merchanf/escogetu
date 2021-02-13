@@ -40,6 +40,8 @@ export default function Home() {
           let document = await docRef.get();
           if (document) {
             const fsPosition = document.data().location;
+            const users = document.data().users;
+            console.log(document.data());
             setPosition({
               latitude: fsPosition.latitude,
               longitude: fsPosition.longitude,
@@ -47,6 +49,7 @@ export default function Home() {
             docRef.set(
               {
                 [userUid]: [],
+                users: [...users, userUid],
               },
               { merge: true }
             );
@@ -71,6 +74,7 @@ export default function Home() {
       setSessionId(docRef.id);
       docRef.set({
         [userUid]: [],
+        users: [userUid],
         location: position,
       });
     }
@@ -80,7 +84,12 @@ export default function Home() {
     const unsubscribe = db
       .doc(`session/${sessionId}`)
       .onSnapshot((snapshot) => {
-        console.log("Current data: ", snapshot.data());
+        if (snapshot.data()?.users) {
+          const users = snapshot.data().users;
+          const likes = users.map((user) => snapshot.data()[user]);
+          const result = likes.reduce((a, b) => a.filter((c) => b.includes(c)));
+          console.log(result);
+        }
       });
     return () => {
       unsubscribe();
