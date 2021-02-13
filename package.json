@@ -10,10 +10,12 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@firebase/analytics": "^0.6.2",
     "axios": "^0.21.1",
     "axios-hooks": "^2.3.0",
     "classnames": "^2.2.6",
     "dotenv": "^8.2.0",
+    "firebase": "^8.2.7",
     "next": "10.0.6",
     "react": "17.0.1",
     "react-dom": "17.0.1",

@@ -1,6 +1,4 @@
-import { createRef, useState, useMemo, useRef, useEffect } from "react";
-import useAxios from "axios-hooks";
-import axios from "axios";
+import { useRef, useEffect } from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
 import Layout from "../app/components/Layout/Layout";
@@ -11,90 +9,18 @@ import {
   ShareIcon,
   withIconButton,
 } from "../app/components/Icons/Icons";
-import { distance } from "../app/utils/utils";
+import useGetRestaurants from "../app/Hooks/useGetRestaurants";
+import firebase from "../app/firebase/config";
 
-const gMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
-const defaultRadius = 2500;
 const LikeIconButton = withIconButton(LikeIcon);
 const ShareIconButton = withIconButton(ShareIcon);
 const CrossIconButton = withIconButton(CrossIcon);
 
-const nearbyRestaurantsEndpoint = (lat, long, radius, key) =>
-  `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${long}&radius=${radius}&type=restaurant&key=${key}`;
-
-const placePhotoSrc = (photoreference, maxheight = 16000) =>
-  `https://maps.googleapis.com/maps/api/place/photo?key=${gMapsApiKey}&photoreference=${photoreference}&maxheight=${1600}`;
-
-const getPlaceDetailsEndpoint = (placeId) =>
-  `https://maps.googleapis.com/maps/api/place/details/json?key=${gMapsApiKey}&place_id=${placeId}`;
-
 export default function Home() {
   const card = useRef(0);
-  const [loading, setLoading] = useState(true);
-  const [list, setList] = useState([]);
-
-  useEffect(() => {
-    setLoading(true);
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const userLat = position.coords.latitude;
-        const userLong = position.coords.longitude;
-        const {
-          data: { results },
-        } = await axios.get(
-          nearbyRestaurantsEndpoint(
-            userLat,
-            userLong,
-            defaultRadius,
-            gMapsApiKey
-          )
-        );
-
-        const db = results
-          .map(
-            ({
-              place_id,
-              name,
-              photos,
-              geometry: {
-                location: { lat, lng },
-              },
-            }) => {
-              if (!photos) return null;
-              return {
-                placeId: place_id,
-                name: name,
-                distance: distance(userLat, userLong, lat, lng),
-                pictures: photos.map(({ photo_reference, height }) =>
-                  placePhotoSrc(photo_reference, height)
-                ),
-                ref: createRef(),
-              };
-            }
-          )
-          .filter((result) => result != null);
-
-        db.forEach(async (result) => {
-          const {
-            data: {
-              result: { photos },
-            },
-          } = await axios.get(getPlaceDetailsEndpoint(result.placeId));
-
-          const pictures_ = photos.map(({ photo_reference, height }) =>
-            placePhotoSrc(photo_reference, height)
-          );
-
-          setList((prevState) => [
-            ...prevState,
-            { ...result, pictures: pictures_ },
-          ]);
-        });
-        setLoading(false);
-      },
-      () => console.log("Denied")
-    );
-  }, []);
+  const [list, loading] = useGetRestaurants();
+  const { db } = firebase;
+  console.log("ola");
 
   const swiped = (direction, name) => {
     console.log(direction, name);
@@ -104,6 +30,14 @@ export default function Home() {
   const swipe = (dir) => {
     list[card.current].ref.current.swipe(dir); // Swipe the card!
   };
+
+  useEffect(async () => {
+    const query = db.doc(`session/JUniEN2sRs36GhI62K7W`);
+    let document = await query.get();
+    if (document.exists) {
+      console.log(document.data());
+    }
+  }, []);
 
   return (
     <div className={styles.container}>
