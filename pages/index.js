@@ -26,6 +26,7 @@ export default function Home() {
   );
   const [userUid, _] = useState(uid());
   const [sessionId, setSessionId] = useState();
+  const [data, setData] = useState();
   const { db } = firebase;
 
   useEffect(() => {
@@ -74,6 +75,17 @@ export default function Home() {
       });
     }
   }, [position, sessionId]);
+
+  useEffect(() => {
+    const unsubscribe = db
+      .doc(`session/${sessionId}`)
+      .onSnapshot((snapshot) => {
+        console.log("Current data: ", snapshot.data());
+      });
+    return () => {
+      unsubscribe();
+    };
+  }, [sessionId]);
 
   const swiped = async (direction, name) => {
     if (direction === "right") {
