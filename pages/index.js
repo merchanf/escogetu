@@ -29,16 +29,43 @@ export default function Home() {
   const { db } = firebase;
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setPosition({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      });
-    });
+    (async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const session = urlParams.get("session");
+      if (session) {
+        setSessionId(session);
+        const docRef = db.doc(`session/${session}`);
+        try {
+          let document = await docRef.get();
+          if (document) {
+            const fsPosition = document.data().location;
+            setPosition({
+              latitude: fsPosition.latitude,
+              longitude: fsPosition.longitude,
+            });
+            docRef.set(
+              {
+                [userUid]: [],
+              },
+              { merge: true }
+            );
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      } else {
+        navigator.geolocation.getCurrentPosition((position) => {
+          setPosition({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        });
+      }
+    })();
   }, []);
 
   useEffect(() => {
-    if (position) {
+    if (position && !sessionId) {
       const docRef = db.collection("session").doc();
       setSessionId(docRef.id);
       docRef.set({
@@ -46,7 +73,7 @@ export default function Home() {
         location: position,
       });
     }
-  }, [position]);
+  }, [position, sessionId]);
 
   const swiped = async (direction, name) => {
     if (direction === "right") {
