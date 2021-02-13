@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
 import Layout from "../app/components/Layout/Layout";
@@ -11,6 +11,7 @@ import {
 } from "../app/components/Icons/Icons";
 import useGetRestaurants from "../app/Hooks/useGetRestaurants";
 import firebase from "../app/firebase/config";
+import { uid } from "uid";
 
 const LikeIconButton = withIconButton(LikeIcon);
 const ShareIconButton = withIconButton(ShareIcon);
@@ -19,25 +20,37 @@ const CrossIconButton = withIconButton(CrossIcon);
 export default function Home() {
   const card = useRef(0);
   const [list, loading] = useGetRestaurants();
+  const [userUid, _] = useState(uid());
+  const [sessionId, setSessionId] = useState();
   const { db } = firebase;
-  console.log("ola");
 
-  const swiped = (direction, name) => {
-    console.log(direction, name);
+  useEffect(() => {
+    const docRef = db.collection("session").doc();
+    setSessionId(docRef.id);
+    docRef.set({
+      [userUid]: [],
+    });
+  }, []);
+
+  const swiped = async (direction, name) => {
+    if (direction === "right") {
+      const query = db.doc(`session/${sessionId}`);
+      try {
+        let document = await query.get();
+        if (document) {
+          const liked = document.data()[userUid];
+          await query.set({ [userUid]: [...liked, name] }, { merge: true });
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
     card.current += 1;
   };
 
   const swipe = (dir) => {
     list[card.current].ref.current.swipe(dir); // Swipe the card!
   };
-
-  useEffect(async () => {
-    const query = db.doc(`session/JUniEN2sRs36GhI62K7W`);
-    let document = await query.get();
-    if (document.exists) {
-      console.log(document.data());
-    }
-  }, []);
 
   return (
     <div className={styles.container}>
