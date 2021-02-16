@@ -4,8 +4,8 @@ body {
   font-family: "lato";
   margin: 0;
   padding: 0;
-  background-color: #FFFDFD;
-  height: 100%; 
+  background-color: #fffdfd;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -24,6 +24,10 @@ a {
   position: relative;
 }
 
-#__next{
+#__next {
   height: 100%;
+}
+
+.RMM__body {
+  padding: 0 15% !important;
 }

@@ -1,9 +1,17 @@
 .Layout {
   display: flex;
-  background-color: #f9ebea;
+
   justify-content: center;
   align-items: center;
   height: 100%;
   margin: auto;
   max-width: 640px;
+}
+
+.Layout__Light {
+  background-color: #f9ebea;
+}
+
+.Layout__Dark {
+  background-color: #ddaeae;
 }
