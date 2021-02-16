@@ -8760,6 +8760,11 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-morphing-modal@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/react-morphing-modal/-/react-morphing-modal-0.2.2.tgz#54a17f7c364adb679904a61c9b995879c6daeeaf"
+  integrity sha512-LW6UMXYIFakbfcbjOAspsZh2xhNaJ5X5Y+29Z1KSUBnj9NpSQuQd+HFWGBTl3bH+3d8/e1DYZZmQgXAgpzLcFQ==
+
 react-popper-tooltip@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/react-popper-tooltip/-/react-popper-tooltip-3.1.1.tgz#329569eb7b287008f04fcbddb6370452ad3f9eac"
