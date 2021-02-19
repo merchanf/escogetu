@@ -5,7 +5,7 @@ export default {
   title: "CardList",
 };
 
-export const db = [
+const db = [
   {
     name: "El corral",
     distance: "3 Km",
