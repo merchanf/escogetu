@@ -11,9 +11,55 @@
   width: 100%;
   color: $white;
   font-size: 24px;
+  padding: 0 5rem;
 
   .RestaurantDetails__Name {
     font-size: 32px;
     font-weight: bold;
+    margin-top: 0;
+  }
+
+  .RestaurantDetails__Pin {
+    color: $red_wine_hard;
+  }
+
+  .RestaurantDetails__Details {
+    width: 100%;
+    padding: 1.2rem;
+    .RestaurantDetails__Details__Ratings {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .RestaurantDetails__Details__ContactInfo__Wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .RestaurantDetails__Details__ContactInfo {
+        display: flex;
+        flex-direction: column;
+
+        .RestaurantDetails__Details__ContactInfo__Phone {
+          display: flex;
+          align-items: center;
+          font-size: 2rem;
+          margin-top: 3.2rem;
+        }
+
+        .RestaurantDetails__Details__ContactInfo__Address {
+          display: flex;
+          align-items: flex-start;
+          font-size: 2rem;
+          margin-top: 2rem;
+
+          .RestaurantDetails__Details__ContactInfo__Address__Text {
+            display: flex;
+            flex-direction: column;
+          }
+        }
+      }
+    }
   }
 }

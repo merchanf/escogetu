@@ -3,7 +3,7 @@ import classnames from "classnames";
 
 import styles from "./Icon.module.scss";
 
-const Icon = ({ className, svg, size }) => {
+const Icon = ({ className, svg, size, ...props }) => {
   const iconClassNames = classnames(
     styles.Icon,
     { [className]: className },
@@ -12,15 +12,19 @@ const Icon = ({ className, svg, size }) => {
       [styles.Icon__small]: size === "small",
       [styles.Icon__medium]: size === "medium",
       [styles.Icon__large]: size === "large",
-      [styles.Icon__extra__large]: size === "extra-large"
+      [styles.Icon__extra__large]: size === "extra-large",
     }
   );
 
-  return <div className={iconClassNames}>{svg}</div>;
+  return (
+    <div className={iconClassNames} {...props}>
+      {svg}
+    </div>
+  );
 };
 
 Icon.defaultProps = {
-  size: "medium"
+  size: "medium",
 };
 
 export default Icon;
