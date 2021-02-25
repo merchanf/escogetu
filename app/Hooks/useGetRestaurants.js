@@ -14,10 +14,6 @@ const getPlaceDetailsEndpoint = (placeId) =>
 const gMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
 const defaultRadius = 2500;
 
-/*
-    
-        */
-
 const useGetRestaurants = (latitude, longitude) => {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);

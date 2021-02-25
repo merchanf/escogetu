@@ -11,7 +11,6 @@
   width: 100%;
   color: $white;
   font-size: 24px;
-  padding: 0 5rem;
 
   .RestaurantDetails__Name {
     font-size: 32px;
@@ -24,7 +23,7 @@
   }
 
   .RestaurantDetails__Details {
-    width: 100%;
+    width: 80%;
     padding: 1.2rem;
     .RestaurantDetails__Details__Ratings {
       display: flex;

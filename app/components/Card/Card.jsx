@@ -5,15 +5,7 @@ import styles from "./Card.module.scss";
 
 const Card = forwardRef(
   (
-    {
-      name,
-      distance,
-      pictures,
-      onSwipe,
-      index,
-      height,
-      onCardLeftScreen,
-    },
+    { distance, height, id, index, name, onCardLeftScreen, onSwipe, pictures },
     ref
   ) => {
     const [selectedPicture, setSelectedPicture] = useState(0);
@@ -42,7 +34,7 @@ const Card = forwardRef(
       >
         <TinderCard
           className={styles.TinderCard}
-          onSwipe={(dir) => onSwipe(dir, name)}
+          onSwipe={(dir) => onSwipe(dir, id)}
           ref={ref}
           onCardLeftScreen={onCardLeftScreen}
         >

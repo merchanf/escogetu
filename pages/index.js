@@ -15,6 +15,7 @@ import {
   withIconButton,
 } from "../app/components/Icons/Icons";
 import useGetRestaurants from "../app/Hooks/useGetRestaurants";
+import useGetRestaurantDetails from "../app/Hooks/useGetRestaurantDetails";
 import firebase from "../app/firebase/config";
 import { uid } from "uid";
 
@@ -26,6 +27,7 @@ export default function Home() {
   const card = useRef(0);
   const modalRef = useRef(null);
   const [position, setPosition] = useState();
+  const [matchedPlace, setMatchedPlace] = useState();
   const [list, loading] = useGetRestaurants(
     position?.latitude,
     position?.longitude
@@ -34,6 +36,7 @@ export default function Home() {
   const [sessionId, setSessionId] = useState();
   const { open, modalProps } = useModal();
   const { db } = firebase;
+  const [loadingDetails, details] = useGetRestaurantDetails(matchedPlace);
 
   useEffect(() => {
     (async () => {
@@ -103,6 +106,16 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (matchedPlace) {
+      open(modalRef, {
+        id: "modalId",
+        background: "#f9ebea",
+        onClose: () => handleOnClose(matchedPlace),
+      });
+    }
+  }, [matchedPlace]);
+
+  useEffect(() => {
     const unsubscribe = db
       .doc(`session/${sessionId}`)
       .onSnapshot((snapshot) => {
@@ -111,36 +124,25 @@ export default function Home() {
           const likes = users.map((user) => snapshot.data()[user]);
           const result = likes.reduce((a, b) => a.filter((c) => b.includes(c)));
           if (result.length) {
-            open(modalRef, {
-              id: "modalId",
-              background: "#f9ebea",
-              onClose: () => handleOnClose(result[0]),
-            });
+            setMatchedPlace(result[0]);
           }
         }
       });
-    return () => {
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, [sessionId]);
 
-  const swiped = async (direction, name) => {
+  const swiped = async (direction, id) => {
     if (direction === "right") {
       const query = db.doc(`session/${sessionId}`);
       try {
         let document = await query.get();
         if (document) {
           const liked = document.data()[userUid];
-          await query.set({ [userUid]: [...liked, name] }, { merge: true });
+          await query.set({ [userUid]: [...liked, id] }, { merge: true });
         }
       } catch (e) {
         console.log(e);
       }
-    } else {
-      open(modalRef, {
-        id: "modalId",
-        background: "#f9ebea",
-      });
     }
     card.current += 1;
   };
@@ -153,7 +155,7 @@ export default function Home() {
     <>
       <Modal {...modalProps}>
         <Layout background="Dark">
-          <RestaurantDetails />
+          {details && <RestaurantDetails {...details} />}
         </Layout>
       </Modal>
       <div className={styles.container} ref={modalRef}>

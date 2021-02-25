@@ -10,6 +10,8 @@ import styles from "./RestaurantDetails.module.scss";
 
 import { PinIcon } from "../Icons/Icons";
 
+const IconWrapper = () => <LocationOnIcon style={{ color: "#8B0000" }} />;
+
 const defaultProps = {
   zoom: 15,
 };
@@ -27,37 +29,46 @@ const iconStyles = { fontSize: "32px" };
 const detailIcons = { ...iconStyles, marginRight: "12px" };
 
 const RestaurantDetails = (props) => {
-  const { name, location, apiKey, phoneNumber, address, neighbor } = props;
+  const {
+    name,
+    location,
+    apiKey,
+    phoneNumber,
+    address,
+    rating,
+    priceLevel,
+  } = props;
+  const gMapsApiKey = process.env.GOOGLE_MAPS_API_KEY || apiKey;
   return (
     <div className={styles.RestaurantDetails}>
       <p>Hoy vamos a comer en...</p>
       <p className={styles.RestaurantDetails__Name}>¡{name}!</p>
-      <div style={{ height: "250px", width: "100%" }}>
+      <div style={{ height: "250px", width: "80%" }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: apiKey }}
+          bootstrapURLKeys={{ key: gMapsApiKey }}
           defaultCenter={location}
           defaultZoom={defaultProps.zoom}
         >
-          <PinIcon
-            className={styles.RestaurantDetails__Pin}
-            lat={location.lat}
-            lng={location.lng}
-          />
+          <IconWrapper lat={location.lat} lng={location.lng} />
         </GoogleMapReact>
       </div>
 
       <div className={styles.RestaurantDetails__Details}>
         <div className={styles.RestaurantDetails__Details__Ratings}>
-          <StyledRating
-            name="price-rating"
-            value={2.8}
-            precision={0.5}
-            icon={<AttachMoneyIcon style={iconStyles} />}
-            readOnly
-          />
+          {priceLevel ? (
+            <StyledRating
+              name="price-rating"
+              value={priceLevel}
+              precision={0.5}
+              icon={<AttachMoneyIcon style={iconStyles} />}
+              readOnly
+            />
+          ) : (
+            <div></div>
+          )}
           <StyledRating
             name="score"
-            value={2}
+            value={rating}
             precision={0.5}
             icon={<StarIcon style={iconStyles} />}
             readOnly
@@ -67,12 +78,16 @@ const RestaurantDetails = (props) => {
           className={styles.RestaurantDetails__Details__ContactInfo__Wrapper}
         >
           <div className={styles.RestaurantDetails__Details__ContactInfo}>
-            <div
-              className={styles.RestaurantDetails__Details__ContactInfo__Phone}
-            >
-              <PhoneIcon style={detailIcons} />
-              {phoneNumber}
-            </div>
+            {phoneNumber && (
+              <div
+                className={
+                  styles.RestaurantDetails__Details__ContactInfo__Phone
+                }
+              >
+                <PhoneIcon style={detailIcons} />
+                {phoneNumber}
+              </div>
+            )}
             <div
               className={
                 styles.RestaurantDetails__Details__ContactInfo__Address
@@ -85,7 +100,6 @@ const RestaurantDetails = (props) => {
                 }
               >
                 <span>{address}</span>
-                <span>{neighbor}</span>
               </div>
             </div>
           </div>

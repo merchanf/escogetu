@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import Card from "../Card/Card";
 import styles from "./CardList.module.scss";
 
-const CardList = ({ list, refs, onSwipe, onCardLeftScreen }) => {
+const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
   const ref = useRef(null);
   const [width, setWidth] = useState();
   const [height, setHeight] = useState();
@@ -14,8 +14,9 @@ const CardList = ({ list, refs, onSwipe, onCardLeftScreen }) => {
 
   return (
     <div className={styles.Container} ref={ref}>
-      {list.map(({ name, pictures, distance, ref }, index) => (
+      {list.map(({ placeId, name, pictures, distance, ref }, index) => (
         <Card
+          id={placeId}
           name={name}
           pictures={pictures}
           distance={distance}
