@@ -2,11 +2,13 @@ import { useRef, useEffect, useState } from "react";
 import { useModal, Modal } from "react-morphing-modal";
 import "react-morphing-modal/dist/ReactMorphingModal.css";
 import Head from "next/head";
+
 import styles from "../styles/Home.module.scss";
 import {
   CardList,
   Layout,
   RestaurantDetails,
+  ShareDialog,
 } from "../app/components/components";
 import {
   LikeIcon,
@@ -22,6 +24,7 @@ import { uid } from "uid";
 const LikeIconButton = withIconButton(LikeIcon);
 const ShareIconButton = withIconButton(ShareIcon);
 const CrossIconButton = withIconButton(CrossIcon);
+const domain = process.env.DOMAIN;
 
 export default function Home() {
   const card = useRef(0);
@@ -37,6 +40,7 @@ export default function Home() {
   const { open, modalProps } = useModal();
   const { db } = firebase;
   const [loadingDetails, details] = useGetRestaurantDetails(matchedPlace);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -158,6 +162,11 @@ export default function Home() {
           {details && <RestaurantDetails {...details} />}
         </Layout>
       </Modal>
+      <ShareDialog
+        open={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        url={`${domain}?session=${sessionId}`}
+      />
       <div className={styles.container} ref={modalRef}>
         <Head>
           <title>Escoge tu!</title>
@@ -182,7 +191,10 @@ export default function Home() {
                 size="large"
                 color="red"
               />
-              <ShareIconButton color="blue" />
+              <ShareIconButton
+                onClick={() => setIsShareModalOpen(true)}
+                color="blue"
+              />
               <LikeIconButton
                 onClick={() => swipe("right")}
                 size="large"

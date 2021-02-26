@@ -1,0 +1,14 @@
+@import "../../styles/main.scss";
+
+.ShareDialog {
+  display: flex;
+  flex-direction: column;
+}
+.Toast {
+  font-family: "lato";
+  font-size: 3.2rem;
+  background-color: $black;
+  color: $white;
+  padding: 0.8rem 1.6rem;
+  border-radius: 10%;
+}
