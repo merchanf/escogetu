@@ -8,10 +8,14 @@ import WhatsappIcon from "./WhatsappIcon";
 import TelegramIcon from "./TelegramIcon";
 import CopyIcon from "./CopyIcon";
 import LinkIcon from "./LinkIcon";
+import CrossCutterlyIcon from "./CrossCutterlyIcon";
+import BittedHeartIcon from "./BittedHeartIcon";
 
 export {
+  BittedHeartIcon,
   CallIcon,
   CopyIcon,
+  CrossCutterlyIcon,
   CrossIcon,
   LikeIcon,
   LinkIcon,

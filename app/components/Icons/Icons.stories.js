@@ -22,6 +22,10 @@ export const TelegramIcon = () => <icons.TelegramIcon />;
 
 export const CopyIcon = () => <icons.CopyIcon />;
 
+export const CrossCutterlyIcon = () => <icons.CrossCutterlyIcon />;
+
+export const BittedHeartIcon = () => <icons.BittedHeartIcon />;
+
 export const LinkIcon = () => <icons.CopyIcon />;
 
 export const LikeButtonRed = () => <LikeButton color="red" />;

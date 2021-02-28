@@ -11,8 +11,8 @@ import {
   ShareDialog,
 } from "../app/components/components";
 import {
-  LikeIcon,
-  CrossIcon,
+  BittedHeartIcon,
+  CrossCutterlyIcon,
   ShareIcon,
   withIconButton,
 } from "../app/components/Icons/Icons";
@@ -21,9 +21,9 @@ import useGetRestaurantDetails from "../app/Hooks/useGetRestaurantDetails";
 import firebase from "../app/firebase/config";
 import { uid } from "uid";
 
-const LikeIconButton = withIconButton(LikeIcon);
+const LikeIconButton = withIconButton(BittedHeartIcon);
 const ShareIconButton = withIconButton(ShareIcon);
-const CrossIconButton = withIconButton(CrossIcon);
+const CrossIconButton = withIconButton(CrossCutterlyIcon);
 const domain = process.env.DOMAIN;
 
 export default function Home() {
