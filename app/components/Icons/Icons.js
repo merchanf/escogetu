@@ -4,5 +4,20 @@ import ShareIcon from "./ShareIcon";
 import CrossIcon from "./CrossIcon";
 import CallIcon from "./CallIcon";
 import PinIcon from "./PinIcon";
+import WhatsappIcon from "./WhatsappIcon";
+import TelegramIcon from "./TelegramIcon";
+import CopyIcon from "./CopyIcon";
+import LinkIcon from "./LinkIcon";
 
-export { withIconButton, LikeIcon, ShareIcon, CrossIcon, CallIcon, PinIcon };
+export {
+  CallIcon,
+  CopyIcon,
+  CrossIcon,
+  LikeIcon,
+  LinkIcon,
+  PinIcon,
+  ShareIcon,
+  TelegramIcon,
+  WhatsappIcon,
+  withIconButton,
+};

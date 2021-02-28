@@ -16,6 +16,14 @@ export const Share = () => <icons.ShareIcon />;
 
 export const Pin = () => <icons.PinIcon />;
 
+export const WhatsappIcon = () => <icons.WhatsappIcon />;
+
+export const TelegramIcon = () => <icons.TelegramIcon />;
+
+export const CopyIcon = () => <icons.CopyIcon />;
+
+export const LinkIcon = () => <icons.CopyIcon />;
+
 export const LikeButtonRed = () => <LikeButton color="red" />;
 
 export const LikeButtonGreen = () => <LikeButton color="green" />;
