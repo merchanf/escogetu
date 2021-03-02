@@ -9,6 +9,7 @@ import {
   Layout,
   RestaurantDetails,
   ShareDialog,
+  LoadingIcon,
 } from "../app/components/components";
 import {
   BittedHeartIcon,
@@ -137,7 +138,7 @@ export default function Home() {
         <Layout>
           <div className={styles.Home}>
             {loading ? (
-              <h3>Loading ... </h3>
+              <LoadingIcon />
             ) : (
               <CardList list={list} onSwipe={swiped} />
             )}
