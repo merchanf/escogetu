@@ -13,13 +13,11 @@ const Card = forwardRef(
     const handleRightButton = () => {
       if (selectedPicture + 1 < pictures.length)
         setSelectedPicture((prevState) => prevState + 1);
-      console.log("clicked right");
     };
 
     const handleLeftButton = () => {
       if (selectedPicture - 1 >= 0)
         setSelectedPicture((prevState) => prevState - 1);
-      console.log("clicked left");
     };
 
     return (

@@ -62,31 +62,16 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (position && !sessionId) {
-      const docRef = db.collection("session").doc();
-      setSessionId(docRef.id);
-      docRef.set({
-        [userUid]: [],
-        users: [userUid],
-        location: position,
-      });
-    }
+    (async () => {
+      if (position && !sessionId) {
+        const docRefId = await session.create(userUid, position);
+        setSessionId(docRefId);
+      }
+    })();
   }, [position, sessionId]);
 
-  const handleOnClose = async (nameToDelete) => {
-    const query = db.doc(`session/${sessionId}`);
-    try {
-      let document = await query.get();
-      if (document) {
-        const liked = document.data()[userUid];
-        await query.set(
-          { [userUid]: liked.filter((item) => item !== nameToDelete) },
-          { merge: true }
-        );
-      }
-    } catch (e) {
-      console.log(e);
-    }
+  const handleOnClose = async (itemToDelete) => {
+    await session.deleteLikedItem(sessionId, userUid, itemToDelete);
   };
 
   useEffect(() => {
@@ -115,18 +100,9 @@ export default function Home() {
     return () => unsubscribe();
   }, [sessionId]);
 
-  const swiped = async (direction, id) => {
+  const swiped = async (direction, likedItem) => {
     if (direction === "right") {
-      const query = db.doc(`session/${sessionId}`);
-      try {
-        let document = await query.get();
-        if (document) {
-          const liked = document.data()[userUid];
-          await query.set({ [userUid]: [...liked, id] }, { merge: true });
-        }
-      } catch (e) {
-        console.log(e);
-      }
+      await session.like(sessionId, userUid, likedItem);
     }
     card.current += 1;
   };
