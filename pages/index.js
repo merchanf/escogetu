@@ -36,7 +36,7 @@ export default function Home() {
   const [userUid, _] = useState(uid());
   const [sessionId, setSessionId] = useState();
   const { open, modalProps } = useModal();
-  const { db } = firebase;
+  const { db, analytics } = firebase;
   const [loadingDetails, details] = useGetRestaurantDetails(matchedPlace);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
@@ -60,6 +60,7 @@ export default function Home() {
         });
       }
     })();
+    analytics();
   }, []);
 
   useEffect(() => {

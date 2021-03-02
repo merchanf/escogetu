@@ -1,5 +1,4 @@
 import firebaseInstance from "firebase/app";
-import "firebase/auth";
 import "firebase/firestore";
 import "firebase/analytics";
 
@@ -19,9 +18,10 @@ const firebase = (() => {
     ? firebaseInstance.initializeApp(config)
     : firebaseInstance.app();
 
+  const analytics = firebaseInstance.analytics;
   const firestore = app.firestore();
 
-  return { firebase: app, db: firestore };
+  return { firebase: app, db: firestore, analytics };
 })();
 
 export default firebase;
