@@ -18,7 +18,7 @@ import {
 } from "../app/components/Icons/Icons";
 import useGetRestaurants from "../app/Hooks/useGetRestaurants";
 import useGetRestaurantDetails from "../app/Hooks/useGetRestaurantDetails";
-import firebase from "../app/firebase/config";
+import firebase, { session } from "../app/firebase/firebase";
 import { uid } from "uid";
 
 const LikeIconButton = withIconButton(BittedHeartIcon);
@@ -31,10 +31,7 @@ export default function Home() {
   const modalRef = useRef(null);
   const [position, setPosition] = useState();
   const [matchedPlace, setMatchedPlace] = useState();
-  const [list, loading] = useGetRestaurants(
-    position?.latitude,
-    position?.longitude
-  );
+  const [list, loading] = useGetRestaurants(position?.lat, position?.lng);
   const [userUid, _] = useState(uid());
   const [sessionId, setSessionId] = useState();
   const { open, modalProps } = useModal();
@@ -45,36 +42,19 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       const urlParams = new URLSearchParams(window.location.search);
-      const session = urlParams.get("session");
-      if (session) {
-        setSessionId(session);
-        const docRef = db.doc(`session/${session}`);
-        try {
-          let document = await docRef.get();
-          if (document) {
-            const fsPosition = document.data().location;
-            const users = document.data().users;
-            console.log(document.data());
-            setPosition({
-              latitude: fsPosition.latitude,
-              longitude: fsPosition.longitude,
-            });
-            docRef.set(
-              {
-                [userUid]: [],
-                users: [...users, userUid],
-              },
-              { merge: true }
-            );
-          }
-        } catch (e) {
-          console.log(e);
-        }
+      const sessionParam = urlParams.get("session");
+      if (sessionParam) {
+        setSessionId(sessionParam);
+        const { lat, lng } = await session.load(userUid, sessionParam);
+        setPosition({
+          lat: lat,
+          lng: lng,
+        });
       } else {
         navigator.geolocation.getCurrentPosition((position) => {
           setPosition({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
           });
         });
       }
