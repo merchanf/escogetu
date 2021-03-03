@@ -10,7 +10,9 @@ import styles from "./RestaurantDetails.module.scss";
 
 import { PinIcon } from "../Icons/Icons";
 
-const IconWrapper = () => <LocationOnIcon style={{ color: "#8B0000" }} />;
+const IconWrapper = () => (
+  <LocationOnIcon style={{ color: "#8B0000", fontSize: "24px" }} />
+);
 
 const defaultProps = {
   zoom: 15,
@@ -46,7 +48,7 @@ const RestaurantDetails = (props) => {
       <div style={{ height: "250px", width: "80%" }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: gMapsApiKey }}
-          defaultCenter={location}
+          center={location}
           defaultZoom={defaultProps.zoom}
         >
           <IconWrapper lat={location.lat} lng={location.lng} />
