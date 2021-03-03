@@ -2,8 +2,9 @@ import { createRef, useState, useEffect } from "react";
 import axios from "axios";
 import { distance } from "../utils/utils";
 
-const nearbyRestaurantsEndpoint = (lat, long, radius, key) =>
-  `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${long}&radius=${radius}&type=restaurant&key=${key}`;
+const nearbyRestaurantsEndpoint = (lat, long, radius, key, pageToken) =>
+  `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${long}&radius=${radius}&type=restaurant&key=${key}&` +
+  (pageToken && `pagetoken=${pageToken}`);
 
 const placePhotoSrc = (photoreference, maxheight = 16000) =>
   `https://maps.googleapis.com/maps/api/place/photo?key=${gMapsApiKey}&photoreference=${photoreference}&maxheight=${1600}`;
@@ -17,6 +18,16 @@ const defaultRadius = 2500;
 const useGetRestaurants = (latitude, longitude) => {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
+  const [prePageToken, setPrePageToken] = useState();
+  const [pageToken, setPageToken] = useState();
+
+  const loadNextPage = () => setPageToken(prePageToken);
+
+  const pop = () =>
+    setList((prevState) => {
+      prevState.shift();
+      return prevState;
+    });
 
   useEffect(() => {
     (async () => {
@@ -25,16 +36,17 @@ const useGetRestaurants = (latitude, longitude) => {
       if (!latitude || !longitude) return;
 
       const {
-        data: { results },
+        data: { results, next_page_token },
       } = await axios.get(
         nearbyRestaurantsEndpoint(
           latitude,
           longitude,
           defaultRadius,
-          gMapsApiKey
+          gMapsApiKey,
+          pageToken
         )
       );
-
+      setPrePageToken(next_page_token);
       const db = results
         .map(
           ({
@@ -77,9 +89,9 @@ const useGetRestaurants = (latitude, longitude) => {
       });
       setLoading(false);
     })();
-  }, [latitude, longitude]);
+  }, [latitude, longitude, pageToken]);
 
-  return [list, loading];
+  return [list, loading, loadNextPage, pop];
 };
 
 export default useGetRestaurants;

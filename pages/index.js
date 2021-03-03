@@ -32,7 +32,10 @@ export default function Home() {
   const modalRef = useRef(null);
   const [position, setPosition] = useState();
   const [matchedPlace, setMatchedPlace] = useState();
-  const [list, loading] = useGetRestaurants(position?.lat, position?.lng);
+  const [list, loading, loadNextPage, pop] = useGetRestaurants(
+    position?.lat,
+    position?.lng
+  );
   const [userUid, _] = useState(uid());
   const [sessionId, setSessionId] = useState();
   const { open, modalProps } = useModal();
@@ -106,11 +109,12 @@ export default function Home() {
     if (direction === "right") {
       await session.like(sessionId, userUid, likedItem);
     }
-    card.current += 1;
+    pop();
+    if (list.length <= 3) loadNextPage();
   };
 
   const swipe = (dir) => {
-    list[card.current].ref.current.swipe(dir); // Swipe the card!
+    list[0].ref.current.swipe(dir); // Swipe the card!
   };
 
   return (
@@ -158,6 +162,7 @@ export default function Home() {
                 size="large"
                 color="green"
               />
+              <button onClick={() => loadNextPage()}>click here</button>
             </div>
           </div>
         </Layout>
