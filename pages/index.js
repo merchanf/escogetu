@@ -110,7 +110,10 @@ export default function Home() {
       await session.like(sessionId, userUid, likedItem);
     }
     pop();
-    if (list.length <= 3) loadNextPage();
+  };
+
+  const onCardLeftScreen = () => {
+    if (list.length <= 5) loadNextPage();
   };
 
   const swipe = (dir) => {
@@ -145,7 +148,11 @@ export default function Home() {
             {loading ? (
               <LoadingIcon />
             ) : (
-              <CardList list={list} onSwipe={swiped} />
+              <CardList
+                list={list}
+                onSwipe={swiped}
+                onCardLeftScreen={onCardLeftScreen}
+              />
             )}
             <div className={styles.Home__Buttons}>
               <CrossIconButton
