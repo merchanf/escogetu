@@ -3,15 +3,16 @@ import axios from "axios";
 import { distance } from "../utils/utils";
 
 const nearbyRestaurantsEndpoint = (lat, long, radius, key, pageToken) =>
-  `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${long}&radius=${radius}&type=restaurant&key=${key}&` +
-  (pageToken && `pagetoken=${pageToken}`);
+  `${domain}/api/nearbysearch?&lat=${lat}&lng=${long}&radius=${radius}&type=restaurant&key=${key}&` +
+  (pageToken ? `pagetoken=${pageToken}` : "");
 
-const placePhotoSrc = (photoreference, maxheight = 16000) =>
-  `https://maps.googleapis.com/maps/api/place/photo?key=${gMapsApiKey}&photoreference=${photoreference}&maxheight=${1600}`;
+const placePhotoSrc = (photoreference) =>
+  `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${gMapsApiKey}&photoreference=${photoreference}&maxheight=${1600}`;
 
 const getPlaceDetailsEndpoint = (placeId) =>
-  `https://maps.googleapis.com/maps/api/place/details/json?key=${gMapsApiKey}&place_id=${placeId}`;
+  `${domain}/api/placeDetails?firstParameter=firstparam&key=${gMapsApiKey}&place_id=${placeId}`;
 
+const domain = process.env.DOMAIN;
 const gMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
 const defaultRadius = 2500;
 
@@ -34,18 +35,17 @@ const useGetRestaurants = (latitude, longitude) => {
       setLoading(true);
 
       if (!latitude || !longitude) return;
-
+      const request = nearbyRestaurantsEndpoint(
+        latitude,
+        longitude,
+        defaultRadius,
+        gMapsApiKey,
+        pageToken
+      );
+      console.log(request);
       const {
         data: { results, next_page_token },
-      } = await axios.get(
-        nearbyRestaurantsEndpoint(
-          latitude,
-          longitude,
-          defaultRadius,
-          gMapsApiKey,
-          pageToken
-        )
-      );
+      } = await axios.get(request);
       setPrePageToken(next_page_token);
       const db = results
         .map(
@@ -77,6 +77,11 @@ const useGetRestaurants = (latitude, longitude) => {
             result: { photos },
           },
         } = await axios.get(getPlaceDetailsEndpoint(result.placeId));
+
+        const results = await axios.get(
+          getPlaceDetailsEndpoint(result.placeId)
+        );
+        console.log(results);
 
         const pictures_ = photos.map(({ photo_reference, height }) =>
           placePhotoSrc(photo_reference, height)
