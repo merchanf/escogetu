@@ -26,6 +26,7 @@ const LikeIconButton = withIconButton(BittedHeartIcon);
 const ShareIconButton = withIconButton(ShareIcon);
 const CrossIconButton = withIconButton(CrossCutterlyIcon);
 const domain = process.env.DOMAIN;
+const gMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
 
 export default function Home() {
   const card = useRef(0);
@@ -123,6 +124,7 @@ export default function Home() {
 
   return (
     <>
+      <div id="map"></div>
       <Modal {...modalProps}>
         <Layout background="Dark">
           {details && <RestaurantDetails {...details} />}
@@ -142,6 +144,10 @@ export default function Home() {
             href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
             rel="stylesheet"
           ></link>
+          <script
+            async
+            src={`https://maps.googleapis.com/maps/api/js?key=${gMapsApiKey}&libraries=places&callback=initMap`}
+          ></script>
         </Head>
 
         <Layout>

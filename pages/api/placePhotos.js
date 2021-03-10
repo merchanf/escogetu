@@ -6,11 +6,10 @@ const placePhotoSrc = (key, photoreference) =>
   `https://maps.googleapis.com/maps/api/place/photo?key=${key}&photoreference=${photoreference}&maxheight=${1600}`;
 
 export default async (req, res) => {
-  const placeId = gup("place_id", req.url);
+  const photoReference = gup("photoreference", req.url);
   const key = gup("key", req.url);
-  const request = placePhotoSrc(key, placeId);
+  const request = placePhotoSrc(key, photoReference);
 
   const response = await axios.get(request);
-  console.log(reponse);
-  res.status(200).json(data);
+  res.status(200).json({ src: response.request.res.responseUrl });
 };
