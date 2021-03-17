@@ -22,6 +22,8 @@ const useGetRestaurants = (latitude, longitude) => {
   const [prePageToken, setPrePageToken] = useState();
   const [pageToken, setPageToken] = useState();
   const [map, setMap] = useState();
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [locationCoordinates, setLocationCoordinates] = useState();
 
   const loadNextPage = () => setPageToken(prePageToken);
 
@@ -32,95 +34,56 @@ const useGetRestaurants = (latitude, longitude) => {
     });
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-
-      if (!latitude || !longitude) return;
-      const request = nearbyRestaurantsEndpoint(
-        latitude,
-        longitude,
-        defaultRadius,
-        gMapsApiKey,
-        pageToken
-      );
-      console.log(request);
-      const {
-        data: { results, next_page_token },
-      } = await axios.get(request);
-      setPrePageToken(next_page_token);
-      /* const db = results
-        .map(
-          ({
-            place_id,
-            name,
-            photos,
-            geometry: {
-              location: { lat, lng },
-            },
-          }) => {
-            if (!photos) return null;
-            return {
-              placeId: place_id,
-              name: name,
-              distance: distance(latitude, longitude, lat, lng),
-              pictures: photos.map(({ photo_reference, height }) =>
-                placePhotoSrc(photo_reference, height)
-              ),
-              ref: createRef(),
-            };
-          }
-        )
-        .filter((result) => result != null);
-
-      db.forEach(async (result) => {
-        const {
-          data: {
-            result: { photos },
-          },
-        } = await axios.get(getPlaceDetailsEndpoint(result.placeId));
-
-        const pictures_ = photos.map(async ({ photo_reference, height }) => {
-          const request = placePhotoSrc(photo_reference, height);
-          const {
-            data: { src },
-          } = await axios.get(request);
-          return src;
-        });
-
-        setList((prevState) => [
-          ...prevState,
-          { ...result, pictures: pictures_ },
-        ]);
-      });
-      */
-      setLoading(false);
-    })();
-  }, [latitude, longitude, pageToken]);
+    if (!window.grecaptcha) {
+      const script = document.createElement("script");
+      if (!window.initMap)
+        window.initMap = () => {
+          setIsLoaded(true);
+        };
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${gMapsApiKey}&libraries=places&callback=initMap`;
+      document.body.appendChild(script);
+    } else {
+      setIsLoaded(true);
+    }
+  }, []);
 
   useEffect(() => {
-    var locationCoordinates = new window.google.maps.LatLng(
-      latitude,
-      longitude
-    );
+    (async () => {
+      if (!isLoaded || isNaN(latitude) || isNaN(longitude)) return;
+      if (!window?.google?.maps) return;
 
-    setMap(
-      new window.google.maps.Map(document.getElementById("map"), {
-        center: locationCoordinates,
-        zoom: 15,
-      })
-    );
+      setLocationCoordinates(
+        new window.google.maps.LatLng(
+          parseFloat(latitude),
+          parseFloat(longitude)
+        )
+      );
 
-    var request = {
-      location: locationCoordinates,
-      radius: "2000",
-      type: ["restaurant"],
-    };
+      setMap(
+        new window.google.maps.Map(document.getElementById("map"), {
+          center: locationCoordinates,
+          zoom: 15,
+        })
+      );
+    })();
+  }, [latitude, longitude, isLoaded]);
 
-    const service = new window.google.maps.places.PlacesService(map);
-    service.nearbySearch(request, callback);
-  }, [latitude, longitude]);
+  useEffect(() => {
+    setLoading(true);
+    if (map && locationCoordinates) {
+      var request = {
+        location: locationCoordinates,
+        radius: "2000",
+        type: ["restaurant"],
+      };
 
-  const callback2 = (results, status, result) => {
+      const service = new window.google.maps.places.PlacesService(map);
+      service.nearbySearch(request, nearbySearchCallback);
+      setLoading(false);
+    }
+  }, [map, locationCoordinates]);
+
+  const getDetailsCallback = (results, result) => {
     if (!results?.photos) return;
     const { photos } = results;
 
@@ -131,7 +94,7 @@ const useGetRestaurants = (latitude, longitude) => {
     setList((prevState) => [...prevState, { ...result, pictures: pictures_ }]);
   };
 
-  const callback = (results, status) => {
+  const nearbySearchCallback = (results) => {
     const db = results
       .map(
         ({
@@ -163,9 +126,9 @@ const useGetRestaurants = (latitude, longitude) => {
       };
 
       const service = new window.google.maps.places.PlacesService(map);
-      service.getDetails(request, (results, status, result) =>
-        callback2(results, status, result)
-      );
+      service.getDetails(request, (results, _) => {
+        getDetailsCallback(results, result);
+      });
     });
   };
 
