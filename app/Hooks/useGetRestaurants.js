@@ -2,19 +2,10 @@ import { createRef, useState, useEffect } from "react";
 import axios from "axios";
 import { distance } from "../utils/utils";
 
-const nearbyRestaurantsEndpoint = (lat, long, radius, key, pageToken) =>
-  `${domain}/api/nearbysearch?&lat=${lat}&lng=${long}&radius=${radius}&type=restaurant&key=${key}&` +
-  (pageToken ? `pagetoken=${pageToken}` : "");
-
-const placePhotoSrc = (photoreference) =>
-  `${domain}/api/placePhotos?key=${gMapsApiKey}&photoreference=${photoreference}&maxheight=${1600}`;
-
-const getPlaceDetailsEndpoint = (placeId) =>
-  `${domain}/api/placeDetails?firstParameter=firstparam&key=${gMapsApiKey}&place_id=${placeId}`;
+import useGoogleMaps from "./useGoogleMaps"
 
 const domain = process.env.DOMAIN;
-const gMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
-const defaultRadius = 2500;
+const defaultRadius = 1500;
 
 const useGetRestaurants = (latitude, longitude) => {
   const [loading, setLoading] = useState(true);
@@ -22,8 +13,8 @@ const useGetRestaurants = (latitude, longitude) => {
   const [prePageToken, setPrePageToken] = useState();
   const [pageToken, setPageToken] = useState();
   const [map, setMap] = useState();
-  const [isLoaded, setIsLoaded] = useState(false);
   const [locationCoordinates, setLocationCoordinates] = useState();
+  const googleMaps = useGoogleMaps();
 
   const loadNextPage = () => setPageToken(prePageToken);
 
@@ -34,53 +25,38 @@ const useGetRestaurants = (latitude, longitude) => {
     });
 
   useEffect(() => {
-    if (!window.grecaptcha) {
-      const script = document.createElement("script");
-      if (!window.initMap)
-        window.initMap = () => {
-          setIsLoaded(true);
-        };
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${gMapsApiKey}&libraries=places&callback=initMap`;
-      document.body.appendChild(script);
-    } else {
-      setIsLoaded(true);
-    }
-  }, []);
-
-  useEffect(() => {
     (async () => {
-      if (!isLoaded || isNaN(latitude) || isNaN(longitude)) return;
-      if (!window?.google?.maps) return;
+      if (!googleMaps || isNaN(latitude) || isNaN(longitude)) return;
 
       setLocationCoordinates(
-        new window.google.maps.LatLng(
+        new googleMaps.LatLng(
           parseFloat(latitude),
           parseFloat(longitude)
         )
       );
 
       setMap(
-        new window.google.maps.Map(document.getElementById("map"), {
+        new googleMaps.Map(document.getElementById("map"), {
           center: locationCoordinates,
           zoom: 15,
         })
       );
     })();
-  }, [latitude, longitude, isLoaded]);
+  }, [latitude, longitude, googleMaps]);
 
   useEffect(() => {
     setLoading(true);
     if (map && locationCoordinates) {
       var request = {
         location: locationCoordinates,
-        radius: "2000",
+        radius: defaultRadius,
         type: ["restaurant"],
       };
 
-      const service = new window.google.maps.places.PlacesService(map);
+      const service = new googleMaps.places.PlacesService(map);
       service.nearbySearch(request, nearbySearchCallback);
-      setLoading(false);
     }
+    setLoading(false);
   }, [map, locationCoordinates]);
 
   const getDetailsCallback = (results, result) => {
@@ -125,7 +101,7 @@ const useGetRestaurants = (latitude, longitude) => {
         fields: ["photos"],
       };
 
-      const service = new window.google.maps.places.PlacesService(map);
+      const service = new googleMaps.places.PlacesService(map);
       service.getDetails(request, (results, _) => {
         getDetailsCallback(results, result);
       });
