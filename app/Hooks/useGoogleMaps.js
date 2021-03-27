@@ -19,7 +19,7 @@ const useGoogleMaps = () => {
       script.src = `https://maps.googleapis.com/maps/api/js?key=${gMapsApiKey}&libraries=places&callback=initMap`;
       document.body.appendChild(script);
     }
-  }, [googleMaps]);
+  }, []);
 
   return googleMaps;
 }

@@ -17,6 +17,7 @@ import {
   ShareIcon,
   withIconButton,
 } from "../app/components/Icons/Icons";
+import useGoogleMaps from "../app/Hooks/useGoogleMaps";
 import useGetRestaurants from "../app/Hooks/useGetRestaurants";
 import useGetRestaurantDetails from "../app/Hooks/useGetRestaurantDetails";
 import firebase, { session } from "../app/firebase/firebase";
@@ -33,15 +34,17 @@ export default function Home() {
   const modalRef = useRef(null);
   const [position, setPosition] = useState();
   const [matchedPlace, setMatchedPlace] = useState();
+  const googleMaps = useGoogleMaps();
   const [list, loading, loadNextPage, pop] = useGetRestaurants(
     position?.lat,
-    position?.lng
+    position?.lng,
+    googleMaps
   );
+  const [loadingDetails, details] = useGetRestaurantDetails(matchedPlace, googleMaps);
   const [userUid, _] = useState(uid());
   const [sessionId, setSessionId] = useState();
   const { open, modalProps } = useModal();
   const { db, analytics } = firebase;
-  const [loadingDetails, details] = useGetRestaurantDetails(matchedPlace);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   useEffect(() => {

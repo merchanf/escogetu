@@ -1,5 +1,4 @@
 import { createRef, useState, useEffect } from "react";
-import axios from "axios";
 import { distance } from "../utils/utils";
 
 import useGoogleMaps from "./useGoogleMaps"
@@ -7,14 +6,13 @@ import useGoogleMaps from "./useGoogleMaps"
 const domain = process.env.DOMAIN;
 const defaultRadius = 1500;
 
-const useGetRestaurants = (latitude, longitude) => {
+const useGetRestaurants = (latitude, longitude, googleMaps) => {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
   const [prePageToken, setPrePageToken] = useState();
   const [pageToken, setPageToken] = useState();
   const [map, setMap] = useState();
   const [locationCoordinates, setLocationCoordinates] = useState();
-  const googleMaps = useGoogleMaps();
 
   const loadNextPage = () => setPageToken(prePageToken);
 
