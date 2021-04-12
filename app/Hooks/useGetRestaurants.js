@@ -1,14 +1,16 @@
 import { createRef, useState, useEffect } from "react";
 import { distance } from "../utils/utils";
 
-import useGoogleMaps from "./useGoogleMaps"
+import useGoogleMaps from "./useGoogleMaps";
 
 const domain = process.env.DOMAIN;
 const defaultRadius = 1500;
 
 const useGetRestaurants = (latitude, longitude, googleMaps) => {
   const [loading, setLoading] = useState(true);
-  const [list, setList] = useState([]);
+  const [tempList, setTempList] = useState([]);
+  const [tempLength, setTempLength] = useState();
+  const [list, setList] = useState();
   const [prePageToken, setPrePageToken] = useState();
   const [pageToken, setPageToken] = useState();
   const [map, setMap] = useState();
@@ -23,27 +25,20 @@ const useGetRestaurants = (latitude, longitude, googleMaps) => {
     });
 
   useEffect(() => {
-    (async () => {
-      if (!googleMaps || isNaN(latitude) || isNaN(longitude)) return;
+    if (!googleMaps || isNaN(latitude) || isNaN(longitude)) return;
+    setLocationCoordinates(
+      new googleMaps.LatLng(parseFloat(latitude), parseFloat(longitude))
+    );
 
-      setLocationCoordinates(
-        new googleMaps.LatLng(
-          parseFloat(latitude),
-          parseFloat(longitude)
-        )
-      );
-
-      setMap(
-        new googleMaps.Map(document.getElementById("map"), {
-          center: locationCoordinates,
-          zoom: 15,
-        })
-      );
-    })();
+    setMap(
+      new googleMaps.Map(document.getElementById("map"), {
+        center: locationCoordinates,
+        zoom: 15,
+      })
+    );
   }, [latitude, longitude, googleMaps]);
 
   useEffect(() => {
-    setLoading(true);
     if (map && locationCoordinates) {
       var request = {
         location: locationCoordinates,
@@ -54,7 +49,6 @@ const useGetRestaurants = (latitude, longitude, googleMaps) => {
       const service = new googleMaps.places.PlacesService(map);
       service.nearbySearch(request, nearbySearchCallback);
     }
-    setLoading(false);
   }, [map, locationCoordinates]);
 
   const getDetailsCallback = (results, result) => {
@@ -65,11 +59,14 @@ const useGetRestaurants = (latitude, longitude, googleMaps) => {
       photo.getUrl({ maxWidth: 1600, maxHeight: 1600 })
     );
 
-    setList((prevState) => [...prevState, { ...result, pictures: pictures_ }]);
+    setTempList((prevState) => [
+      ...prevState,
+      { ...result, pictures: pictures_ },
+    ]);
   };
 
   const nearbySearchCallback = (results) => {
-    const db = results
+    const mappedResults = results
       .map(
         ({
           place_id,
@@ -84,26 +81,18 @@ const useGetRestaurants = (latitude, longitude, googleMaps) => {
             placeId: place_id,
             name: name,
             distance: distance(latitude, longitude, lat(), lng()),
-            pictures: photos.map((photo) =>
-              photo.getUrl({ maxWidth: 1600, maxHeight: 1600 })
-            ),
             ref: createRef(),
           };
+
+          setTempList((prevState) => [
+            ...prevState,
+            { ...result, pictures: pictures_ },
+          ]);
         }
       )
       .filter((result) => result != null);
-
-    db.forEach(async (result) => {
-      var request = {
-        placeId: result.placeId,
-        fields: ["photos"],
-      };
-
-      const service = new googleMaps.places.PlacesService(map);
-      service.getDetails(request, (results, _) => {
-        getDetailsCallback(results, result);
-      });
-    });
+      setList([...mappedResults])
+      setLoading(false);
   };
 
   return [list, loading, loadNextPage, pop];
