@@ -1,5 +1,6 @@
 import { useState, forwardRef } from "react";
 import TinderCard from "react-tinder-card";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 import styles from "./Card.module.scss";
 
@@ -20,6 +21,9 @@ const Card = forwardRef(
         setSelectedPicture((prevState) => prevState - 1);
     };
 
+    const trueHeight = height ? Math.trunc(height * 0.9) : 0;
+    const trueWidth = height ? Math.trunc(height * 0.54) : 0; // 60% of 90%
+
     return (
       <div
         style={{
@@ -39,21 +43,29 @@ const Card = forwardRef(
           <div
             className={styles.Card}
             style={{
-              height: height && Math.trunc(height * 0.9),
-              width: height && Math.trunc(height * 0.54), // 60% of 90%
+              height: trueHeight,
+              width: trueWidth,
             }}
           >
-            <img
-              className={styles.Card__Image}
-              src={pictures[selectedPicture]}
-              alt={`${name} - ${selectedPicture}`}
-              style={{
-                maxHeight: height && Math.trunc(height * 0.9),
-                maxWidth: height && Math.trunc(height * 0.54), // 60% of 90%
-                width: "auto",
-                height: "auto",
-              }}
-            />
+            {pictures ? (
+              <img
+                className={styles.Card__Image}
+                src={pictures[selectedPicture]}
+                alt={`${name} - ${selectedPicture}`}
+                style={{
+                  maxHeight: trueHeight,
+                  maxWidth: trueWidth, // 60% of 90%
+                  width: "auto",
+                  height: "auto",
+                }}
+              />
+            ) : (
+              <Skeleton
+                variant="rect"
+                width={trueWidth}
+                height={trueHeight}
+              />
+            )}
             <div className={styles.Card__Buttons}>
               {selectedPicture - 1 >= 0 ? (
                 <button
@@ -65,7 +77,7 @@ const Card = forwardRef(
               ) : (
                 <div></div>
               )}
-              {selectedPicture + 1 < pictures.length && (
+              {pictures && selectedPicture + 1 < pictures.length && (
                 <button
                   className={styles.Card__Buttons__Button}
                   onClick={handleRightButton}
