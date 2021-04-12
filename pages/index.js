@@ -40,7 +40,10 @@ export default function Home() {
     position?.lng,
     googleMaps
   );
-  const [loadingDetails, details] = useGetRestaurantDetails(matchedPlace, googleMaps);
+  const [loadingDetails, details] = useGetRestaurantDetails(
+    matchedPlace,
+    googleMaps
+  );
   const [userUid, _] = useState(uid());
   const [sessionId, setSessionId] = useState();
   const { open, modalProps } = useModal();
@@ -151,11 +154,13 @@ export default function Home() {
 
         <Layout>
           <div className={styles.Home}>
+            <div className={styles.Home__Body}>
             {loading ? (
               <LoadingIcon />
             ) : (
               <CardList list={list} onSwipe={swiped} />
             )}
+            </div>
             <div className={styles.Home__Buttons}>
               <CrossIconButton
                 onClick={() => swipe("left")}
