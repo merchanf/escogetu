@@ -50,7 +50,6 @@ const Card = forwardRef(
             {pictures ? (
               <img
                 className={styles.Card__Image}
-                src={pictures[selectedPicture]}
                 alt={`${name} - ${selectedPicture}`}
                 style={{
                   maxHeight: trueHeight,
@@ -64,7 +63,17 @@ const Card = forwardRef(
                 variant="rect"
                 width={trueWidth}
                 height={trueHeight}
-              />
+                animation="wave"
+              >
+                <img
+                  style={{
+                    maxHeight: trueHeight,
+                    maxWidth: trueWidth, // 60% of 90%
+                    width: "auto",
+                    height: "auto",
+                  }}
+                />
+              </Skeleton>
             )}
             <div className={styles.Card__Buttons}>
               {selectedPicture - 1 >= 0 ? (
