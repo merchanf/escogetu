@@ -63,7 +63,7 @@ const useGetRestaurants = (latitude, longitude, googleMaps) => {
     );
 
     console.log('aqui', { ...result, pictures: pictures_ });
-    setTempList((prevState) => [
+    setList((prevState) => [
       ...prevState,
       { ...result, pictures: pictures_ }
     ]);
