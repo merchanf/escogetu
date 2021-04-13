@@ -81,6 +81,7 @@ const Card = forwardRef(
                 <button
                   className={styles.Card__Buttons__Button}
                   onClick={handleLeftButton}
+                  onTouchStart={handleRightButton}
                 >
                   {"<"}
                 </button>
@@ -91,6 +92,7 @@ const Card = forwardRef(
                 <button
                   className={styles.Card__Buttons__Button}
                   onClick={handleRightButton}
+                  onTouchStart={handleRightButton}
                 >
                   {">"}
                 </button>
