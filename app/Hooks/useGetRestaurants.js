@@ -56,7 +56,7 @@ const useGetRestaurants = (latitude, longitude, googleMaps) => {
     const { photos } = results;
 
     const pictures_ = photos.map((photo) =>
-      photo.getUrl({ maxWidth: 1600, maxHeight: 1600 })
+      photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })
     );
 
     setTempList((prevState) => [

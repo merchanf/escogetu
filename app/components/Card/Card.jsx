@@ -22,7 +22,7 @@ const Card = forwardRef(
     };
 
     const trueHeight = height ? Math.trunc(height * 0.9) : 0;
-    const trueWidth = height ? Math.trunc(height * 0.54) : 0; // 60% of 90%
+    const trueWidth = height ? Math.trunc(height * 0.50625) : 0; // 56.25% of 90%
 
     return (
       <div

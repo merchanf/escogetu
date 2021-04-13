@@ -7,40 +7,53 @@ const useGetRestaurantDetails = (placeId, googleMaps) => {
 
   useEffect(() => {
     if (!googleMaps) return;
-      setMap(
-        new googleMaps.Map(document.getElementById("map"), {
-          zoom: 15,
-        })
-      );
+    setMap(
+      new googleMaps.Map(document.getElementById("map"), {
+        zoom: 15,
+      })
+    );
   }, [googleMaps]);
 
   const getDetailsCallback = (result, status) => {
-    const { 
+    const {
       name,
       price_level,
       vicinity,
       rating,
       international_phone_number,
-      geometry: { location: {lat, lng} },
+      geometry: {
+        location: { lat, lng },
+      },
+      photos,
     } = result;
     setDetails({
       address: vicinity,
-      location: {lat: lat(), lng:lng()},
+      location: { lat: lat(), lng: lng() },
       name: name,
       rating: rating,
       phoneNumber: international_phone_number,
       priceLevel: price_level,
-    })
-  }
+      photos: photos.map((photo) =>
+        photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })
+      ),
+    });
+  };
 
   useEffect(() => {
     (async () => {
       if (!placeId || !googleMaps) return;
-      setLoading(true);
 
       var request = {
         placeId: placeId,
-        fields: ["international_phone_number", "name", "rating", "vicinity", "geometry", "price_level"],
+        fields: [
+          "international_phone_number",
+          "name",
+          "rating",
+          "vicinity",
+          "geometry",
+          "price_level",
+          "photos",
+        ],
       };
 
       const service = new googleMaps.places.PlacesService(map);
@@ -52,6 +65,5 @@ const useGetRestaurantDetails = (placeId, googleMaps) => {
 
   return [loading, details];
 };
-
 
 export default useGetRestaurantDetails;
