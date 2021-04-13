@@ -50,6 +50,7 @@ const Card = forwardRef(
             {pictures ? (
               <img
                 className={styles.Card__Image}
+                src={pictures[selectedPicture]}
                 alt={`${name} - ${selectedPicture}`}
                 style={{
                   maxHeight: trueHeight,

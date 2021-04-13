@@ -5,22 +5,25 @@ import useGoogleMaps from "./useGoogleMaps";
 
 const domain = process.env.DOMAIN;
 const defaultRadius = 1500;
+const initialLoadAmount = 3;
 
 const useGetRestaurants = (latitude, longitude, googleMaps) => {
   const [loading, setLoading] = useState(true);
+  const [list, setList] = useState([]);
   const [tempList, setTempList] = useState([]);
-  const [tempLength, setTempLength] = useState();
-  const [list, setList] = useState();
   const [prePageToken, setPrePageToken] = useState();
   const [pageToken, setPageToken] = useState();
   const [map, setMap] = useState();
   const [locationCoordinates, setLocationCoordinates] = useState();
+  const [firstLoading, setFirstLoading] = useState(true);
 
   const loadNextPage = () => setPageToken(prePageToken);
 
   const pop = () =>
     setList((prevState) => {
       prevState.shift();
+      //if there are less than 3 cards call again getrestaurants
+      //load images for the third next one.
       return prevState;
     });
 
@@ -59,11 +62,19 @@ const useGetRestaurants = (latitude, longitude, googleMaps) => {
       photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })
     );
 
+    console.log('aqui', { ...result, pictures: pictures_ });
     setTempList((prevState) => [
       ...prevState,
-      { ...result, pictures: pictures_ },
+      { ...result, pictures: pictures_ }
     ]);
   };
+
+  useEffect(() => {
+    if(!loading){
+      console.log('list', tempList);
+      setList(tempList);
+    }
+  }, [loading])
 
   const nearbySearchCallback = (results) => {
     const mappedResults = results
@@ -83,16 +94,30 @@ const useGetRestaurants = (latitude, longitude, googleMaps) => {
             distance: distance(latitude, longitude, lat(), lng()),
             ref: createRef(),
           };
-
-          setTempList((prevState) => [
-            ...prevState,
-            { ...result, pictures: pictures_ },
-          ]);
         }
       )
       .filter((result) => result != null);
-      setList([...mappedResults])
-      setLoading(false);
+
+    let accumulator = 0;
+    mappedResults.forEach((result) => {
+      var request = {
+        placeId: result.placeId,
+        fields: ["photos"],
+      };
+
+      if (true) {
+        console.log('if', result.name);
+        const service = new googleMaps.places.PlacesService(map);
+        service.getDetails(request, (results, _) => {
+          getDetailsCallback(results, result);
+        });
+      } /*else {
+        console.log('else', result.name);
+        setTempList((prevState) => [ ...prevState, { ...result },]);
+      }*/
+      accumulator++;
+    });
+    setLoading(false);
   };
 
   return [list, loading, loadNextPage, pop];
