@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import useGetRestaurants from "./useGetRestaurants";
 
 const useDeck = (latitude, longitude, googleMaps) => {
-  const initialCardsAmount = 4;
+  const initialCardsAmount = 3;
   const [list, setList] = useState([]);
   const [loadingPhotos, setLoadingPhotos] = useState(true);
   const [map, setMap] = useState();
   const [locationCoordinates, setLocationCoordinates] = useState();
-  const [currentItem, setCurrentItem] = useState(initialCardsAmount);
+  const [initialCards, setInitialCards] = useState(0);
   const [ service, setService] = useState();
   const [
     restaurantList,
@@ -85,44 +85,13 @@ const useDeck = (latitude, longitude, googleMaps) => {
 
   useEffect(() => {
     if (loadingRestaurantList && !service) return;
-    const length =
-      restaurantList.length < initialCardsAmount
-        ? restaurantList.length
-        : initialCardsAmount;
-    for (let i = 0; i < length; i++) {
-      const item = restaurantList[i];
-
-      var request = {
-        placeId: item.placeId,
-        fields: ["photos"],
-      };
-
-      service.getDetails(request, (results) => {
-        const pictures = getPictures(results);
-        if (pictures) {
-          setList((prevState) => {
-            prevState.push({ ...item, pictures: pictures });
-            return [...prevState];
-          });
-        } else {
-          setList((prevState) => {
-            prevState.push({ ...item });
-            return [...prevState];
-          });
-        }
-      });
-      popFromRestaurantList();
-    }
-  }, [loadingRestaurantList, restaurantList, service]);
-
-  useEffect(() => {
-    if (loadingRestaurantList) return;
-    if (
-      list.length === restaurantList.length ||
-      list.length === initialCardsAmount
-    )
+    if( initialCards >= initialCardsAmount ){
       setLoadingPhotos(false);
-  }, [loadingRestaurantList, list, restaurantList]);
+      return;
+    }
+    pop();
+    setInitialCards(initialCards + 1);
+  }, [loadingRestaurantList, restaurantList, initialCards]);
 
   const loading = loadingRestaurantList || loadingPhotos;
   return [loading, list, pop];
