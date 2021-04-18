@@ -8,6 +8,7 @@ const useDeck = (latitude, longitude, googleMaps) => {
   const [map, setMap] = useState();
   const [locationCoordinates, setLocationCoordinates] = useState();
   const [currentItem, setCurrentItem] = useState(initialCardsAmount);
+  const [ service, setService] = useState();
   const [
     restaurantList,
     loadingRestaurantList,
@@ -19,18 +20,53 @@ const useDeck = (latitude, longitude, googleMaps) => {
     map,
     locationCoordinates
   );
+
+  const getPictures = (results, result) => {
+    if (!results?.photos) return;
+    const { photos } = results;
+
+    return photos.map((photo) =>
+      photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })
+    );
+  };
   
   const pop = () => {
+    const item = popFromRestaurantList();
     setList((prevState) => {
       prevState.shift();
       return prevState;
     });
-    push();
+    push(item);
   }
 
-  const push = () => {
-    
+  const push = (item) => {
+    if(!service) return;
+    const { placeId } = item;
+    var request = {
+      placeId: placeId,
+      fields: ["photos"],
+    };
+
+    service.getDetails(request, (results) => {
+      const pictures = getPictures(results);
+      if (pictures) {
+        setList((prevState) => {
+          prevState.push({ ...item, pictures: pictures });
+          return [...prevState];
+        });
+      } else {
+        setList((prevState) => {
+          prevState.push({ ...item });
+          return [...prevState];
+        });
+      }
+    });
   }
+
+  useEffect(() => {
+    if(!googleMaps && !map) return;
+    setService(new googleMaps.places.PlacesService(map));
+  }, [googleMaps, map])
 
   useEffect(() => {
     if (!googleMaps || isNaN(latitude) || isNaN(longitude)) return;
@@ -47,18 +83,8 @@ const useDeck = (latitude, longitude, googleMaps) => {
     );
   }, [latitude, longitude, googleMaps]);
 
-  const getPictures = (results, result) => {
-    if (!results?.photos) return;
-    const { photos } = results;
-
-    return photos.map((photo) =>
-      photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })
-    );
-  };
-
   useEffect(() => {
-    if (loadingRestaurantList) return;
-    const service = new googleMaps.places.PlacesService(map);
+    if (loadingRestaurantList && !service) return;
     const length =
       restaurantList.length < initialCardsAmount
         ? restaurantList.length
@@ -87,7 +113,7 @@ const useDeck = (latitude, longitude, googleMaps) => {
       });
       popFromRestaurantList();
     }
-  }, [loadingRestaurantList, restaurantList]);
+  }, [loadingRestaurantList, restaurantList, service]);
 
   useEffect(() => {
     if (loadingRestaurantList) return;
