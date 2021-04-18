@@ -18,7 +18,7 @@ import {
   withIconButton,
 } from "../app/components/Icons/Icons";
 import useGoogleMaps from "../app/Hooks/useGoogleMaps";
-import useGetRestaurants from "../app/Hooks/useGetRestaurants";
+import useDeck from "../app/Hooks/useDeck";
 import useGetRestaurantDetails from "../app/Hooks/useGetRestaurantDetails";
 import firebase, { session } from "../app/firebase/firebase";
 import { uid } from "uid";
@@ -35,7 +35,7 @@ export default function Home() {
   const [position, setPosition] = useState();
   const [matchedPlace, setMatchedPlace] = useState();
   const googleMaps = useGoogleMaps();
-  const [list, loading, loadNextPage, pop] = useGetRestaurants(
+  const [loading, list] = useDeck(
     position?.lat,
     position?.lng,
     googleMaps
@@ -116,12 +116,11 @@ export default function Home() {
     if (direction === "right") {
       await session.like(sessionId, userUid, likedItem);
     }
-    pop();
-    if (list.length <= 5) loadNextPage();
+    //if (list.length <= 5) loadNextPage();
   };
 
   const onCardLeftScreen = () => {
-    if (list.length <= 5) loadNextPage();
+    //if (list.length <= 5) loadNextPage();
   };
 
   const swipe = (dir) => {
