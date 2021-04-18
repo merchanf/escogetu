@@ -3,12 +3,19 @@ import { distance } from "../utils/utils";
 
 import useGoogleMaps from "./useGoogleMaps";
 
-const useGetRestaurants = (latitude, longitude, googleMaps) => {
+const useGetRestaurants = (latitude, longitude, googleMaps, map, locationCoordinates) => {
   const defaultRadius = 2500;
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
-  const [map, setMap] = useState();
-  const [locationCoordinates, setLocationCoordinates] = useState();
+
+  const pop = () => {
+    const item = list.length > 0 ? list[0] : null;
+    setList((prevState) => {
+      prevState.shift();
+      return prevState;
+    });
+    return item;
+  }
 
   const nearbySearchCallback = (results) => {
     return results
@@ -37,21 +44,6 @@ const useGetRestaurants = (latitude, longitude, googleMaps) => {
   };
 
   useEffect(() => {
-    if (!googleMaps || isNaN(latitude) || isNaN(longitude)) return;
-    const location = new googleMaps.LatLng(
-      parseFloat(latitude),
-      parseFloat(longitude)
-    );
-    setLocationCoordinates(location);
-    setMap(
-      new googleMaps.Map(document.getElementById("map"), {
-        center: location,
-        zoom: 15,
-      })
-    );
-  }, [latitude, longitude, googleMaps]);
-
-  useEffect(() => {
     if (!map || !locationCoordinates) return;
     var request = {
       location: locationCoordinates,
@@ -68,7 +60,7 @@ const useGetRestaurants = (latitude, longitude, googleMaps) => {
 
   }, [map, locationCoordinates]);
 
-  return [list, loading];
+  return [list, loading, pop];
 };
 
 export default useGetRestaurants;

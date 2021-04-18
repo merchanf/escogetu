@@ -2,14 +2,35 @@ import { useEffect, useState } from "react";
 import useGetRestaurants from "./useGetRestaurants";
 
 const useDeck = (latitude, longitude, googleMaps) => {
-  const [restaurantList, loadingRestaurantList ] = useGetRestaurants(
-    latitude,
-    longitude,
-    googleMaps
-  );
+  const initialCardsAmount = 4;
   const [list, setList] = useState([]);
   const [loadingPhotos, setLoadingPhotos] = useState(true);
   const [map, setMap] = useState();
+  const [locationCoordinates, setLocationCoordinates] = useState();
+  const [currentItem, setCurrentItem] = useState(initialCardsAmount);
+  const [
+    restaurantList,
+    loadingRestaurantList,
+    popFromRestaurantList,
+  ] = useGetRestaurants(
+    latitude,
+    longitude,
+    googleMaps,
+    map,
+    locationCoordinates
+  );
+  
+  const pop = () => {
+    setList((prevState) => {
+      prevState.shift();
+      return prevState;
+    });
+    push();
+  }
+
+  const push = () => {
+    
+  }
 
   useEffect(() => {
     if (!googleMaps || isNaN(latitude) || isNaN(longitude)) return;
@@ -17,6 +38,7 @@ const useDeck = (latitude, longitude, googleMaps) => {
       parseFloat(latitude),
       parseFloat(longitude)
     );
+    setLocationCoordinates(location);
     setMap(
       new googleMaps.Map(document.getElementById("map"), {
         center: location,
@@ -36,37 +58,48 @@ const useDeck = (latitude, longitude, googleMaps) => {
 
   useEffect(() => {
     if (loadingRestaurantList) return;
-    restaurantList.forEach((item) => {
+    const service = new googleMaps.places.PlacesService(map);
+    const length =
+      restaurantList.length < initialCardsAmount
+        ? restaurantList.length
+        : initialCardsAmount;
+    for (let i = 0; i < length; i++) {
+      const item = restaurantList[i];
+
       var request = {
         placeId: item.placeId,
         fields: ["photos"],
       };
-      const service = new googleMaps.places.PlacesService(map);
+
       service.getDetails(request, (results) => {
         const pictures = getPictures(results);
-        if(pictures){
+        if (pictures) {
           setList((prevState) => {
             prevState.push({ ...item, pictures: pictures });
-            return [ ...prevState];
+            return [...prevState];
           });
-        }else{
+        } else {
           setList((prevState) => {
             prevState.push({ ...item });
-            return [ ...prevState];
+            return [...prevState];
           });
         }
       });
-    });
+      popFromRestaurantList();
+    }
   }, [loadingRestaurantList, restaurantList]);
- 
-  useEffect(()=>{
-    if(loadingRestaurantList) return;
-    if(list.length === restaurantList.length)
+
+  useEffect(() => {
+    if (loadingRestaurantList) return;
+    if (
+      list.length === restaurantList.length ||
+      list.length === initialCardsAmount
+    )
       setLoadingPhotos(false);
-  }, [loadingRestaurantList, list, restaurantList])
+  }, [loadingRestaurantList, list, restaurantList]);
 
   const loading = loadingRestaurantList || loadingPhotos;
-  return [loading, list];
+  return [loading, list, pop];
 };
 
 export default useDeck;

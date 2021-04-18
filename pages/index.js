@@ -35,7 +35,7 @@ export default function Home() {
   const [position, setPosition] = useState();
   const [matchedPlace, setMatchedPlace] = useState();
   const googleMaps = useGoogleMaps();
-  const [loading, list] = useDeck(
+  const [loading, list, pop] = useDeck(
     position?.lat,
     position?.lng,
     googleMaps
@@ -116,6 +116,7 @@ export default function Home() {
     if (direction === "right") {
       await session.like(sessionId, userUid, likedItem);
     }
+    pop();
     //if (list.length <= 5) loadNextPage();
   };
 
