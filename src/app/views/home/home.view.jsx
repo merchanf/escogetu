@@ -10,14 +10,10 @@ const HomeViewBase = () => {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { restaurants, swipe, onSwipe } = useRestaurants();
 
-  const onCardLeftScreen = () => {
-    console.log('onCardLeftScreen');
-  };
-
   return (
     <div className="Home">
       <div className="Home__Body">
-        <CardList list={restaurants} onSwipe={onSwipe} onCardLeftScreen={onCardLeftScreen} />
+        <CardList list={restaurants} onSwipe={onSwipe} />
       </div>
       <div className="Home__Buttons">
         <CrossIconButton onClick={() => swipe('left')} size="large" color="red" />

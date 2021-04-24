@@ -1,13 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useStore } from 'react-redux';
-import { getNearRestaurants } from '@services/googleMaps.service';
+import { getNearRestaurants, getRestaurantDetails } from '@services/googleMaps.service';
 import { useMount } from '@hooks/use-mount.hook';
 
 export const useRestaurants = () => {
   const [loading, setLoading] = useState(true);
   const [restaurants, setRestaurants] = useState([]);
-  const [likedRestaurants] = useState([]);
-  const [unlikedRestaurants] = useState([]);
 
   const {
     hydrate: {
@@ -21,11 +19,9 @@ export const useRestaurants = () => {
   } = useStore().getState();
 
   const onSwipe = (direction) => {
-    const restaurant = restaurants.pop();
+    restaurants.pop();
     if (direction === 'right') {
-      likedRestaurants.push(restaurant);
-    } else {
-      unlikedRestaurants.push(restaurant);
+      //  TODO save in database
     }
   };
 
@@ -37,8 +33,13 @@ export const useRestaurants = () => {
   const refreshRestaurants = useCallback(() => {
     const location = new window.google.maps.LatLng(parseFloat(latitude), parseFloat(longitude));
     getNearRestaurants({ client, location, radius: 2500 }).then((results) => {
-      setRestaurants(results);
-      setLoading(false);
+      setRestaurants([
+        ...results.slice(0, 3).map((restaurant) => ({
+          ...restaurant,
+          ...getRestaurantDetails({ client, placeId: restaurant.placeId }),
+        })),
+        ...results.slice(3, results.length),
+      ]);
     });
   }, [client, latitude, longitude]);
 
