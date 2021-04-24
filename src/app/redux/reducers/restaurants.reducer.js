@@ -17,7 +17,7 @@ const restaurantsReducer = createReducer(RestaurantsStore, (builder) => {
   }));
   builder.addCase(setRestaurants, (state, { payload }) => ({
     ...state,
-    restaurants: payload,
+    list: payload,
   }));
 });
 

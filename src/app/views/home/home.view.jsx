@@ -1,39 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { CardList, LoadingIcon } from '@app/components';
+import { CardList } from '@app/components';
+import { CrossIconButton, LikeIconButton, ShareIconButton } from '@components/Icons/Icons';
 
-const HomeViewBase = ({ loadingRestaurants, restaurants }) => {
+import './home.view.scss';
+
+const HomeViewBase = ({ restaurantsList }) => {
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const onCardLeftScreen = () => {
     console.log('onCardLeftScreen');
   };
   const onSwipe = () => {
     console.log('onSwipe');
   };
+  const swipe = () => {
+    console.log('swipe');
+  };
 
   return (
     <div className="Home">
       <div className="Home__Body">
-        {loadingRestaurants ? (
-          <LoadingIcon />
-        ) : (
-          <CardList list={restaurants} onSwipe={onSwipe} onCardLeftScreen={onCardLeftScreen} />
-        )}
+        <CardList list={restaurantsList} onSwipe={onSwipe} onCardLeftScreen={onCardLeftScreen} />
+      </div>
+      <div className="Home__Buttons">
+        <CrossIconButton onClick={() => swipe('left')} size="large" color="red" />
+        <ShareIconButton onClick={() => setIsShareModalOpen(true)} color="blue" />
+        <LikeIconButton onClick={() => swipe('right')} size="large" color="green" />
       </div>
     </div>
   );
 };
 
-const mapStateToProps = ({ restaurants: { loading: loadingRestaurants, restaurants } }) => ({
-  loadingRestaurants,
-  restaurants,
+const mapStateToProps = ({ restaurants: { list: restaurantsList } }) => ({
+  restaurantsList,
 });
 
 HomeViewBase.defaultProps = {};
 
 HomeViewBase.propTypes = {
-  loadingRestaurants: PropTypes.bool.isRequired,
-  restaurants: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  restaurantsList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export const HomeView = connect(mapStateToProps)(HomeViewBase);

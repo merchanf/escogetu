@@ -1,22 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from '@app/components';
-import styles from './CardList.module.scss';
+
+import './CardList.scss';
 
 export const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
-  console.log(list)
-  const ref = useRef(null);
-  const [width, setWidth] = useState();
-  const [height, setHeight] = useState();
-
-  useEffect(() => {
-    setWidth(ref.current.clientWidth);
-    setHeight(ref.current.clientHeight);
-  }, [ref?.current?.clientWidth, ref?.current?.clientHeight]);
-
   return (
-    <div className={styles.Container} ref={ref}>
-      {list.map(({ placeId, name, pictures, distance, ref }, index) => (
+    <div className="card-list">
+      {list.map(({ placeId, name, pictures, distance }, index) => (
         <Card
           id={placeId}
           name={name}
@@ -25,9 +16,6 @@ export const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
           key={name}
           onSwipe={onSwipe}
           index={list.length - index}
-          width={width}
-          height={height}
-          ref={ref}
           onSwipe={onSwipe}
           onCardLeftScreen={onCardLeftScreen}
         />
@@ -37,7 +25,7 @@ export const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
 };
 
 CardList.propTypes = {
-  list: PropTypes.string.isRequired,
+  list: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   onSwipe: PropTypes.func.isRequired,
   onCardLeftScreen: PropTypes.func.isRequired,
 };

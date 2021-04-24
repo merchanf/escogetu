@@ -1,6 +1,7 @@
 const { resolve } = require('path');
 
 exports.webpack = (config, env) => {
+  config.devtool = 'source-map';
   config.resolve.alias = {
     ...config.resolve.alias,
     // app aliases
