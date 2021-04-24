@@ -1,0 +1,16 @@
+{
+  "files": ["./{src,tests,cypress,stories}/**/*.{js,ts,jsx}"],
+  "formats": [
+    {
+      "name": "stylish",
+      "output": "console"
+    },
+    {
+      "name": "json-with-metadata",
+      "output": "file",
+      "path": "./eslint-output.json"
+    }
+  ],
+  "cliEngineConfig": {
+  }
+}

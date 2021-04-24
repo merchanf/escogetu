@@ -1,0 +1,107 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["react", "prettier"],
+  "parserOptions": {
+    "ecmaVersion": 2019,
+    "sourceType": "module"
+  },
+  "extends": [
+    "eslint:recommended",
+    "airbnb",
+    "plugin:you-dont-need-lodash-underscore/compatible",
+    "plugin:prettier/recommended",
+    "react-app",
+    "problems",
+    "prettier/react"
+  ],
+  "ignorePatterns": ["node_modules/"],
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "globals": {
+    "__adroll__": true
+  },
+  "rules": {
+    "import/no-cycle": 0,
+    "no-shadow": 0,
+    "react/jsx-props-no-spreading": 0,
+    "react/jsx-wrap-multilines": ["error", { "declaration": false, "assignment": false }],
+    "react/no-array-index-key": 0,
+    "react/jsx-one-expression-per-line": 0,
+    "jsx-a11y/control-has-associated-label": 0,
+    "jsx-a11y/label-has-associated-control": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
+    "no-param-reassign": 0,
+    "no-plusplus": 0,
+    "no-return-assign": 0,
+    "jsx-a11y/anchor-has-content": 0,
+    "jsx-a11y/anchor-is-valid": 0,
+    "max-lines": ["error", { "max": 400, "skipBlankLines": true, "skipComments": true }],
+    "one-var": ["error", "never"],
+    "import/prefer-default-export": 0,
+    "import/no-default-export": 2,
+    "import/order": [
+      "error",
+      {
+        "groups": ["external", "builtin", "index", "internal", "parent", "sibling"]
+      }
+    ],
+    "you-dont-need-lodash-underscore/assign": "warn",
+    "you-dont-need-lodash-underscore/concat": "warn",
+    "you-dont-need-lodash-underscore/flatten": "warn",
+    "you-dont-need-lodash-underscore/first": "warn",
+    "you-dont-need-lodash-underscore/index-of": "warn",
+    "you-dont-need-lodash-underscore/is-array": "warn",
+    "you-dont-need-lodash-underscore/is-finite": "warn",
+    "you-dont-need-lodash-underscore/is-integer": "warn",
+    "you-dont-need-lodash-underscore/is-nil": "warn",
+    "you-dont-need-lodash-underscore/is-null": "warn",
+    "you-dont-need-lodash-underscore/is-undefined": "warn",
+    "you-dont-need-lodash-underscore/join": "warn",
+    "you-dont-need-lodash-underscore/keys": "warn",
+    "you-dont-need-lodash-underscore/last": "warn",
+    "you-dont-need-lodash-underscore/omit": "warn",
+    "you-dont-need-lodash-underscore/pad-start": "warn",
+    "you-dont-need-lodash-underscore/reverse": "warn",
+    "you-dont-need-lodash-underscore/slice": "warn",
+    "you-dont-need-lodash-underscore/uniq": "warn",
+    "you-dont-need-lodash-underscore/values": "warn",
+    "you-dont-need-lodash-underscore/every": 0
+  },
+  "overrides": [
+    {
+      "files": [
+        "babel.config.js",
+        "./config/*",
+        "./stories/config/webpack.config.js",
+        "./src/app/reducers/*"
+      ],
+      "rules": {
+        "no-console": 0
+      },
+      "env": {
+        "node": true
+      }
+    }
+  ],
+  "settings": {
+    "import/resolver": {
+      "eslint-import-resolver-custom-alias": {
+        "alias": {
+          "@app": "./src/app",
+          "@hooks": "./src/app/hooks",
+          "@components": "./src/app/components",
+          "@models": "./src/app/models",
+          "@hocs": "./src/app/hocs",
+          "@utils": "./src/app/utils",
+          "@constants": "./src/app/constants",
+          "@services": "./src/app/services",
+          "@assets": "./src/assets"
+        },
+        "extensions": [".js", ".jsx"]
+      }
+    }
+  }
+}
