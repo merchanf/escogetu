@@ -20,13 +20,12 @@ export const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
           name={name}
           pictures={pictures}
           distance={distance}
-          key={name}
+          key={placeId}
           onSwipe={onSwipe}
-          index={list.length - index}
+          index={index}
           width={width}
           height={height}
           ref={ref}
-          onSwipe={onSwipe}
           onCardLeftScreen={onCardLeftScreen}
         />
       ))}

@@ -24,10 +24,9 @@ const mapStateToProps = ({
     userUid,
     geoLocation: { loading: loadingLocation },
   },
-  restaurants: { loading: loadingRestaurants },
 }) => ({
   userUid,
-  isMinimumAppDataLoaded: !loadingLocation && !loadingRestaurants,
+  isMinimumAppDataLoaded: !loadingLocation,
 });
 
 InitializationWrapperBase.defaultProps = {

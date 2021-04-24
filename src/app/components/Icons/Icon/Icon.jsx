@@ -30,6 +30,6 @@ Icon.defaultProps = {
 
 Icon.propTypes = {
   className: PropTypes.string.isRequired,
-  svg: PropTypes.string.isRequired,
+  svg: PropTypes.shape({}).isRequired,
   size: PropTypes.string,
 };

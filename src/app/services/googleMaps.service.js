@@ -1,7 +1,8 @@
+import { createRef } from 'react';
 import { distance } from '@utils/utils';
 
 export const getNearRestaurants = async ({ client, location, radius = 2500 }) =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     const service = new window.google.maps.places.PlacesService(client);
     const request = {
       location,
@@ -17,6 +18,7 @@ export const getNearRestaurants = async ({ client, location, radius = 2500 }) =>
             name,
             distance: distance(location.latitude, location.longitude, lat(), lng()),
             pictures: photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })),
+            ref: createRef(),
           })),
       );
     });

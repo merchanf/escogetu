@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import useGetRestaurants from './useGetRestaurants';
+import useGetRestaurants from 'src/app/hooks/useRestaurants';
 
 export const useDeck = (latitude, longitude, googleMaps) => {
   const initialCardsAmount = 3;
