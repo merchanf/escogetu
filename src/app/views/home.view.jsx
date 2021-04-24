@@ -27,29 +27,6 @@ export const Home = () => {
 
   useEffect(() => {
     (async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const sessionParam = urlParams.get('session');
-      if (sessionParam) {
-        setSessionId(sessionParam);
-        const { lat, lng } = await session.load(userUid, sessionParam);
-        setPosition({
-          lat,
-          lng,
-        });
-      } else {
-        navigator.geolocation.getCurrentPosition((position) => {
-          setPosition({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        });
-      }
-    })();
-    analytics();
-  }, [analytics, userUid]);
-
-  useEffect(() => {
-    (async () => {
       if (position && !sessionId) {
         const docRefId = await session.create(userUid, position);
         setSessionId(docRefId);

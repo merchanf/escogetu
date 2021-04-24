@@ -13,6 +13,9 @@ exports.webpack = (config, env) => {
     '@constants': resolve('./src/app/constants'),
     '@services': resolve('./src/app/services'),
     '@assets': resolve('./src/assets'),
+    '@reducers': resolve('./src/app/redux/reducers'),
+    '@actions': resolve('./src/app/redux/actions'),
+    '@stores': resolve('./src/app/redux/stores'),
   };
 
   return config;

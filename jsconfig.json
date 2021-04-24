@@ -10,7 +10,10 @@
       "@utils/*": ["./src/app/utils/*"],
       "@constants/*": ["./src/app/constants/*"],
       "@services/*": ["./src/app/services/*"],
-      "@assets/*": ["./src/assets/*"]
+      "@assets/*": ["./src/assets/*"],
+      "@reducers/*": ["./src/app/redux/reducers/*"],
+      "@actions/*": ["./src/app/redux/actions/*"],
+      "@stores/*": ["./src/app/redux/stores/*"]
     }
   }
 }

@@ -1,9 +1,12 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Home } from '@app/views/home.view';
+import { HomeView } from '@app/views/home/home.view';
+import { InitializationWrapper } from '@components/initializationWrapper/initialization-wrapper';
 
 export const routes = (
-  <Switch>
-    <Route exact path="/" component={Home} />
-  </Switch>
+  <InitializationWrapper>
+    <Switch>
+      <Route exact path="/" component={HomeView} />
+    </Switch>
+  </InitializationWrapper>
 );
