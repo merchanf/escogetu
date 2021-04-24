@@ -1,18 +1,16 @@
 @import "../../../scss/colors";
 
-.tinder-card {
-  max-width: 100%;
-  &__picture {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: $red_bg_soft;
-  }
-  &__picture-img {
-    width: 100%;
-  }
+.TinderCard {
+  position: absolute;
+}
 
-  &__buttons {
+.Card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $red_bg_soft;
+
+  .Card__Buttons {
     position: absolute;
     display: flex;
     width: 100%;
@@ -24,7 +22,7 @@
     z-index: 1;
     padding: 0 1.2rem;
 
-    &__button {
+    .Card__Buttons__Button {
       display: block;
       height: 6rem;
       width: 6rem;
@@ -35,23 +33,16 @@
       font-weight: 700;
     }
   }
-}
-
-.Card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: $red_bg_soft;
-
 
   .Card__Name {
     position: absolute;
     bottom: 0;
     left: 0;
     z-index: 2;
+    padding-left: 1.2rem;
     background-color: rgba($color: #000000, $alpha: 0.5);
     color: $white;
-    padding: 1.6rem 1.6rem 1.6rem 1.2rem;
+    padding: 1.6rem;
     margin: 0;
     width: 100%;
   }

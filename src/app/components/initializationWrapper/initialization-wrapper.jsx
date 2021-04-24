@@ -6,15 +6,15 @@ import { hydrate } from '@actions/hydrate.action';
 import { LoadingIcon } from '@app/components';
 
 const InitializationWrapperBase = ({ children, userUid, isMinimumAppDataLoaded }) => {
-  // const dispatch = useDispatch();
-  //
-  // useMount(() => {
-  //   dispatch(hydrate(userUid));
-  // });
-  //
-  // if (!isMinimumAppDataLoaded) {
-  //   return <LoadingIcon />;
-  // }
+  const dispatch = useDispatch();
+
+  useMount(() => {
+    dispatch(hydrate(userUid));
+  });
+
+  if (!isMinimumAppDataLoaded) {
+    return <LoadingIcon />;
+  }
 
   return children;
 };

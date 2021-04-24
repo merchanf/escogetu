@@ -5,14 +5,17 @@ import { CardList } from '@app/components';
 import { CrossIconButton, LikeIconButton, ShareIconButton } from '@components/Icons/Icons';
 
 import './home.view.scss';
+import { session } from '@services/firebase/firebase';
 
-const HomeViewBase = ({ restaurantsList }) => {
+const HomeViewBase = ({ restaurantsList, userUid, sessionId }) => {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const onCardLeftScreen = () => {
     console.log('onCardLeftScreen');
   };
-  const onSwipe = () => {
-    console.log('onSwipe');
+  const onSwipe = async (direction, likedItem) => {
+    if (direction === 'right') {
+      await session.like(sessionId, userUid, likedItem);
+    }
   };
   const swipe = () => {
     console.log('swipe');
@@ -32,14 +35,24 @@ const HomeViewBase = ({ restaurantsList }) => {
   );
 };
 
-const mapStateToProps = ({ restaurants: { list: restaurantsList } }) => ({
+const mapStateToProps = ({
+  user: { uid: userUid, sessionId },
+  restaurants: { list: restaurantsList },
+}) => ({
   restaurantsList,
+  userUid,
+  sessionId,
 });
 
-HomeViewBase.defaultProps = {};
+HomeViewBase.defaultProps = {
+  userUid: null,
+  sessionId: null,
+};
 
 HomeViewBase.propTypes = {
   restaurantsList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  userUid: PropTypes.string,
+  sessionId: PropTypes.string,
 };
 
 export const HomeView = connect(mapStateToProps)(HomeViewBase);
