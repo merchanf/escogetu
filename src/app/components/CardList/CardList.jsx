@@ -4,6 +4,7 @@ import { Card } from '@app/components';
 import styles from './CardList.module.scss';
 
 export const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
+  console.log(list)
   const ref = useRef(null);
   const [width, setWidth] = useState();
   const [height, setHeight] = useState();

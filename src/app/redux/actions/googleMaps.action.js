@@ -13,6 +13,7 @@ export const initGoogleMaps = ({ latitude, longitude }) => async (dispatch) => {
   try {
     const loader = new Loader({
       apiKey: GOOGLE_API_KEY,
+      libraries: ['places'],
       version: 'weekly',
     });
 

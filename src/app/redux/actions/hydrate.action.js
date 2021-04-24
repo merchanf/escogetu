@@ -1,9 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
-import { useState } from 'react';
+import { createRef, useState } from 'react';
 import { getGeoLocation } from '@services/geoLocation.service';
 import { USER_SECTION_NAME } from '@stores/user.store';
 import { RESTAURANTS_SECTION_NAME } from '@stores/restaurants.store';
 import { initGoogleMaps } from '@actions/googleMaps.action';
+import { distance } from '@utils/utils';
 
 // GeoLocation
 export const setGeoLocation = createAction(`${USER_SECTION_NAME}/setGeoLocation`);
@@ -35,13 +36,37 @@ export const getRestaurants = () => async (dispatch, getState) => {
       radius: 2500,
       type: ['restaurant'],
     };
-    console.log(window.google.maps);
     const service = new window.google.maps.places.PlacesService(client);
     service.nearbySearch(request, (results) => {
-      console.log(results);
+      console.log(results)
+      dispatch(
+        setRestaurants(
+          results
+            .filter(({ photos }) => photos)
+            .map(
+              ({
+                place_id,
+                name,
+                photos,
+                geometry: {
+                  location: { lat, lng },
+                },
+              }) => {
+                return {
+                  placeId: place_id,
+                  name,
+                  distance: distance(latitude, longitude, lat(), lng()),
+                  pictures: photos.map((photo) =>
+                    photo.getUrl({ maxWidth: 1080, maxHeight: 1920 }),
+                  ),
+                  ref: createRef(),
+                };
+              },
+            ),
+        ),
+      );
     });
   } catch (e) {
-    console.log(e)
     dispatch(setRestaurantsError(e.message));
   } finally {
     dispatch(setRestaurantsLoading(false));

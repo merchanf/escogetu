@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { CardList, LoadingIcon } from '@app/components';
-import { CrossIconButton, LikeIconButton, ShareIconButton } from '@components/Icons/Icons';
 
 const HomeViewBase = ({ loadingRestaurants, restaurants }) => {
   const onCardLeftScreen = () => {
@@ -21,7 +20,6 @@ const HomeViewBase = ({ loadingRestaurants, restaurants }) => {
           <CardList list={restaurants} onSwipe={onSwipe} onCardLeftScreen={onCardLeftScreen} />
         )}
       </div>
-
     </div>
   );
 };
