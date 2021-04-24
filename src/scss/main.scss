@@ -1,0 +1,36 @@
+@import 'colors';
+
+html,
+body,
+#root {
+  font-size: 1.6rem;
+  font-family: "lato", "Open Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #fffdfd;
+  height: 100%;
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 62.5%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+#__next {
+  height: 100%;
+}
+
+.RMM__body {
+  padding: 0 !important;
+}
