@@ -1,3 +1,4 @@
+/* eslint-disable */
 import RestaurantDetails from './RestaurantDetails';
 
 export default {

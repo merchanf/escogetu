@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as icons from './Icons';
 
 export default {

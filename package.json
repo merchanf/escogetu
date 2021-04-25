@@ -13,8 +13,7 @@
     "lint": "stylelint \"src/**/*.{scss,css}\" && eslint ./src --ext=.js,.ts,.jsx --max-warnings=0",
     "lint:fix": "stylelint \"src/**/*.{scss,css}\" --fix && eslint ./src --ext=.js,.ts,.jsx --fix --max-warnings=0",
     "lint:ci:css_base": "stylelint \"./src/**/*.{scss,css}\" --max-warnings 0 --cache --cache-location \"./.stylelintcache/\"",
-    "lint:ci:css": "yarn lint:ci:css_base -f json -o ./stylelint-output.json > /dev/null || yarn lint:ci:css_base",
-    "lint:ci": "yarn lint:ci:css && yarn eslint-output --max-warnings=0"
+    "lint:ci:css": "yarn lint:ci:css_base -f json -o ./stylelint-output.json > /dev/null || yarn lint:ci:css_base"
   },
   "browserslist": {
     "production": [

@@ -2,9 +2,10 @@ import { useState, useCallback, useEffect } from 'react';
 import { useStore } from 'react-redux';
 import { getNearRestaurants, getRestaurantDetails } from '@services/googleMaps.service';
 import { useMount } from '@hooks/use-mount.hook';
+import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
 
 export const useRestaurants = () => {
-  const [loading, setLoading] = useState(true);
+  const [restaurantPreviews, setRestaurantPreviews] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
 
   const {
@@ -18,8 +19,12 @@ export const useRestaurants = () => {
     },
   } = useStore().getState();
 
+  const onCardLeftScreen = () => {
+    setRestaurants((oldRestaurants) => oldRestaurants.slice(0, oldRestaurants.length - 1));
+    setRestaurantPreviews((oldPreviews) => oldPreviews.slice(0, oldPreviews.length - 1));
+  };
+
   const onSwipe = (direction) => {
-    restaurants.pop();
     if (direction === 'right') {
       //  TODO save in database
     }
@@ -32,18 +37,35 @@ export const useRestaurants = () => {
 
   const refreshRestaurants = useCallback(() => {
     const location = new window.google.maps.LatLng(parseFloat(latitude), parseFloat(longitude));
-    getNearRestaurants({ client, location, radius: 2500 }).then((results) => {
-      setRestaurants([
-        ...results.slice(0, 3).map((restaurant) => ({
-          ...restaurant,
-          ...getRestaurantDetails({ client, placeId: restaurant.placeId }),
-        })),
-        ...results.slice(3, results.length),
-      ]);
-    });
+    getNearRestaurants({ client, location, radius: 2500 }, (results) =>
+      setRestaurantPreviews((previews) => [...results, ...previews]),
+    );
   }, [client, latitude, longitude]);
+
+  useEffect(() => {
+    if (restaurantPreviews.length === MIN_DETAILED_RESTAURANTS) {
+      refreshRestaurants();
+    }
+  }, [refreshRestaurants, restaurantPreviews]);
+
+  // Get details of next restaurants
+  useEffect(() => {
+    const restaurantsToDetail = MIN_DETAILED_RESTAURANTS - restaurants.length;
+    if (restaurantsToDetail) {
+      Promise.all(
+        restaurantPreviews
+          .slice(
+            restaurantPreviews.length - restaurantsToDetail - restaurants.length,
+            restaurantPreviews.length - restaurants.length,
+          )
+          .map((restaurantToDetail) =>
+            getRestaurantDetails({ client, restaurant: restaurantToDetail }),
+          ),
+      ).then((detailedRestaurants) => setRestaurants([...detailedRestaurants, ...restaurants]));
+    }
+  }, [client, restaurantPreviews, restaurants]);
 
   useMount(() => refreshRestaurants());
 
-  return { restaurants, loading, swipe, onSwipe };
+  return { restaurants, swipe, onSwipe, onCardLeftScreen };
 };

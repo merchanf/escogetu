@@ -1,3 +1,4 @@
+/* eslint-disable */
 import LoadingIcon from './LoadingIcon';
 
 export default {

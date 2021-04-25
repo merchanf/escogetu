@@ -1,6 +1,4 @@
 import React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import burgerChomp from '@assets/BurgerChomp.gif';
 
-export const LoadingIcon = () => {
-  return <CircularProgress color="secondary" />;
-};
+export const LoadingIcon = () => <img alt="loading" src={burgerChomp} height="240" width="240" />;
