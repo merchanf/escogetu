@@ -1,27 +1,25 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { CardList } from '@app/components';
+import { CardList, LoadingIcon } from '@app/components';
 import { FeedbackButton } from '@app/components/FeedbackButton/FeedbackButton';
 import { CrossIconButton, LikeIconButton, ShareIconButton} from '@components/Icons/Icons';
 
 import './home.view.scss';
 import { useRestaurants } from '@hooks/useRestaurants';
 
-
-
 const HomeViewBase = () => {
   const feederShProjectId = process.env.REACT_APP_FEEDBACK_ID
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const { restaurants, swipe, onSwipe } = useRestaurants();
+  const { restaurants, swipe, onSwipe, onCardLeftScreen } = useRestaurants();
 
-  const onCardLeftScreen = () => {
-    console.log('onCardLeftScreen');
-  };
+  if (!restaurants.length) {
+    return <LoadingIcon />;
+  }
 
   return (
     <div className="Home">
       <div className="Home__Body">
-        <CardList list={restaurants} onSwipe={onSwipe} onCardLeftScreen={onCardLeftScreen} />   
+        <CardList list={restaurants} onSwipe={onSwipe} onCardLeftScreen={onCardLeftScreen} />
       </div>
       <div className="Home__Buttons">
         <CrossIconButton onClick={() => swipe('left')} size="large" color="red" />
