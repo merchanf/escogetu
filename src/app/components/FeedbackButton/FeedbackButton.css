@@ -1,0 +1,10 @@
+@media only screen and (max-width: 490px){
+
+.frf-feedback-container{
+    display:none;
+}
+}
+.frf-water{
+    display:none;
+}
+
