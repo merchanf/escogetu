@@ -5,9 +5,7 @@ import './FeedbackButton.css';
 
 export const FeedbackButton = ({ projectId }) => {
   return (
-      <div
-        placeholder="PLACEHOLDER GONORREA"
-      >
+      <div>
     <Feedback
       projectId={projectId}
       email
