@@ -25,8 +25,6 @@ export const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
           key={`${placeId}-${index}`}
           onSwipe={onSwipe}
           index={index}
-          width={width}
-          height={height}
           onCardLeftScreen={onCardLeftScreen}
           ref={ref}
         />
