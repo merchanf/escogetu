@@ -1,6 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { USER_SECTION_NAME, UserStore } from '@stores/user.store';
-import { setGeoLocation, setGeoLocationLoading, setSession, setUserUid } from '@actions/hydrate.action';
+import {
+  setGeoLocation,
+  setGeoLocationLoading,
+  setSession,
+  setUserUid,
+} from '@actions/hydrate.action';
 
 const userReducer = createReducer(UserStore, (builder) => {
   builder.addCase(setGeoLocationLoading, (state, { payload }) => ({
@@ -25,7 +30,6 @@ const userReducer = createReducer(UserStore, (builder) => {
     ...state,
     userUid: payload,
   }));
-
 });
 
 export const USER_PARTIAL = {

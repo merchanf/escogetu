@@ -1,9 +1,9 @@
-import {createAction} from '@reduxjs/toolkit';
-import {getGeoLocation} from '@services/geoLocation.service';
-import {USER_SECTION_NAME} from '@stores/user.store';
-import {initGoogleMaps} from '@actions/googleMaps.action';
-import {createSession, getSession} from '@services/firestore.service';
-import {uid} from "uid";
+import { createAction } from '@reduxjs/toolkit';
+import { uid } from 'uid';
+import { getGeoLocation } from '@services/geoLocation.service';
+import { USER_SECTION_NAME } from '@stores/user.store';
+import { initGoogleMaps } from '@actions/googleMaps.action';
+import { createSession, getSession } from '@services/firestore.service';
 
 // User uid
 export const setUserUid = createAction(`${USER_SECTION_NAME}/setUserUid`);
@@ -19,7 +19,7 @@ export const initGeoLocation = () => async (dispatch, getState) => {
     const userUid = uid();
     dispatch(setUserUid(userUid));
     const urlParams = new URLSearchParams(window.location.search);
-    const sessionParam = urlParams.get("session");
+    const sessionParam = urlParams.get('session');
 
     dispatch(setGeoLocationLoading(true));
     let location;
@@ -29,9 +29,9 @@ export const initGeoLocation = () => async (dispatch, getState) => {
         location = storageSession.location;
         dispatch(setSession(sessionParam));
       } else {
-        //to clean
+        // to clean
         const {
-          coords: {latitude, longitude},
+          coords: { latitude, longitude },
         } = await getGeoLocation(userUid);
         location = {
           latitude,
@@ -41,9 +41,9 @@ export const initGeoLocation = () => async (dispatch, getState) => {
         await dispatch(setSession(sessionId));
       }
     } else {
-      //to clean
+      // to clean
       const {
-        coords: {latitude, longitude},
+        coords: { latitude, longitude },
       } = await getGeoLocation(userUid);
       location = {
         latitude,
@@ -55,7 +55,6 @@ export const initGeoLocation = () => async (dispatch, getState) => {
 
     await dispatch(initGoogleMaps(location));
     dispatch(setGeoLocation(location));
-
   } catch (e) {
     dispatch(setGeoLocationError(e.message));
   } finally {

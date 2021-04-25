@@ -33,7 +33,7 @@ const HomeViewBase = () => {
   );
 };
 
-const mapStateToProps = ({ user: { userUid: userUid } }) => ({
+const mapStateToProps = ({ user: { userUid } }) => ({
   userUid,
 });
 
