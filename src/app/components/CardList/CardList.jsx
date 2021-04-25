@@ -4,7 +4,7 @@ import { Card } from '../Card/Card';
 
 import styles from './CardList.module.scss';
 
-export const CardList = ({ list, onSwipe }) => {
+export const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
   const ref = useRef(null);
   const [width, setWidth] = useState();
   const [height, setHeight] = useState();
@@ -27,6 +27,7 @@ export const CardList = ({ list, onSwipe }) => {
           index={index}
           width={width}
           height={height}
+          onCardLeftScreen={onCardLeftScreen}
           ref={ref}
         />
       ))}
@@ -37,4 +38,5 @@ export const CardList = ({ list, onSwipe }) => {
 CardList.propTypes = {
   list: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   onSwipe: PropTypes.func.isRequired,
+  onCardLeftScreen: PropTypes.func.isRequired,
 };

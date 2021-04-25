@@ -19,9 +19,12 @@ export const useRestaurants = () => {
     },
   } = useStore().getState();
 
-  const onSwipe = (direction) => {
+  const onCardLeftScreen = () => {
     setRestaurants((oldRestaurants) => oldRestaurants.slice(0, oldRestaurants.length - 1));
     setRestaurantPreviews((oldPreviews) => oldPreviews.slice(0, oldPreviews.length - 1));
+  };
+
+  const onSwipe = (direction) => {
     if (direction === 'right') {
       //  TODO save in database
     }
@@ -64,5 +67,5 @@ export const useRestaurants = () => {
 
   useMount(() => refreshRestaurants());
 
-  return { restaurants, swipe, onSwipe };
+  return { restaurants, swipe, onSwipe, onCardLeftScreen };
 };
