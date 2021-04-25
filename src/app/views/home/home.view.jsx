@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { CardList, LoadingIcon } from '@app/components';
 import { CrossIconButton, LikeIconButton, ShareIconButton } from '@components/Icons/Icons';
@@ -11,7 +11,11 @@ const HomeViewBase = () => {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { restaurants, swipe, onSwipe, onCardLeftScreen } = useRestaurants();
 
-  if (!restaurants.length) {
+  const restaurantsWithPhoto = useMemo(
+    () => restaurants.filter((restaurant) => restaurant.pictures?.length),
+    [restaurants],
+  );
+  if (!restaurantsWithPhoto.length) {
     return <LoadingIcon />;
   }
 
@@ -21,9 +25,9 @@ const HomeViewBase = () => {
         <CardList list={restaurants} onSwipe={onSwipe} onCardLeftScreen={onCardLeftScreen} />
       </div>
       <div className="Home__Buttons">
-        <CrossIconButton onClick={() => swipe('left')} size="large" color="red" />
-        <ShareIconButton onClick={() => setIsShareModalOpen(true)} color="blue" />
-        <LikeIconButton onClick={() => swipe('right')} size="large" color="green" />
+        <CrossIconButton onClick={() => swipe('left')} size="medium" color="red" />
+        <ShareIconButton onClick={() => setIsShareModalOpen(true)} size="small" color="blue" />
+        <LikeIconButton onClick={() => swipe('right')} size="medium" color="green" />
       </div>
     </div>
   );

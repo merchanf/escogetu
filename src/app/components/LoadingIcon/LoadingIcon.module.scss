@@ -1,20 +1,4 @@
-.DotLoader {
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  background-color: #f44336;
-  position: relative;
-  -webkit-animation: 1.2s grow ease-in-out infinite;
-  animation: 1.2s grow ease-in-out infinite;
-}
-
-.DotLoader__2 {
-  -webkit-animation: 1.2s grow ease-in-out infinite 0.15555s;
-  animation: 1.2s grow ease-in-out infinite 0.15555s;
-  margin: 0 20px;
-}
-
-.DotLoader__3 {
-  -webkit-animation: 1.2s grow ease-in-out infinite 0.3s;
-  animation: 1.2s grow ease-in-out infinite 0.3s;
+.Loading_Icon {
+  width: 50%;
+  height: auto;
 }
