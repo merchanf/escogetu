@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useStore } from 'react-redux';
 import { getNearRestaurants, getRestaurantDetails } from '@services/googleMaps.service';
+import { likedRestaurant } from '@services/firestore.service';
 import { useMount } from '@hooks/use-mount.hook';
 import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
 
@@ -13,6 +14,7 @@ export const useRestaurants = () => {
       googleMaps: { client },
     },
     user: {
+      sessionId,
       geoLocation: {
         location: { latitude, longitude },
       },
@@ -24,9 +26,9 @@ export const useRestaurants = () => {
     setRestaurantPreviews((oldPreviews) => oldPreviews.slice(0, oldPreviews.length - 1));
   };
 
-  const onSwipe = (direction) => {
+  const onSwipe = async (direction, likedItem) => {
     if (direction === 'right') {
-      //  TODO save in database
+      await likedRestaurant(sessionId, likedItem);
     }
   };
 
