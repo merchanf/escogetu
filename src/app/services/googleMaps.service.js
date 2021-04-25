@@ -20,7 +20,10 @@ export const getRestaurantDetails = async ({ client, restaurant }) =>
       resolve({
         ...restaurant,
         address: details?.vicinity,
-        location: { lat: details?.geometry?.location?.lat(), lng: details?.geometry?.location?.lng() },
+        location: {
+          lat: details?.geometry?.location?.lat(),
+          lng: details?.geometry?.location?.lng(),
+        },
         name: details?.name,
         rating: details?.rating,
         phoneNumber: details?.international_phone_number,

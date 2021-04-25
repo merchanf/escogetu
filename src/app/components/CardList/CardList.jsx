@@ -10,9 +10,9 @@ export const CardList = ({ list, onSwipe }) => {
   const [height, setHeight] = useState();
 
   useEffect(() => {
-    setWidth(ref.current.clientWidth);
-    setHeight(ref.current.clientHeight);
-  }, [ref?.current?.clientWidth, ref?.current?.clientHeight]);
+    setWidth(ref?.current?.clientWidth);
+    setHeight(ref?.current?.clientHeight);
+  }, [ref]);
 
   return (
     <div className={styles.Container} ref={ref}>
