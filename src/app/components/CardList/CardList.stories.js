@@ -1,3 +1,4 @@
+/* eslint-disable */
 import CardList from './CardList';
 
 export default {

@@ -1,2 +1,1 @@
-export const MIN_DETAILED_RESTAURANTS = 3;
-export const MIN_RESTAURANT_PREVIEWS = 15;
+export const MIN_DETAILED_RESTAURANTS = 10;
