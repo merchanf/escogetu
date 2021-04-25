@@ -58,7 +58,7 @@ export const getNearRestaurants = async ({ client, location, radius = 2500 }, ca
             distance: distance(location.latitude, location.longitude, lat(), lng()),
             pictures: photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })),
             ref: createRef(),
-          })),
+          })) || [],
       );
     });
   }

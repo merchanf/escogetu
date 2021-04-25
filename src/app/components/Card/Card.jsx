@@ -104,6 +104,7 @@ export const Card = forwardRef(
 
 Card.defaultProps = {
   onCardLeftScreen: () => {},
+  name: 'Restaurante',
 };
 
 Card.propTypes = {
@@ -111,7 +112,7 @@ Card.propTypes = {
   height: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   onCardLeftScreen: PropTypes.func,
   onSwipe: PropTypes.func.isRequired,
   pictures: PropTypes.arrayOf(PropTypes.string).isRequired,
