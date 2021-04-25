@@ -14,11 +14,11 @@ export const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
 
   return (
     <div className={styles.Container} ref={ref}>
-      {list.map(({ placeId, name, pictures, distance, ref }, index) => (
+      {list.map(({ placeId, name, details, pictures, distance, ref }, index) => (
         <Card
           id={placeId}
           name={name}
-          pictures={pictures}
+          pictures={details?.pictures || pictures}
           distance={distance}
           key={placeId}
           onSwipe={onSwipe}
