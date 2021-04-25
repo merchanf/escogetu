@@ -8,6 +8,7 @@ import './home.view.scss';
 import { useRestaurants } from '@hooks/useRestaurants';
 
 const HomeViewBase = () => {
+  // eslint-disable-next-line no-unused-vars
   const feederShProjectId = process.env.REACT_APP_FEEDBACK_ID
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { restaurants, swipe, onSwipe, onCardLeftScreen } = useRestaurants();
