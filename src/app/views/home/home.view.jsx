@@ -22,9 +22,9 @@ const HomeViewBase = () => {
         <CardList list={restaurants} onSwipe={onSwipe} onCardLeftScreen={onCardLeftScreen} />
       </div>
       <div className="Home__Buttons">
-        <CrossIconButton onClick={() => swipe('left')} size="large" color="red" />
-        <ShareIconButton onClick={() => setIsShareModalOpen(true)} color="blue" />
-        <LikeIconButton onClick={() => swipe('right')} size="large" color="green" />
+        <CrossIconButton onClick={() => swipe('left')} size="medium" color="red" />
+        <ShareIconButton onClick={() => setIsShareModalOpen(true)} size="medium" color="blue" />
+        <LikeIconButton onClick={() => swipe('right')} size="medium" color="green" />
       </div>
       <FeedbackButton
         projectId={feederShProjectId}
