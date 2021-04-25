@@ -5,7 +5,6 @@ import './FeedbackButton.css';
 
 export const FeedbackButton = ({ projectId }) => {
   return (
-      <div>
     <Feedback
       projectId={projectId}
       email
@@ -14,6 +13,5 @@ export const FeedbackButton = ({ projectId }) => {
       submitButtonMsg="Enviar Comentario"
       postSubmitButtonMsg="Gracias!"
     />
-    </div>
   );
 };
