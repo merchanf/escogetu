@@ -72,6 +72,6 @@ export const ShareDialog = ({ onClose, open, url }) => {
 
 ShareDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
-  open: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
   url: PropTypes.string.isRequired,
 };

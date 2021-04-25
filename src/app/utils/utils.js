@@ -1,3 +1,4 @@
-import distance from './distance/distance';
+import { distance } from './distance/distance';
+import { isMobilePhone } from './isMobilePhone/isMobilePhone';
 
-export { distance };
+export { distance, isMobilePhone };

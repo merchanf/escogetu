@@ -16,4 +16,4 @@ const distance = (lat1, lon1, lat2, lon2) => {
   return `${d.toFixed(1)} Km`;
 };
 
-export default distance;
+export { distance };
