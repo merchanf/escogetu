@@ -38,9 +38,7 @@ export const Card = forwardRef(
           ref={ref}
           onCardLeftScreen={onCardLeftScreen}
         >
-          <div
-            className={styles.Card}
-          >
+          <div className={styles.Card}>
             {pictures ? (
               <img
                 className={styles.Card__Image}
