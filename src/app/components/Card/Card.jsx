@@ -28,6 +28,8 @@ export const Card = forwardRef(
           zIndex: index,
           alignItems: 'center',
           justifyContent: 'center',
+          width: '100%',
+          height: '100%',
         }}
       >
         <TinderCard
@@ -38,22 +40,12 @@ export const Card = forwardRef(
         >
           <div
             className={styles.Card}
-            style={{
-              height: trueHeight,
-              width: trueWidth,
-            }}
           >
             {pictures ? (
               <img
                 className={styles.Card__Image}
                 src={pictures[selectedPicture]}
                 alt={`${name} - ${selectedPicture}`}
-                style={{
-                  maxHeight: trueHeight,
-                  maxWidth: trueWidth, // 60% of 90%
-                  width: 'auto',
-                  height: 'auto',
-                }}
               />
             ) : (
               <Skeleton variant="rect" width={trueWidth} height={trueHeight} animation="wave">
