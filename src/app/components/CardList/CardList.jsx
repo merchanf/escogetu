@@ -1,8 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Card } from '../Card/Card';
+
 import styles from './CardList.module.scss';
 
-export const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
+export const CardList = ({ list, onSwipe }) => {
   const ref = useRef(null);
   const [width, setWidth] = useState();
   const [height, setHeight] = useState();
@@ -20,15 +22,19 @@ export const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
           name={name}
           pictures={details?.pictures || pictures}
           distance={distance}
-          key={placeId}
+          key={`${placeId}-${index}`}
           onSwipe={onSwipe}
           index={index}
           width={width}
           height={height}
           ref={ref}
-          onCardLeftScreen={onCardLeftScreen}
         />
       ))}
     </div>
   );
+};
+
+CardList.propTypes = {
+  list: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  onSwipe: PropTypes.func.isRequired,
 };

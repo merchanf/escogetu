@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Layout from './Layout';
 
 export default {

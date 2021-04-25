@@ -23,6 +23,7 @@
     "__adroll__": true
   },
   "rules": {
+    "import/no-default-export": 0,
     "import/no-cycle": 0,
     "no-shadow": 0,
     "react/jsx-props-no-spreading": 0,
@@ -41,7 +42,6 @@
     "max-lines": ["error", { "max": 400, "skipBlankLines": true, "skipComments": true }],
     "one-var": ["error", "never"],
     "import/prefer-default-export": 0,
-    "import/no-default-export": 2,
     "import/order": [
       "error",
       {

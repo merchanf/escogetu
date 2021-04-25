@@ -16,31 +16,20 @@ export const getRestaurantDetails = async ({ client, restaurant }) =>
       ],
     };
     const service = new window.google.maps.places.PlacesService(client);
-    service.getDetails(
-      request,
-      ({
-        name,
-        price_level,
-        vicinity,
-        rating,
-        international_phone_number,
-        geometry: {
-          location: { lat, lng },
-        },
-        photos,
-      }) => {
-        resolve({
-          ...restaurant,
-          address: vicinity,
-          location: { lat: lat(), lng: lng() },
-          name,
-          rating,
-          phoneNumber: international_phone_number,
-          priceLevel: price_level,
-          pictures: photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })),
-        });
-      },
-    );
+    service.getDetails(request, (details) => {
+      resolve({
+        ...restaurant,
+        address: details?.vicinity,
+        location: { lat: details?.geometry?.location?.lat(), lng: details?.geometry?.location?.lng() },
+        name: details?.name,
+        rating: details?.rating,
+        phoneNumber: details?.international_phone_number,
+        priceLevel: details?.price_level,
+        pictures:
+          details?.photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })) ||
+          restaurant.pictures,
+      });
+    });
   });
 
 let goNextPage;
@@ -60,8 +49,8 @@ export const getNearRestaurants = async ({ client, location, radius = 2500 }, ca
       callback(
         results
           .filter(({ photos }) => photos)
-          .map(({ place_id, name, photos, geometry: { location: { lat, lng } } }) => ({
-            placeId: place_id,
+          .map(({ place_id: placeId, name, photos, geometry: { location: { lat, lng } } }) => ({
+            placeId,
             name,
             distance: distance(location.latitude, location.longitude, lat(), lng()),
             pictures: photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })),

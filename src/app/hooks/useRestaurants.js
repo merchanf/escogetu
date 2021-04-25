@@ -60,7 +60,7 @@ export const useRestaurants = () => {
           ),
       ).then((detailedRestaurants) => setRestaurants([...detailedRestaurants, ...restaurants]));
     }
-  }, [client, restaurantPreviews]);
+  }, [client, restaurantPreviews, restaurants]);
 
   useMount(() => refreshRestaurants());
 
