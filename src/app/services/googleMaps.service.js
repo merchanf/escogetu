@@ -1,6 +1,33 @@
 import { createRef } from 'react';
 import { distance } from '@utils/utils';
 
+const isNotARestaurant = (types) => types.includes('lodging') || types.includes('spa');
+const excludeNotRestaurantsFromResults = (results) =>
+  results.filter(({ types }) => !isNotARestaurant(types));
+const excludeResultsWithNullPhotos = (results) => results.filter(({ photos }) => photos);
+const filterResults = (results) => {
+  const filteredResults = excludeResultsWithNullPhotos(results);
+  return excludeNotRestaurantsFromResults(filteredResults);
+};
+const mapper = (
+  {
+    // eslint-disable-next-line camelcase
+    place_id,
+    name,
+    photos,
+    geometry: {
+      location: { lat, lng },
+    },
+  },
+  location,
+) => ({
+  placeId: place_id,
+  name,
+  distance: distance(location.lat(), location.lng(), lat(), lng()),
+  pictures: photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })),
+  ref: createRef(),
+});
+
 export const getRestaurantDetails = async ({ client, restaurant }) =>
   new Promise((resolve) => {
     const request = {
@@ -49,17 +76,8 @@ export const getNearRestaurants = async ({ client, location, radius = 2500 }, ca
     };
     service.nearbySearch(request, (results, status, pageToken) => {
       goNextPage = () => pageToken.nextPage();
-      callback(
-        results
-          .filter(({ photos }) => photos)
-          .map(({ place_id: placeId, name, photos, geometry: { location: { lat, lng } } }) => ({
-            placeId,
-            name,
-            distance: distance(location.latitude, location.longitude, lat(), lng()),
-            pictures: photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })),
-            ref: createRef(),
-          })) || [],
-      );
+      const filteredResults = filterResults(results);
+      callback(filteredResults.map((result) => mapper(result, location)) || []);
     });
   }
 };
