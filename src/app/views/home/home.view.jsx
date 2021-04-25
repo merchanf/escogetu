@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { CardList } from '@app/components';
+import { CardList, LoadingIcon } from '@app/components';
 import { CrossIconButton, LikeIconButton, ShareIconButton } from '@components/Icons/Icons';
 
 import './home.view.scss';
@@ -10,6 +10,10 @@ const HomeViewBase = () => {
   // eslint-disable-next-line no-unused-vars
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { restaurants, swipe, onSwipe, onCardLeftScreen } = useRestaurants();
+
+  if (!restaurants.length) {
+    return <LoadingIcon />;
+  }
 
   return (
     <div className="Home">
