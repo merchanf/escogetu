@@ -3,9 +3,7 @@ import React from 'react';
 import classnames from 'classnames';
 import styles from './withIconButton.module.scss';
 
-export const withIconButton = (Icon) => (props) => {
-  const { className, disabled, onClick, onMouseDown, color = 'black', size = 'medium' } = props;
-
+export const withIconButton = (Icon) => ( { className, disabled, onClick, onMouseDown, color = 'black', size = 'medium' }) => {
   const iconClassNames = classnames(
     styles.withIconButton,
     { [className]: className },
