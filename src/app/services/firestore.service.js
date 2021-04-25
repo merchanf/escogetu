@@ -24,19 +24,20 @@ const db = app.firestore();
 
 export const createSession = async (userUid, position) =>
     new Promise((resolve) => {
-        resolve(db.collection("session").add({
+        db.collection("session").add({
             users: [userUid],
             location: position,
             likedRestaurants: [],
-        }));
+        }).then((docRef) => {
+            resolve(docRef.id);
+        });
     });
 
 export const getSession = async (sessionId) =>
     new Promise((resolve, reject) => {
         let docRef = db.collection("session").doc(sessionId);
         docRef.get().then(doc => {
-            if (doc.exists){
-                console.log('Doc with session ' + doc.data());
+            if (doc.exists) {
                 resolve(doc.data());
             } else {
                 resolve(undefined);
@@ -48,21 +49,24 @@ export const getSession = async (sessionId) =>
 
 export const likedRestaurant = async (sessionId, restaurantID) =>
     new Promise((resolve, reject) => {
-        let docRef = db.collection("session").doc(sessionId);
+        let docRef = db.collection("session").doc(sessionId.toString());
         docRef.get().then(doc => {
-            let updatedLikes = [];
-            if (doc.exists && doc.data().likedRestaurants) {
-                updatedLikes = doc.data().likedRestaurants.map(rest => {
-                    if (rest.id === restaurantID) {
-                        rest.likes = rest.likes + 1;
-                    }
-                    return rest;
-                });
-            } else {
-                updatedLikes = [{id: restaurantID, likes: 1}];
+            let storedDoc;
+            if (doc.exists) {
+                storedDoc = doc.data();
+                if (doc.data().likedRestaurants.length > 0) {
+                    storedDoc.likedRestaurants = storedDoc.likedRestaurants.map(rest => {
+                        if (rest.id === restaurantID) {
+                            rest.likes = rest.likes + 1;
+                        }
+                        return rest;
+                    });
+                } else {
+                    storedDoc.likedRestaurants = [...storedDoc.likedRestaurants,{id: restaurantID, likes: 1}];
+                }
             }
             resolve(docRef.set(
-                {likedRestaurants: updatedLikes},
+                storedDoc,
                 {merge: true}));
             reject(`No info for sessionId: ${sessionId}`);
         }).catch(reason => {
