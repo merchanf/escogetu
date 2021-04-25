@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { CardList, LoadingIcon } from '@app/components';
 import { FeedbackButton } from '@app/components/FeedbackButton/FeedbackButton';
-import { CrossIconButton, LikeIconButton, ShareIconButton} from '@components/Icons/Icons';
+import { CrossIconButton, LikeIconButton, ShareIconButton } from '@components/Icons/Icons';
 
 import './home.view.scss';
 import { useRestaurants } from '@hooks/useRestaurants';
 
 const HomeViewBase = () => {
+  const feederShProjectId = process.env.REACT_APP_FEEDBACK_ID;
   // eslint-disable-next-line no-unused-vars
-  const feederShProjectId = process.env.REACT_APP_FEEDBACK_ID
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { restaurants, swipe, onSwipe, onCardLeftScreen } = useRestaurants();
 
@@ -27,9 +27,7 @@ const HomeViewBase = () => {
         <ShareIconButton onClick={() => setIsShareModalOpen(true)} size="medium" color="blue" />
         <LikeIconButton onClick={() => swipe('right')} size="medium" color="green" />
       </div>
-      <FeedbackButton
-        projectId={feederShProjectId}
-      />
+      <FeedbackButton projectId={feederShProjectId} />
     </div>
   );
 };
