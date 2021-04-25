@@ -1,8 +1,12 @@
-import { createAction } from '@reduxjs/toolkit';
-import { getGeoLocation } from '@services/geoLocation.service';
-import { USER_SECTION_NAME } from '@stores/user.store';
-import { initGoogleMaps } from '@actions/googleMaps.action';
+import {createAction} from '@reduxjs/toolkit';
+import {getGeoLocation} from '@services/geoLocation.service';
+import {USER_SECTION_NAME} from '@stores/user.store';
+import {initGoogleMaps} from '@actions/googleMaps.action';
+import {createSession, getSession} from '@services/firestore.service';
+import {uid} from "uid";
 
+// User uid
+export const setUserUid = createAction(`${USER_SECTION_NAME}/setUserUid`);
 // Session
 export const setSession = createAction(`${USER_SECTION_NAME}/setSession`);
 // GeoLocation
@@ -12,19 +16,46 @@ export const setGeoLocationError = createAction(`${USER_SECTION_NAME}/setGeoLoca
 
 export const initGeoLocation = () => async (dispatch, getState) => {
   try {
+    const userUid = uid();
+    dispatch(setUserUid(userUid));
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionParam = urlParams.get("session");
+
     dispatch(setGeoLocationLoading(true));
-    const {
-      user: { uid: userUid },
-    } = getState();
-    const {
-      coords: { latitude, longitude },
-    } = await getGeoLocation(userUid);
-    const location = {
-      latitude,
-      longitude,
-    };
+    let location;
+    if (sessionParam) {
+      const storageSession = await getSession(sessionParam);
+      if (storageSession) {
+        location = storageSession.location;
+        dispatch(setSession(sessionParam));
+      } else {
+        //to clean
+        const {
+          coords: {latitude, longitude},
+        } = await getGeoLocation(userUid);
+        location = {
+          latitude,
+          longitude,
+        };
+        const sessionId = await createSession(userUid, location);
+        await dispatch(setSession(sessionId));
+      }
+    } else {
+      //to clean
+      const {
+        coords: {latitude, longitude},
+      } = await getGeoLocation(userUid);
+      location = {
+        latitude,
+        longitude,
+      };
+      const sessionId = await createSession(userUid, location);
+      await dispatch(setSession(sessionId));
+    }
+
     await dispatch(initGoogleMaps(location));
     dispatch(setGeoLocation(location));
+
   } catch (e) {
     dispatch(setGeoLocationError(e.message));
   } finally {
