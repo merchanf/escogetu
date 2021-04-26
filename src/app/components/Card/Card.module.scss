@@ -27,13 +27,22 @@
 
     .Card__Buttons__Button {
       display: block;
-      height: 4rem;
-      width: 4rem;
+      height: 6rem;
+      width: 6rem;
       border-radius: 50%;
-      border: 0;
+      border-style: solid;
+      border-color: $black_a05;
       background-color: $white_a05;
       color: $black_a05;
       font-weight: 700;
+      &:hover {
+        border-color: $white_a05;
+        background-color: $gray_hover;
+      }
+      &:active{
+        border-color: $white_a05;
+        background-color: $gray;
+    }
     }
   }
 
