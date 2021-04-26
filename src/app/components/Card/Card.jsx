@@ -35,6 +35,10 @@ export const Card = forwardRef(
           onCardLeftScreen={onCardLeftScreen}
         >
           <div className={styles.Card}>
+            <div className={styles.Card__Counter}>
+                {selectedPicture + 1}/{pictures.length}
+            </div>
+
             <img
               className={styles.Card__Image}
               src={pictures[selectedPicture]}
