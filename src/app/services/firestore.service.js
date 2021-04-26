@@ -32,6 +32,25 @@ export const createSession = async (userUid, position) =>
       });
   });
 
+export const addUserToSession = async (sessionId, userUid) =>
+  new Promise((resolve, reject) => {
+    const docRef = db.collection('session').doc(sessionId);
+    docRef
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          const storedDoc = doc.data();
+          if (!storedDoc.users.includes(userUid)) {
+            storedDoc.users = [...storedDoc.users, userUid];
+          }
+          resolve(docRef.set(storedDoc, { merge: true }));
+        }
+      })
+      .catch((reason) => {
+        reject(reason);
+      });
+  });
+
 export const getSession = async (sessionId) =>
   new Promise((resolve, reject) => {
     const docRef = db.collection('session').doc(sessionId);
@@ -49,32 +68,46 @@ export const getSession = async (sessionId) =>
       });
   });
 
-export const likedRestaurant = async (sessionId, restaurantID) =>
+export const likedRestaurant = async (sessionId, userUid, restaurantId) =>
   new Promise((resolve, reject) => {
     const docRef = db.collection('session').doc(sessionId.toString());
     docRef
       .get()
       .then((doc) => {
-        let storedDoc;
         if (doc.exists) {
-          storedDoc = doc.data();
-          if (doc.data().likedRestaurants.length > 0) {
+          const storedDoc = doc.data();
+          if (
+            storedDoc.likedRestaurants.length <= 0 ||
+            !alreadyInLikedRestaurant(storedDoc.likedRestaurants, restaurantId)
+          ) {
+            storedDoc.likedRestaurants = [
+              ...storedDoc.likedRestaurants,
+              { id: restaurantId, likes: [userUid] },
+            ];
+          } else {
             storedDoc.likedRestaurants = storedDoc.likedRestaurants.map((rest) => {
-              if (rest.id === restaurantID) {
-                rest.likes += 1;
+              if (rest.id === restaurantId) {
+                if (!rest.likes.includes(userUid)) {
+                  rest.likes = [...rest.likes, userUid];
+                }
               }
               return rest;
             });
-          } else {
-            storedDoc.likedRestaurants = [
-              ...storedDoc.likedRestaurants,
-              { id: restaurantID, likes: 1 },
-            ];
           }
+          resolve(docRef.set(storedDoc, { merge: true }));
         }
-        resolve(docRef.set(storedDoc, { merge: true }));
       })
       .catch((reason) => {
         reject(reason);
       });
   });
+
+function alreadyInLikedRestaurant(likedRestaurants, restaurantId) {
+  let isIn = false;
+  likedRestaurants.forEach((rest) => {
+    if (rest.id === restaurantId) {
+      isIn = true;
+    }
+  });
+  return isIn;
+}
