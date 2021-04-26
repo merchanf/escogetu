@@ -36,11 +36,7 @@ export const Card = forwardRef(
         >
           <div className={styles.Card}>
             <div className={styles.Card__Counter}>
-              <span className={styles.Card__Counter__Label}>
-                <p>
-                  {selectedPicture + 1}/{pictures.length}
-                </p>
-              </span>
+                {selectedPicture + 1}/{pictures.length}
             </div>
 
             <img

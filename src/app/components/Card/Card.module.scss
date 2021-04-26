@@ -69,21 +69,17 @@
 
   .Card__Counter{
     position: absolute;
-    top: 8px;
+    top: 16px;
     right: 16px;
+    display: block;
+    font-size: 1.6rem;
+    text-align: center;
+    border-radius: 25px;
+    color: $white;
+    background-color: rgba(23, 32, 42, 0.78);
+    padding: 0.8rem 1.2rem;
     z-index: 1;
 
-    .Card__Counter__Label{
-      display: block;
-      height: 28px;
-      width: 64px;
-      font-size: 24px;
-      text-align: center;
-      border-radius: 25px;
-      color: $white;
-      background-color: rgba(23, 32, 42, 0.78);
-
-    }
 
   }
 }
