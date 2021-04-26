@@ -1,5 +1,4 @@
 import { createAction } from '@reduxjs/toolkit';
-import { uid } from 'uid';
 import { getGeoLocation } from '@services/geoLocation.service';
 import { USER_SECTION_NAME } from '@stores/user.store';
 import { initGoogleMaps } from '@actions/googleMaps.action';

@@ -26,10 +26,11 @@ export const Icon = ({ className, svg, size, ...props }) => {
 
 Icon.defaultProps = {
   size: 'medium',
+  className: '',
 };
 
 Icon.propTypes = {
-  className: PropTypes.string.isRequired,
+  className: PropTypes.string,
   svg: PropTypes.shape({}).isRequired,
   size: PropTypes.string,
 };

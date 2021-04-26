@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useStore } from 'react-redux';
 import { getNearRestaurants, getRestaurantDetails } from '@services/googleMaps.service';
-import { likedRestaurant } from '@services/firestore.service';
 import { useMount } from '@hooks/use-mount.hook';
 import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
 
@@ -29,7 +28,7 @@ export const useRestaurants = () => {
     setSwiping(false);
   };
 
-  const onSwipe = async (direction, likedItem) => {
+  const onSwipe = (direction) => {
     if (direction === 'right') {
       await likedRestaurant(sessionId, userUid, likedItem);
     }
