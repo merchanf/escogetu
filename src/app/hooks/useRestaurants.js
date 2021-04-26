@@ -8,12 +8,14 @@ import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
 export const useRestaurants = () => {
   const [restaurantPreviews, setRestaurantPreviews] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
+  const [swiping, setSwiping] = useState(false);
 
   const {
     hydrate: {
       googleMaps: { client },
     },
     user: {
+      userUid,
       sessionId,
       geoLocation: {
         location: { latitude, longitude },
@@ -24,17 +26,21 @@ export const useRestaurants = () => {
   const onCardLeftScreen = () => {
     setRestaurants((oldRestaurants) => oldRestaurants.slice(0, oldRestaurants.length - 1));
     setRestaurantPreviews((oldPreviews) => oldPreviews.slice(0, oldPreviews.length - 1));
+    setSwiping(false);
   };
 
   const onSwipe = async (direction, likedItem) => {
     if (direction === 'right') {
-      await likedRestaurant(sessionId, likedItem);
+      await likedRestaurant(sessionId, userUid, likedItem);
     }
   };
 
   const swipe = (direction) => {
-    const restaurant = restaurants[restaurants.length - 1];
-    restaurant.ref.current.swipe(direction); // Swipe the card!
+    if (!swiping) {
+      const restaurant = restaurants[restaurants.length - 1];
+      restaurant.ref.current.swipe(direction); // Swipe the card!
+      setSwiping(true);
+    }
   };
 
   const refreshRestaurants = useCallback(() => {

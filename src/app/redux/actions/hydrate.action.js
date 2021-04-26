@@ -3,7 +3,7 @@ import { uid } from 'uid';
 import { getGeoLocation } from '@services/geoLocation.service';
 import { USER_SECTION_NAME } from '@stores/user.store';
 import { initGoogleMaps } from '@actions/googleMaps.action';
-import { createSession, getSession } from '@services/firestore.service';
+import { createSession, getSession, addUserToSession } from '@services/firestore.service';
 
 // User uid
 export const setUserUid = createAction(`${USER_SECTION_NAME}/setUserUid`);
@@ -16,18 +16,32 @@ export const setGeoLocationError = createAction(`${USER_SECTION_NAME}/setGeoLoca
 
 export const initGeoLocation = () => async (dispatch, getState) => {
   try {
-    const userUid = uid();
-    dispatch(setUserUid(userUid));
-    const urlParams = new URLSearchParams(window.location.search);
-    const sessionParam = urlParams.get('session');
-
-    dispatch(setGeoLocationLoading(true));
+    const myStorage = window.sessionStorage;
+    let userUid;
     let location;
-    if (sessionParam) {
-      const storageSession = await getSession(sessionParam);
+
+    // Setting User Id
+    userUid = myStorage.getItem('userUid');
+    if (!userUid) {
+      userUid = uid();
+      myStorage.setItem('userUid', userUid);
+    }
+    dispatch(setUserUid(userUid));
+
+    // Setting Session Id
+    const storageSessionId = myStorage.getItem('sessionId');
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = storageSessionId || urlParams.get('session');
+
+    // Hydrating
+    dispatch(setGeoLocationLoading(true));
+    if (sessionId) {
+      const storageSession = await getSession(sessionId);
       if (storageSession) {
         location = storageSession.location;
-        dispatch(setSession(sessionParam));
+        dispatch(setSession(sessionId));
+        await addUserToSession(sessionId, userUid);
+        myStorage.setItem('sessionId', sessionId);
       } else {
         // to clean
         const {
@@ -37,8 +51,10 @@ export const initGeoLocation = () => async (dispatch, getState) => {
           latitude,
           longitude,
         };
-        const sessionId = await createSession(userUid, location);
-        await dispatch(setSession(sessionId));
+        const newSession = await createSession(userUid, location);
+        await dispatch(setSession(newSession));
+        await addUserToSession(newSession, userUid);
+        myStorage.setItem('sessionId', newSession);
       }
     } else {
       // to clean
@@ -49,8 +65,10 @@ export const initGeoLocation = () => async (dispatch, getState) => {
         latitude,
         longitude,
       };
-      const sessionId = await createSession(userUid, location);
-      await dispatch(setSession(sessionId));
+      const newSession = await createSession(userUid, location);
+      await dispatch(setSession(newSession));
+      await addUserToSession(newSession, userUid);
+      myStorage.setItem('sessionId', newSession);
     }
 
     await dispatch(initGoogleMaps(location));
