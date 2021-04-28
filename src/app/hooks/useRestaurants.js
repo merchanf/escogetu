@@ -12,7 +12,8 @@ export const useRestaurants = () => {
 
   const {
     hydrate: {
-      googleMaps: { client },
+      googleMaps: { client, googleMaps },
+      firebase: { database },
     },
     user: {
       userUid,
@@ -31,7 +32,7 @@ export const useRestaurants = () => {
 
   const onSwipe = async (direction, likedItem) => {
     if (direction === 'right') {
-      await likedRestaurant(sessionId, userUid, likedItem);
+      await likedRestaurant(sessionId, userUid, likedItem, database);
     }
   };
 
@@ -44,11 +45,13 @@ export const useRestaurants = () => {
   };
 
   const refreshRestaurants = useCallback(() => {
-    const location = new window.google.maps.LatLng(parseFloat(latitude), parseFloat(longitude));
-    getNearRestaurants({ client, location, radius: 2500 }, (results) =>
-      setRestaurantPreviews((previews) => [...results, ...previews]),
-    );
-  }, [client, latitude, longitude]);
+    if (googleMaps) {
+      const location = new googleMaps.LatLng(parseFloat(latitude), parseFloat(longitude));
+      getNearRestaurants({ client, location, radius: 2500 }, (results) =>
+        setRestaurantPreviews((previews) => [...results, ...previews]),
+      );
+    }
+  }, [client, googleMaps, latitude, longitude]);
 
   useEffect(() => {
     if (restaurantPreviews.length === MIN_DETAILED_RESTAURANTS) {
@@ -66,9 +69,7 @@ export const useRestaurants = () => {
             restaurantPreviews.length - restaurantsToDetail - restaurants.length,
             restaurantPreviews.length - restaurants.length,
           )
-          .map((restaurantToDetail) =>
-            getRestaurantDetails({ client, restaurant: restaurantToDetail }),
-          ),
+          .map((restaurantToDetail) => getRestaurantDetails(client, restaurantToDetail)),
       ).then((detailedRestaurants) => setRestaurants([...detailedRestaurants, ...restaurants]));
     }
   }, [client, restaurantPreviews, restaurants]);
