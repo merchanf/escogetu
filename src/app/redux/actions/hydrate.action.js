@@ -74,7 +74,7 @@ export const initGeoLocation = () => async (dispatch, store) => {
       };
       const newSession = await createSession(userUid, location, database);
       await dispatch(setSession(newSession));
-      await addUserToSession(newSession, userUid);
+      await addUserToSession(newSession, userUid, database);
       myStorage.setItem('sessionId', newSession);
     }
 

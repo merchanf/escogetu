@@ -35,7 +35,7 @@ export const getSession = async (sessionId, database) => {
   return null;
 };
 
-export const likedRestaurant = async (sessionId, userUid, restaurantId, database) => {
+export const addLike = async (sessionId, userUid, restaurantId, database) => {
   try {
     const doc = database.doc(`session/${sessionId}`);
     const document = await doc.get();

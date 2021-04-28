@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useStore } from 'react-redux';
+import { useStore, useDispatch } from 'react-redux';
 import { getNearRestaurants, getRestaurantDetails } from '@services/googleMaps.service';
-import { likedRestaurant } from '@services/firestore.service';
+import { like } from '@actions/user.actions';
 import { useMount } from '@hooks/use-mount.hook';
 import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
 
@@ -9,15 +9,13 @@ export const useRestaurants = () => {
   const [restaurantPreviews, setRestaurantPreviews] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [swiping, setSwiping] = useState(false);
+  const dispatch = useDispatch();
 
   const {
     hydrate: {
       googleMaps: { client, googleMaps },
-      firebase: { database },
     },
     user: {
-      userUid,
-      sessionId,
       geoLocation: {
         location: { latitude, longitude },
       },
@@ -32,7 +30,7 @@ export const useRestaurants = () => {
 
   const onSwipe = async (direction, likedItem) => {
     if (direction === 'right') {
-      await likedRestaurant(sessionId, userUid, likedItem, database);
+      dispatch(like(likedItem));
     }
   };
 
