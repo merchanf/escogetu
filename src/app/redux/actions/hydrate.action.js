@@ -1,9 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
 import { uid } from 'uid';
 import { getGeoLocation } from '@services/geoLocation.service';
+import { createSession, getSession, addUserToSession } from '@services/firestore.service';
 import { USER_SECTION_NAME } from '@stores/user.store';
 import { initGoogleMaps } from '@actions/googleMaps.action';
-import { createSession, getSession, addUserToSession } from '@services/firestore.service';
+import { initFirebase } from '@actions/firebase.actions';
 
 // User uid
 export const setUserUid = createAction(`${USER_SECTION_NAME}/setUserUid`);
@@ -14,7 +15,13 @@ export const setGeoLocation = createAction(`${USER_SECTION_NAME}/setGeoLocation`
 export const setGeoLocationLoading = createAction(`${USER_SECTION_NAME}/setGeoLocationLoading`);
 export const setGeoLocationError = createAction(`${USER_SECTION_NAME}/setGeoLocationError`);
 
-export const initGeoLocation = () => async (dispatch, getState) => {
+export const initGeoLocation = () => async (dispatch, store) => {
+  const {
+    hydrate: {
+      firebase: { database },
+    },
+  } = store();
+
   try {
     const myStorage = window.sessionStorage;
     let userUid;
@@ -36,11 +43,11 @@ export const initGeoLocation = () => async (dispatch, getState) => {
     // Hydrating
     dispatch(setGeoLocationLoading(true));
     if (sessionId) {
-      const storageSession = await getSession(sessionId);
+      const storageSession = await getSession(sessionId, database);
       if (storageSession) {
         location = storageSession.location;
         dispatch(setSession(sessionId));
-        await addUserToSession(sessionId, userUid);
+        addUserToSession(sessionId, userUid, database);
         myStorage.setItem('sessionId', sessionId);
       } else {
         // to clean
@@ -51,10 +58,10 @@ export const initGeoLocation = () => async (dispatch, getState) => {
           latitude,
           longitude,
         };
-        const newSession = await createSession(userUid, location);
-        await dispatch(setSession(newSession));
-        await addUserToSession(newSession, userUid);
-        myStorage.setItem('sessionId', newSession);
+        const newSessionId = await createSession(userUid, location, database);
+        await dispatch(setSession(newSessionId));
+        await addUserToSession(newSessionId, userUid, database);
+        myStorage.setItem('sessionId', newSessionId);
       }
     } else {
       // to clean
@@ -65,7 +72,7 @@ export const initGeoLocation = () => async (dispatch, getState) => {
         latitude,
         longitude,
       };
-      const newSession = await createSession(userUid, location);
+      const newSession = await createSession(userUid, location, database);
       await dispatch(setSession(newSession));
       await addUserToSession(newSession, userUid);
       myStorage.setItem('sessionId', newSession);
@@ -81,5 +88,6 @@ export const initGeoLocation = () => async (dispatch, getState) => {
 };
 
 export const hydrate = () => async (dispatch) => {
+  dispatch(initFirebase());
   await dispatch(initGeoLocation());
 };

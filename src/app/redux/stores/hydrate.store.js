@@ -3,6 +3,13 @@ export const HydrateStore = {
     loading: true,
     client: null,
     error: null,
+    googleMaps: null,
+  },
+  firebase: {
+    loading: true,
+    instance: null,
+    database: null,
+    error: null,
   },
 };
 
