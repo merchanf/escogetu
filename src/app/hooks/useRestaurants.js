@@ -30,7 +30,8 @@ export const useRestaurants = () => {
 
   const onSwipe = async (direction, likedItem) => {
     if (direction === 'right') {
-      dispatch(like(likedItem));
+      const restaurant = restaurants.find(({ placeId }) => placeId === likedItem);
+      dispatch(like(restaurant));
     }
   };
 

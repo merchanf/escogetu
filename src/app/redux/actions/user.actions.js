@@ -4,20 +4,19 @@ import { addLike as addLikeToDatabase } from '@services/firestore.service';
 
 // Likes management
 export const addLike = createAction(`${USER_SECTION_NAME}/addLikedElement`);
+export const addRestaurant = createAction(`${USER_SECTION_NAME}/addRestaurant`);
 
-const getRestaurant = () => ({
-  placeId: 'test',
-  name: 'nombre de prueba',
-});
-
-export const like = (placeId) => async (dispatch, store) => {
+export const like = (restaurant) => async (dispatch, store) => {
   const {
     hydrate: {
       firebase: { database },
     },
     user: { userUid, sessionId },
   } = store();
-  const restaurant = getRestaurant();
-  await addLikeToDatabase(sessionId, userUid, placeId, database);
-  await dispatch(addLike(restaurant));
+  const { placeId } = restaurant;
+  delete restaurant.ref;
+  const tempRestaurant = {};
+  tempRestaurant[placeId] = restaurant;
+  addLikeToDatabase(sessionId, userUid, placeId, database);
+  dispatch(addLike(tempRestaurant));
 };

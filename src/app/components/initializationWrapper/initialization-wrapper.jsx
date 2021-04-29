@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import React, { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -5,6 +6,7 @@ import PropTypes from 'prop-types';
 import { useMount } from '@hooks/use-mount.hook';
 import { hydrate } from '@actions/hydrate.action';
 import { LoadingIcon } from '@app/components';
+import { markAsShown } from '@services/firestore.service';
 
 const InitializationWrapperBase = ({
   children,
@@ -12,6 +14,7 @@ const InitializationWrapperBase = ({
   isMinimumAppDataLoaded,
   sessionId,
   database,
+  likes,
 }) => {
   const dispatch = useDispatch();
 
@@ -29,14 +32,19 @@ const InitializationWrapperBase = ({
           likedRestaurants.forEach(({ likes, poppedUp, id }) => {
             const likesAmount = likes.length;
             if (likesAmount === usersAmount && !poppedUp) {
-              console.log('its a match');
+              console.log('id', id);
+              markAsShown(sessionId, userUid, id, database);
             }
           });
         }
       });
     }
     return () => unsubscribe && unsubscribe();
-  }, [database, sessionId]);
+  }, [database, sessionId, userUid]);
+
+  /* useEffect(() => {
+    console.log(likes);
+  }, [likes]); */
 
   if (!isMinimumAppDataLoaded) {
     return <LoadingIcon />;
@@ -49,6 +57,7 @@ const mapStateToProps = ({
   user: {
     userUid,
     sessionId,
+    likes,
     geoLocation: { loading: loadingLocation },
   },
   hydrate: {
@@ -57,6 +66,7 @@ const mapStateToProps = ({
 }) => ({
   userUid,
   sessionId,
+  likes,
   isMinimumAppDataLoaded: !loadingLocation,
   database,
 });
@@ -68,8 +78,8 @@ InitializationWrapperBase.defaultProps = {
 InitializationWrapperBase.propTypes = {
   userUid: PropTypes.string,
   isMinimumAppDataLoaded: PropTypes.bool.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   database: PropTypes.object,
+  likes: PropTypes.object,
 };
 
 export const InitializationWrapper = connect(mapStateToProps)(InitializationWrapperBase);
