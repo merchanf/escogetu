@@ -1,13 +1,13 @@
 import React, { useState, forwardRef } from 'react';
 import TinderCard from 'react-tinder-card';
 import PropTypes from 'prop-types';
-
+import { RestaurantBio } from '../RestaurantBio/RestaurantBio';
 import styles from './Card.module.scss';
 
 export const Card = forwardRef(
   ({ distance, id, index, name, onCardLeftScreen, onSwipe, pictures }, ref) => {
     const [selectedPicture, setSelectedPicture] = useState(0);
-
+    const [open, setOpen] = useState(false);
     const handleRightButton = () => {
       if (selectedPicture + 1 < pictures.length) setSelectedPicture((prevState) => prevState + 1);
     };
@@ -15,7 +15,9 @@ export const Card = forwardRef(
     const handleLeftButton = () => {
       if (selectedPicture - 1 >= 0) setSelectedPicture((prevState) => prevState - 1);
     };
-
+    const handleOpen = () => {
+      setOpen(true);
+    };
     return (
       <div
         style={{
@@ -40,16 +42,12 @@ export const Card = forwardRef(
             </div>
 
             <div className={styles.Card__Info}>
-              <button
-                className={styles.Card__Info__Button}
-                type="button"
-                onTouchStart={handleOpen}
-                onClick={handleOpen}
-              >
-                {'i'}
+              <button className={styles.Card__Info__Button} type="button" onClick={handleOpen}>
+                i
               </button>
             </div>
 
+            <RestaurantBio name={name} open={open} setOpen={setOpen} />
             <img
               className={styles.Card__Image}
               src={pictures[selectedPicture]}
