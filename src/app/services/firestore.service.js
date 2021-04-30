@@ -9,13 +9,14 @@ export const createSession = async (userUid, position, database) => {
 
 export const addUserToSession = async (sessionId, userUid, database) => {
   try {
-    const document = database.doc(`session/${sessionId}`).get();
+    const query = await database.doc(`session/${sessionId}`);
+    const document = await query.get();
     if (document.exists) {
       const storedDoc = document.data();
       if (!storedDoc.users.includes(userUid)) {
         storedDoc.users = [...storedDoc.users, userUid];
       }
-      document.set(storedDoc, { merge: true });
+      query.set(storedDoc, { merge: true });
     }
   } catch (err) {
     // eslint-disable-next-line no-console
@@ -26,7 +27,7 @@ export const addUserToSession = async (sessionId, userUid, database) => {
 
 export const getSession = async (sessionId, database) => {
   try {
-    const document = database.doc(`session/${sessionId}`).get();
+    const document = await database.doc(`session/${sessionId}`).get();
     if (document.exists) return document.data();
   } catch (err) {
     // eslint-disable-next-line no-console

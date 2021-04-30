@@ -1,6 +1,7 @@
 export const UserStore = {
   userUid: null,
   sessionId: null,
+  match: null,
   likes: {},
   geoLocation: {
     location: {

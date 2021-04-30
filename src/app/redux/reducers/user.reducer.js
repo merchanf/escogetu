@@ -6,7 +6,7 @@ import {
   setSession,
   setUserUid,
 } from '@actions/hydrate.action';
-import { addLike, addRestaurant } from '@actions/user.actions';
+import { addLike, setMatch } from '@actions/user.actions';
 
 const userReducer = createReducer(UserStore, (builder) => {
   builder.addCase(setGeoLocationLoading, (state, { payload }) => ({
@@ -34,6 +34,10 @@ const userReducer = createReducer(UserStore, (builder) => {
   builder.addCase(addLike, (state, { payload }) => ({
     ...state,
     likes: { ...state.likes, ...payload },
+  }));
+  builder.addCase(setMatch, (state, { payload }) => ({
+    ...state,
+    match: payload,
   }));
 });
 

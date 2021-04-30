@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { setMatch } from '@actions/user.actions';
 import { useMount } from '@hooks/use-mount.hook';
 import { hydrate } from '@actions/hydrate.action';
 import { LoadingIcon } from '@app/components';
@@ -32,7 +33,7 @@ const InitializationWrapperBase = ({
           likedRestaurants.forEach(({ likes, poppedUp, id }) => {
             const likesAmount = likes.length;
             if (likesAmount === usersAmount && !poppedUp) {
-              console.log('id', id);
+              dispatch(setMatch(id));
               markAsShown(sessionId, userUid, id, database);
             }
           });
@@ -40,11 +41,7 @@ const InitializationWrapperBase = ({
       });
     }
     return () => unsubscribe && unsubscribe();
-  }, [database, sessionId, userUid]);
-
-  /* useEffect(() => {
-    console.log(likes);
-  }, [likes]); */
+  }, [database, dispatch, sessionId, userUid]);
 
   if (!isMinimumAppDataLoaded) {
     return <LoadingIcon />;
