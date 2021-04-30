@@ -1,10 +1,15 @@
 export const createSession = async (userUid, position, database) => {
-  const document = await database.collection('session').add({
-    users: [userUid],
-    location: position,
-    likedRestaurants: [],
-  });
-  return document.id;
+  try {
+    const document = await database.collection('session').add({
+      users: [userUid],
+      location: position,
+      likedRestaurants: [],
+    });
+    return document.id;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
 };
 
 export const addUserToSession = async (sessionId, userUid, database) => {
