@@ -39,6 +39,17 @@ export const Card = forwardRef(
                 {selectedPicture + 1}/{pictures.length}
             </div>
 
+            <div className={styles.Card__Info}>
+              <button
+                className={styles.Card__Info__Button}
+                type="button"
+                onTouchStart={handleOpen}
+                onClick={handleOpen}
+              >
+                {'i'}
+              </button>
+            </div>
+
             <img
               className={styles.Card__Image}
               src={pictures[selectedPicture]}
