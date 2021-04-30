@@ -29,7 +29,10 @@ export const initGeoLocation = () => async (dispatch, store) => {
 
   try {
     let userUid;
-    let { coords: location } = await getGeoLocation(userUid);
+    const {
+      coords: { longitude, latitude },
+    } = await getGeoLocation(userUid);
+    let location = { longitude, latitude };
 
     // Setting User Id
     userUid = myStorage.getItem('userUid');
