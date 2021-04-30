@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useStore } from 'react-redux';
+import { useStore, useDispatch } from 'react-redux';
 import { getNearRestaurants, getRestaurantDetails } from '@services/googleMaps.service';
-import { likedRestaurant } from '@services/firestore.service';
+import { like } from '@actions/user.actions';
 import { useMount } from '@hooks/use-mount.hook';
 import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
 
@@ -9,14 +9,13 @@ export const useRestaurants = () => {
   const [restaurantPreviews, setRestaurantPreviews] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [swiping, setSwiping] = useState(false);
+  const dispatch = useDispatch();
 
   const {
     hydrate: {
-      googleMaps: { client },
+      googleMaps: { client, googleMaps },
     },
     user: {
-      userUid,
-      sessionId,
       geoLocation: {
         location: { latitude, longitude },
       },
@@ -31,7 +30,8 @@ export const useRestaurants = () => {
 
   const onSwipe = async (direction, likedItem) => {
     if (direction === 'right') {
-      await likedRestaurant(sessionId, userUid, likedItem);
+      const restaurant = restaurants.find(({ placeId }) => placeId === likedItem);
+      dispatch(like(restaurant));
     }
   };
 
@@ -44,11 +44,13 @@ export const useRestaurants = () => {
   };
 
   const refreshRestaurants = useCallback(() => {
-    const location = new window.google.maps.LatLng(parseFloat(latitude), parseFloat(longitude));
-    getNearRestaurants({ client, location, radius: 2500 }, (results) =>
-      setRestaurantPreviews((previews) => [...results, ...previews]),
-    );
-  }, [client, latitude, longitude]);
+    if (googleMaps) {
+      const location = new googleMaps.LatLng(parseFloat(latitude), parseFloat(longitude));
+      getNearRestaurants({ client, location, radius: 2500 }, (results) =>
+        setRestaurantPreviews((previews) => [...results, ...previews]),
+      );
+    }
+  }, [client, googleMaps, latitude, longitude]);
 
   useEffect(() => {
     if (restaurantPreviews.length === MIN_DETAILED_RESTAURANTS) {
@@ -66,9 +68,7 @@ export const useRestaurants = () => {
             restaurantPreviews.length - restaurantsToDetail - restaurants.length,
             restaurantPreviews.length - restaurants.length,
           )
-          .map((restaurantToDetail) =>
-            getRestaurantDetails({ client, restaurant: restaurantToDetail }),
-          ),
+          .map((restaurantToDetail) => getRestaurantDetails(client, restaurantToDetail)),
       ).then((detailedRestaurants) => setRestaurants([...detailedRestaurants, ...restaurants]));
     }
   }, [client, restaurantPreviews, restaurants]);

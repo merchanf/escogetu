@@ -1,106 +1,73 @@
-import firebaseInstance from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/analytics';
-
-const config = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
+export const createSession = async (userUid, position, database) => {
+  const document = await database.collection('session').add({
+    users: [userUid],
+    location: position,
+    likedRestaurants: [],
+  });
+  return document.id;
 };
 
-const app = !firebaseInstance.apps.length
-  ? firebaseInstance.initializeApp(config)
-  : firebaseInstance.app();
+export const addUserToSession = async (sessionId, userUid, database) => {
+  try {
+    const query = await database.doc(`session/${sessionId}`);
+    const document = await query.get();
+    if (document.exists) {
+      const storedDoc = document.data();
+      if (!storedDoc.users.includes(userUid)) {
+        storedDoc.users = [...storedDoc.users, userUid];
+      }
+      query.set(storedDoc, { merge: true });
+    }
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
+  return null;
+};
 
-const db = app.firestore();
+export const getSession = async (sessionId, database) => {
+  try {
+    const document = await database.doc(`session/${sessionId}`).get();
+    if (document.exists) return document.data();
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
+  return null;
+};
 
-export const createSession = async (userUid, position) =>
-  new Promise((resolve) => {
-    db.collection('session')
-      .add({
-        users: [userUid],
-        location: position,
-        likedRestaurants: [],
-      })
-      .then((docRef) => {
-        resolve(docRef.id);
-      });
-  });
-
-export const addUserToSession = async (sessionId, userUid) =>
-  new Promise((resolve, reject) => {
-    const docRef = db.collection('session').doc(sessionId);
-    docRef
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          const storedDoc = doc.data();
-          if (!storedDoc.users.includes(userUid)) {
-            storedDoc.users = [...storedDoc.users, userUid];
+export const addLike = async (sessionId, userUid, restaurantId, database) => {
+  try {
+    const doc = database.doc(`session/${sessionId}`);
+    const document = await doc.get();
+    if (document.exists) {
+      const storedDoc = document.data();
+      if (
+        storedDoc.likedRestaurants.length === 0 ||
+        !alreadyInLikedRestaurant(storedDoc.likedRestaurants, restaurantId)
+      ) {
+        storedDoc.likedRestaurants = [
+          ...storedDoc.likedRestaurants,
+          { id: restaurantId, likes: [userUid], poppedUp: false },
+        ];
+      } else {
+        storedDoc.likedRestaurants = storedDoc.likedRestaurants.map((rest) => {
+          if (rest.id === restaurantId) {
+            if (!rest.likes.includes(userUid)) {
+              rest.likes = [...rest.likes, userUid];
+            }
           }
-          resolve(docRef.set(storedDoc, { merge: true }));
-        }
-      })
-      .catch((reason) => {
-        reject(reason);
-      });
-  });
-
-export const getSession = async (sessionId) =>
-  new Promise((resolve, reject) => {
-    const docRef = db.collection('session').doc(sessionId);
-    docRef
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          resolve(doc.data());
-        } else {
-          resolve(undefined);
-        }
-      })
-      .catch((reason) => {
-        reject(reason);
-      });
-  });
-
-export const likedRestaurant = async (sessionId, userUid, restaurantId) =>
-  new Promise((resolve, reject) => {
-    const docRef = db.collection('session').doc(sessionId.toString());
-    docRef
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          const storedDoc = doc.data();
-          if (
-            storedDoc.likedRestaurants.length <= 0 ||
-            !alreadyInLikedRestaurant(storedDoc.likedRestaurants, restaurantId)
-          ) {
-            storedDoc.likedRestaurants = [
-              ...storedDoc.likedRestaurants,
-              { id: restaurantId, likes: [userUid] },
-            ];
-          } else {
-            storedDoc.likedRestaurants = storedDoc.likedRestaurants.map((rest) => {
-              if (rest.id === restaurantId) {
-                if (!rest.likes.includes(userUid)) {
-                  rest.likes = [...rest.likes, userUid];
-                }
-              }
-              return rest;
-            });
-          }
-          resolve(docRef.set(storedDoc, { merge: true }));
-        }
-      })
-      .catch((reason) => {
-        reject(reason);
-      });
-  });
+          return rest;
+        });
+      }
+      doc.set(storedDoc, { merge: true });
+    }
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
+  return null;
+};
 
 function alreadyInLikedRestaurant(likedRestaurants, restaurantId) {
   let isIn = false;
@@ -111,3 +78,30 @@ function alreadyInLikedRestaurant(likedRestaurants, restaurantId) {
   });
   return isIn;
 }
+
+const shown = (array, id) => {
+  for (let i = 0; i < array.length; i++) {
+    const element = array[i];
+    if (element.id === id) {
+      element.poppedUp = true;
+      array[i] = element;
+    }
+  }
+  return array;
+};
+
+export const markAsShown = async (sessionId, userUid, restaurantId, database) => {
+  try {
+    const doc = database.doc(`session/${sessionId}`);
+    const document = await doc.get();
+    if (document.exists) {
+      const storedDoc = document.data();
+      storedDoc.likedRestaurants = shown(storedDoc.likedRestaurants, restaurantId);
+      doc.set(storedDoc, { merge: true });
+    }
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
+  return null;
+};
