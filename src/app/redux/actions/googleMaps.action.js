@@ -7,6 +7,7 @@ import { GOOGLE_API_KEY } from '@constants/env.constants';
 export const setGoogleMapsLoading = createAction(`${HYDRATE_SECTION_NAME}/setGoogleMapsLoading`);
 export const setGoogleMapsError = createAction(`${HYDRATE_SECTION_NAME}/setGoogleMapsError`);
 export const setGoogleMapsClient = createAction(`${HYDRATE_SECTION_NAME}/setGoogleMapsClient`);
+export const setGoogleMapsInstance = createAction(`${HYDRATE_SECTION_NAME}/setGoogleMapsInstance`);
 
 export const initGoogleMaps = ({ latitude, longitude }) => async (dispatch) => {
   dispatch(setGoogleMapsLoading(true));
@@ -18,6 +19,7 @@ export const initGoogleMaps = ({ latitude, longitude }) => async (dispatch) => {
     });
 
     await loader.load();
+    dispatch(setGoogleMapsInstance(window.google.maps));
     dispatch(
       setGoogleMapsClient(
         new window.google.maps.Map(document.getElementById('map'), {

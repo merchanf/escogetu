@@ -11,8 +11,7 @@ const filterResults = (results) => {
 };
 const mapper = (
   {
-    // eslint-disable-next-line camelcase
-    place_id,
+    place_id: placeId,
     name,
     photos,
     geometry: {
@@ -21,14 +20,47 @@ const mapper = (
   },
   location,
 ) => ({
-  placeId: place_id,
+  placeId,
   name,
   distance: distance(location.lat(), location.lng(), lat(), lng()),
   pictures: photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })),
   ref: createRef(),
 });
 
-export const getRestaurantDetails = async ({ client, restaurant }) =>
+export const getRestaurantDetailsWithoutRestaurant = async (client, placeId) => {
+  return new Promise((resolve) => {
+    const request = {
+      placeId,
+      fields: [
+        'international_phone_number',
+        'name',
+        'rating',
+        'vicinity',
+        'geometry',
+        'price_level',
+        'photos',
+      ],
+    };
+    const service = new window.google.maps.places.PlacesService(client);
+    service.getDetails(request, (details) => {
+      resolve({
+        placeId,
+        address: details?.vicinity,
+        location: {
+          lat: details?.geometry?.location?.lat(),
+          lng: details?.geometry?.location?.lng(),
+        },
+        name: details?.name,
+        rating: details?.rating,
+        phoneNumber: details?.international_phone_number,
+        priceLevel: details?.price_level,
+        pictures: details?.photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })),
+      });
+    });
+  });
+};
+
+export const getRestaurantDetailsWithRestaurant = async (client, restaurant) =>
   new Promise((resolve) => {
     const request = {
       placeId: restaurant.placeId,
@@ -80,4 +112,10 @@ export const getNearRestaurants = async ({ client, location, radius = 2500 }, ca
       callback(filteredResults.map((result) => mapper(result, location)) || []);
     });
   }
+};
+
+export const getRestaurantDetails = async (client, restaurant) => {
+  const isObject = typeof restaurant === 'object';
+  if (restaurant != null && isObject) return getRestaurantDetailsWithRestaurant(client, restaurant);
+  return getRestaurantDetailsWithoutRestaurant(client, restaurant);
 };

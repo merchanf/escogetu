@@ -37,14 +37,13 @@ export const RestaurantDetails = ({
   rating,
   priceLevel,
 }) => {
-  const gMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY || apiKey;
   return (
     <div className={styles.RestaurantDetails}>
       <p>Hoy vamos a comer en...</p>
       <p className={styles.RestaurantDetails__Name}>¡{name}!</p>
       <div style={{ height: '250px', width: '80%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: gMapsApiKey }}
+          bootstrapURLKeys={{ key: apiKey, libraries: ['places'], version: 'weekly' }}
           center={location}
           defaultZoom={defaultProps.zoom}
         >
@@ -94,12 +93,22 @@ export const RestaurantDetails = ({
   );
 };
 
+RestaurantDetails.defaultProps = {
+  rating: null,
+  priceLevel: null,
+  phoneNumber: null,
+  apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+};
+
 RestaurantDetails.propTypes = {
   name: PropTypes.string.isRequired,
-  location: PropTypes.string.isRequired,
-  apiKey: PropTypes.string.isRequired,
-  phoneNumber: PropTypes.string.isRequired,
+  location: PropTypes.shape({
+    lat: PropTypes.number,
+    lng: PropTypes.number,
+  }).isRequired,
+  apiKey: PropTypes.string,
+  phoneNumber: PropTypes.string,
   address: PropTypes.string.isRequired,
-  rating: PropTypes.string.isRequired,
-  priceLevel: PropTypes.string.isRequired,
+  rating: PropTypes.number,
+  priceLevel: PropTypes.number,
 };
