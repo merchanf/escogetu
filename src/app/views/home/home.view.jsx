@@ -10,6 +10,7 @@ import {
   Layout,
   RestaurantDetails,
 } from '@app/components';
+import { FEEDBACK_ID, DOMAIN } from '@constants/env.constants';
 import { CrossIconButton, LikeIconButton } from '@components/Icons/Icons';
 import 'react-morphing-modal/dist/ReactMorphingModal.css';
 
@@ -17,8 +18,7 @@ import './home.view.scss';
 import { useRestaurants } from '@hooks/useRestaurants';
 
 const HomeViewBase = ({ sessionId, match, likes }) => {
-  const domain = process.env.REACT_APP_DOMAIN;
-  const feederShProjectId = process.env.REACT_APP_FEEDBACK_ID;
+  const feederShProjectId = FEEDBACK_ID;
   const { restaurants, swipe, onSwipe, onCardLeftScreen } = useRestaurants();
   const modalRef = useRef(null);
   const { open, modalProps } = useModal();
@@ -58,7 +58,7 @@ const HomeViewBase = ({ sessionId, match, likes }) => {
       </div>
       <div className="Home__Buttons">
         <CrossIconButton onClick={() => swipe('left')} size="medium" color="red" />
-        <ShareButton sessionId={sessionId} domain={domain} />
+        <ShareButton sessionId={sessionId} domain={DOMAIN} />
         <LikeIconButton onClick={() => swipe('right')} size="medium" color="green" />
       </div>
       <FeedbackButton projectId={feederShProjectId} />

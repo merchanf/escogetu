@@ -9,7 +9,7 @@ const LEFT = 'left';
 const RIGHT = 'right';
 const UP = 'up';
 const DOWN = 'down';
-const POWER = 4000;
+const POWER = 3500;
 
 const settings = {
   snapBackDuration: 300,
@@ -84,7 +84,7 @@ const animateOut = async (element, speed, easeIn = false, direction, fromButton 
 
   element.style.transform = translateString + rotateString;
 
-  await sleep(time * (fromButton ? 250 : 25));
+  await sleep(time * (fromButton ? 300 : 25));
 };
 
 const animateBack = (element) => {
@@ -161,7 +161,8 @@ const TinderCard = React.forwardRef(
         } else if (dir === DOWN) {
           await animateOut(element.current, { x: disturbance, y: -POWER }, true, dir, true);
         }
-        element.current.style.display = 'none';
+        if (element && element.current && element.current?.style?.display)
+          element.current.style.display = 'none';
         if (onCardLeftScreen) onCardLeftScreen(dir);
       },
     }));
@@ -185,7 +186,7 @@ const TinderCard = React.forwardRef(
           if (flickOnSwipe) {
             if (!preventSwipe.includes(dir)) {
               await animateOut(element, speed);
-              element.style.display = 'none';
+              if (element?.style?.display) element.style.display = 'none';
               if (onCardLeftScreen) onCardLeftScreen(dir);
               return;
             }
