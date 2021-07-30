@@ -62,11 +62,9 @@ const animateOut = async (element, speed, easeIn = false, direction) => {
 
   const velocity = pythagoras(speed.x, speed.y);
   const time = diagonal / velocity;
-  const multiplier = diagonal / velocity;
-
   const translateString = translationString(
-    speed.x * multiplier + startPos.x,
-    -speed.y * multiplier + startPos.y,
+    speed.x * time + startPos.x,
+    -speed.y * time + startPos.y,
   );
   let rotateString = '';
 
@@ -86,7 +84,7 @@ const animateOut = async (element, speed, easeIn = false, direction) => {
 
   element.style.transform = translateString + rotateString;
 
-  await sleep(time * 300);
+  await sleep(time * 25);
 };
 
 const animateBack = (element) => {
