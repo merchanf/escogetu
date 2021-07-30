@@ -1,6 +1,6 @@
 import React, { useState, forwardRef } from 'react';
-import TinderCard from 'react-tinder-card';
 import PropTypes from 'prop-types';
+import TinderCard from '../TinderCard/TinderCard';
 import { RestaurantBio } from '../RestaurantBio/RestaurantBio';
 import styles from './Card.module.scss';
 
@@ -35,6 +35,8 @@ export const Card = forwardRef(
           onSwipe={(dir) => onSwipe(dir, id)}
           ref={ref}
           onCardLeftScreen={onCardLeftScreen}
+          flickOnSwipe
+          preventSwipe={['up', 'down']}
         >
           <div className={styles.Card}>
             <div className={styles.Card__Counter}>

@@ -23,6 +23,7 @@
     "__adroll__": true
   },
   "rules": {
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],   
     "import/no-default-export": 0,
     "import/no-cycle": 0,
     "no-shadow": 0,
