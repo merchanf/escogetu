@@ -55,7 +55,7 @@ const pythagoras = (x, y) => {
   return Math.sqrt(x ** 2 + y ** 2);
 };
 
-const animateOut = async (element, speed, easeIn = false, direction) => {
+const animateOut = async (element, speed, easeIn = false, direction, fromButton = false) => {
   const startPos = getTranslate(element);
   const bodySize = getElementSize(document.body);
   const diagonal = pythagoras(bodySize.x, bodySize.y);
@@ -84,7 +84,7 @@ const animateOut = async (element, speed, easeIn = false, direction) => {
 
   element.style.transform = translateString + rotateString;
 
-  await sleep(time * 25);
+  await sleep(time * (fromButton ? 250 : 25));
 };
 
 const animateBack = (element) => {
@@ -153,13 +153,13 @@ const TinderCard = React.forwardRef(
         if (onSwipe) onSwipe(dir);
         const disturbance = (Math.random() - 0.5) * 100;
         if (dir === RIGHT) {
-          await animateOut(element.current, { x: POWER, y: disturbance }, true, dir);
+          await animateOut(element.current, { x: POWER, y: disturbance }, true, dir, true);
         } else if (dir === LEFT) {
-          await animateOut(element.current, { x: -POWER, y: disturbance }, true, dir);
+          await animateOut(element.current, { x: -POWER, y: disturbance }, true, dir, true);
         } else if (dir === UP) {
-          await animateOut(element.current, { x: disturbance, y: POWER }, true, dir);
+          await animateOut(element.current, { x: disturbance, y: POWER }, true, dir, true);
         } else if (dir === DOWN) {
-          await animateOut(element.current, { x: disturbance, y: -POWER }, true, dir);
+          await animateOut(element.current, { x: disturbance, y: -POWER }, true, dir, true);
         }
         element.current.style.display = 'none';
         if (onCardLeftScreen) onCardLeftScreen(dir);
@@ -184,7 +184,6 @@ const TinderCard = React.forwardRef(
 
           if (flickOnSwipe) {
             if (!preventSwipe.includes(dir)) {
-              console.log(speed);
               await animateOut(element, speed);
               element.style.display = 'none';
               if (onCardLeftScreen) onCardLeftScreen(dir);
