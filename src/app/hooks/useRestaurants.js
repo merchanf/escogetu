@@ -71,7 +71,9 @@ export const useRestaurants = () => {
           .map((restaurantToDetail) => getRestaurantDetails(client, restaurantToDetail)),
       ).then((detailedRestaurants) => setRestaurants([...detailedRestaurants, ...restaurants]));
     }
-  }, [client, restaurantPreviews, restaurants]);
+    // if resturants is added a infite loop will happen after many swipes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [client, restaurantPreviews]);
 
   useMount(() => refreshRestaurants());
 

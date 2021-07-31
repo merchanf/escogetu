@@ -18,7 +18,6 @@ import './home.view.scss';
 import { useRestaurants } from '@hooks/useRestaurants';
 
 const HomeViewBase = ({ sessionId, match, likes }) => {
-  const feederShProjectId = FEEDBACK_ID;
   const { restaurants, swipe, onSwipe, onCardLeftScreen } = useRestaurants();
   const modalRef = useRef(null);
   const { open, modalProps } = useModal();
@@ -61,7 +60,7 @@ const HomeViewBase = ({ sessionId, match, likes }) => {
         <ShareButton sessionId={sessionId} domain={DOMAIN} />
         <LikeIconButton onClick={() => swipe('right')} size="medium" color="green" />
       </div>
-      <FeedbackButton projectId={feederShProjectId} />
+      <FeedbackButton projectId={FEEDBACK_ID} />
     </div>
   );
 };
