@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon } from './Icon/Icon';
+import Icon from './Icon/Icon';
 
-export const CrossIcon = (props) => {
+const CrossIcon = (props) => {
   const svg = (
     <svg
       focusable={false}
@@ -26,3 +26,5 @@ export const CrossIcon = (props) => {
 
   return <Icon {...props} svg={svg} />;
 };
+
+export default CrossIcon;

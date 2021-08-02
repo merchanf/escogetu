@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon } from './Icon/Icon';
+import Icon from './Icon/Icon';
 
-export const LinkIcon = (props) => {
+const LinkIcon = (props) => {
   const svg = (
     <svg
       focusable={false}
@@ -32,3 +32,5 @@ export const LinkIcon = (props) => {
 
   return <Icon {...props} svg={svg} />;
 };
+
+export default LinkIcon;

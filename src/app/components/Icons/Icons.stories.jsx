@@ -1,4 +1,4 @@
-/* eslint-disable */
+import React from 'react';
 import * as icons from './Icons';
 
 export default {

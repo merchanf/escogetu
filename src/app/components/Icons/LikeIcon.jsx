@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon } from './Icon/Icon';
+import Icon from './Icon/Icon';
 
-export const LikeIcon = (props) => {
+const LikeIcon = (props) => {
   const svg = (
     <svg
       focusable={false}
@@ -21,3 +21,5 @@ export const LikeIcon = (props) => {
 
   return <Icon {...props} svg={svg} />;
 };
+
+export default LikeIcon;

@@ -28,7 +28,7 @@ const StyledRating = withStyles({
 const iconStyles = { fontSize: '32px' };
 const detailIcons = { ...iconStyles, marginRight: '12px' };
 
-export const RestaurantDetails = ({
+const RestaurantDetails = ({
   name,
   location,
   apiKey,
@@ -112,3 +112,5 @@ RestaurantDetails.propTypes = {
   rating: PropTypes.number,
   priceLevel: PropTypes.number,
 };
+
+export default RestaurantDetails;

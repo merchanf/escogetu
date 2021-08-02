@@ -7,7 +7,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { LinkIcon, CopyIcon, WhatsappIcon, TelegramIcon, CrossIcon } from '../Icons/Icons';
 import styles from './ShareDialog.module.scss';
 
-export const ShareDialog = ({ onClose, open, url }) => {
+const ShareDialog = ({ onClose, open, url }) => {
   const [openAlert, setOpenAlert] = useState(false);
 
   const handleClose = (_, reason) => {
@@ -75,3 +75,5 @@ ShareDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   url: PropTypes.string.isRequired,
 };
+
+export default ShareDialog;

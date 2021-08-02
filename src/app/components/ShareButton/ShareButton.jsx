@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import ShareDialog from '@components/ShareDialog/ShareDialog';
 import { isMobilePhone } from '@utils/utils';
 import { ShareIconButton } from '@components/Icons/Icons';
-import { ShareDialog } from '../index';
 
 const ShareButton = ({ domain, sessionId }) => {
   const [open, setOpen] = useState(false);
@@ -25,8 +25,6 @@ const ShareButton = ({ domain, sessionId }) => {
   );
 };
 
-export { ShareButton };
-
 ShareButton.defaultProps = {
   domain: 'https://escogetu.com/',
 };
@@ -35,3 +33,5 @@ ShareButton.propTypes = {
   sessionId: PropTypes.string.isRequired,
   domain: PropTypes.string,
 };
+
+export default ShareButton;

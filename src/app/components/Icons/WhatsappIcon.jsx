@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon } from './Icon/Icon';
+import Icon from './Icon/Icon';
 
-export const WhatsappIcon = (props) => {
+const WhatsappIcon = (props) => {
   const svg = (
     <svg
       focusable={false}
@@ -53,3 +53,5 @@ export const WhatsappIcon = (props) => {
 
   return <Icon {...props} svg={svg} />;
 };
+
+export default WhatsappIcon;

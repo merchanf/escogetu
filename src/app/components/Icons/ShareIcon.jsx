@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon } from './Icon/Icon';
+import Icon from './Icon/Icon';
 
-export const ShareIcon = (props) => {
+const ShareIcon = (props) => {
   const svg = (
     <svg
       focusable={false}
@@ -41,3 +41,5 @@ export const ShareIcon = (props) => {
 
   return <Icon {...props} svg={svg} />;
 };
+
+export default ShareIcon;

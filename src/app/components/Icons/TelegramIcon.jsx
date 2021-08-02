@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon } from './Icon/Icon';
+import Icon from './Icon/Icon';
 
-export const TelegramIcon = (props) => {
+const TelegramIcon = (props) => {
   const svg = (
     <svg
       focusable={false}
@@ -22,3 +22,5 @@ export const TelegramIcon = (props) => {
 
   return <Icon {...props} svg={svg} />;
 };
+
+export default TelegramIcon;

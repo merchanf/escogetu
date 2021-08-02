@@ -1,10 +1,10 @@
 import React, { useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import TinderCard from '../TinderCard/TinderCard';
-import { RestaurantBio } from '../RestaurantBio/RestaurantBio';
+import RestaurantBio from '../RestaurantBio/RestaurantBio';
 import styles from './Card.module.scss';
 
-export const Card = forwardRef(
+const Card = forwardRef(
   ({ distance, id, index, name, onCardLeftScreen, onSwipe, pictures }, ref) => {
     const [selectedPicture, setSelectedPicture] = useState(0);
     const [open, setOpen] = useState(false);
@@ -103,3 +103,5 @@ Card.propTypes = {
   onSwipe: PropTypes.func.isRequired,
   pictures: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
+
+export default Card;

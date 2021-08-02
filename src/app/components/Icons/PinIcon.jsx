@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon } from './Icon/Icon';
+import Icon from './Icon/Icon';
 
-export const PinIcon = (props) => {
+const PinIcon = (props) => {
   const svg = (
     <svg
       focusable={false}
@@ -20,3 +20,5 @@ export const PinIcon = (props) => {
 
   return <Icon {...props} svg={svg} />;
 };
+
+export default PinIcon;

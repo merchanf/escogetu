@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Card } from '../Card/Card';
+import Card from '../Card/Card';
 
 import styles from './CardList.module.scss';
 
-export const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
+const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
   const ref = useRef(null);
 
   return (
@@ -31,3 +31,5 @@ CardList.propTypes = {
   onSwipe: PropTypes.func.isRequired,
   onCardLeftScreen: PropTypes.func.isRequired,
 };
+
+export default CardList;

@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import styles from './Layout.module.scss';
 
-export const Layout = ({ children, background }) => {
+const Layout = ({ children, background }) => {
   return (
     <div
       className={classnames(styles.Layout, {
@@ -23,3 +23,5 @@ Layout.propTypes = {
   background: PropTypes.string,
   children: PropTypes.node.isRequired,
 };
+
+export default Layout;

@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import styles from './Icon.module.scss';
 
-export const Icon = ({ className, svg, size, ...props }) => {
+const Icon = ({ className, svg, size, ...props }) => {
   const iconClassNames = classnames(
     styles.Icon,
     { [className]: className },
@@ -34,3 +34,5 @@ Icon.propTypes = {
   svg: PropTypes.shape({}).isRequired,
   size: PropTypes.string,
 };
+
+export default Icon;

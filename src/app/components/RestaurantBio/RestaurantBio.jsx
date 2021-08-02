@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './RestaurantBio.module.scss';
 
-export const RestaurantBio = ({ name, open, setOpen }) => {
+const RestaurantBio = ({ name, open, setOpen }) => {
   return (
     <>
       {open ? (
@@ -30,3 +30,5 @@ RestaurantBio.propTypes = {
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
 };
+
+export default RestaurantBio;

@@ -13,7 +13,9 @@
     "lint": "stylelint \"src/**/*.{scss,css}\" && eslint ./src --ext=.js,.ts,.jsx --max-warnings=0",
     "lint:fix": "stylelint \"src/**/*.{scss,css}\" --fix && eslint ./src --ext=.js,.ts,.jsx --fix --max-warnings=0",
     "lint:ci:css_base": "stylelint \"./src/**/*.{scss,css}\" --max-warnings 0 --cache --cache-location \"./.stylelintcache/\"",
-    "lint:ci:css": "yarn lint:ci:css_base -f json -o ./stylelint-output.json > /dev/null || yarn lint:ci:css_base"
+    "lint:ci:css": "yarn lint:ci:css_base -f json -o ./stylelint-output.json > /dev/null || yarn lint:ci:css_base",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "browserslist": {
     "production": [
@@ -59,6 +61,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
+    "@storybook/addon-actions": "^6.3.6",
+    "@storybook/addon-essentials": "^6.3.6",
+    "@storybook/addon-links": "^6.3.6",
+    "@storybook/node-logger": "^6.3.6",
+    "@storybook/preset-create-react-app": "^3.2.0",
+    "@storybook/react": "^6.3.6",
     "babel-eslint": "10.1.0",
     "customize-cra": "^1.0.0",
     "eslint": "^6.8.0",
@@ -86,5 +94,17 @@
     "stylelint-config-recommended-scss": "^4.2.0",
     "stylelint-scss": "^3.17.1"
   },
-  "config-overrides-path": "./config/cra-overrides.js"
+  "config-overrides-path": "./config/cra-overrides.js",
+  "eslintConfig": {
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
+  }
 }
