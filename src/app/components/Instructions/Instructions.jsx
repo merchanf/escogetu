@@ -1,0 +1,97 @@
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+import MobileStepper from '@material-ui/core/MobileStepper';
+import Layout from '../Layout/Layout';
+import styles from './Instructions.module.scss';
+import Step1 from './png/1Step.png';
+import Step2 from './png/2Step.png';
+import Step3 from './png/3Step.png';
+import Step4 from './png/4Step.png';
+import Step5 from './png/5Step.png';
+
+const useStyles = makeStyles({
+  root: {
+    backgroundColor: 'transparent',
+  },
+  dots: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dot: {
+    backgroundColor: '#ECEF50',
+    height: '12px',
+    width: '12px',
+    marginLeft: '12px',
+  },
+  dotActive: {
+    backgroundColor: '#A350EF',
+  },
+});
+
+const Instructions = (props) => {
+  const { onClose } = props;
+  const classes = useStyles();
+  const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    if (step > 4) onClose();
+  }, [onClose, step]);
+
+  const nextStep = () => {
+    setStep((prevState) => prevState + 1);
+  };
+
+  const onCloseAndNeverShowAgain = () => {
+    onClose();
+  };
+
+  // const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 />];
+
+  const steps = [
+    <img src={Step1} alt="instructions first step" />,
+    <img src={Step2} alt="instructions second step" />,
+    <img src={Step3} alt="instructions third step" />,
+    <img src={Step4} alt="instructions fourth step" />,
+    <img src={Step5} alt="instructions fifth step" />,
+  ];
+
+  return (
+    <Layout>
+      <main className={styles.Instructions}>
+        <div className={styles.Instructions__Body}>
+          <h1 className={styles.Instructions__Body__Title}>¿Cómo es la vuelta?</h1>
+          <div className={styles.Instructions__Body__Stepper}>
+            <MobileStepper
+              variant="dots"
+              steps={5}
+              position="static"
+              activeStep={step}
+              classes={classes}
+            />
+          </div>
+          <div className={styles.Instructions__Body__Instruction}>{steps[step]}</div>
+          <div className={styles.Instructions__Buttons}>
+            <div className={styles.Instructions__Buttons__Close}>
+              <button type="button" onClick={onClose}>
+                Cerrar
+              </button>
+              <button type="button" onClick={onCloseAndNeverShowAgain}>
+                Cerrar y no mostrar de nuevo
+              </button>
+            </div>
+            <button type="button" onClick={nextStep} className={styles.Instructions__Buttons__Next}>
+              {step < 4 ? 'Siguiente' : '¡Listo pues!'}
+            </button>
+          </div>
+        </div>
+      </main>
+    </Layout>
+  );
+};
+
+Instructions.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};
+
+export default Instructions;

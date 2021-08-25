@@ -4,7 +4,7 @@ import 'feeder-react-feedback/dist/feeder-react-feedback.css';
 import './FeedbackButton.css';
 import PropTypes from 'prop-types';
 
-export const FeedbackButton = ({ projectId }) => {
+const FeedbackButton = ({ projectId }) => {
   return (
     <Feedback
       projectId={projectId}
@@ -20,3 +20,5 @@ export const FeedbackButton = ({ projectId }) => {
 FeedbackButton.propTypes = {
   projectId: PropTypes.string.isRequired,
 };
+
+export default FeedbackButton;
