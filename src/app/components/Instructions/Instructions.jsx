@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import cx from 'classnames';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
@@ -30,7 +31,7 @@ const useStyles = makeStyles({
 });
 
 const Instructions = (props) => {
-  const { onClose } = props;
+  const { onClose, onCloseAndNeverShowAgain } = props;
   const classes = useStyles();
   const [step, setStep] = useState(0);
 
@@ -41,12 +42,6 @@ const Instructions = (props) => {
   const nextStep = () => {
     setStep((prevState) => prevState + 1);
   };
-
-  const onCloseAndNeverShowAgain = () => {
-    onClose();
-  };
-
-  // const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 />];
 
   const steps = [
     <img src={Step1} alt="instructions first step" />,
@@ -80,7 +75,14 @@ const Instructions = (props) => {
                 Cerrar y no mostrar de nuevo
               </button>
             </div>
-            <button type="button" onClick={nextStep} className={styles.Instructions__Buttons__Next}>
+            <button
+              type="button"
+              onClick={nextStep}
+              className={cx({
+                [styles.Instructions__Buttons__Next]: step !== 4,
+                [styles.Instructions__Buttons__End]: step === 4,
+              })}
+            >
               {step < 4 ? 'Siguiente' : '¡Listo pues!'}
             </button>
           </div>
@@ -92,6 +94,7 @@ const Instructions = (props) => {
 
 Instructions.propTypes = {
   onClose: PropTypes.func.isRequired,
+  onCloseAndNeverShowAgain: PropTypes.func.isRequired,
 };
 
 export default Instructions;
