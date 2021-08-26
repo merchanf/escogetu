@@ -5,7 +5,7 @@ import RestaurantBio from '../RestaurantBio/RestaurantBio';
 import styles from './Card.module.scss';
 
 const Card = forwardRef(
-  ({ distance, id, index, name, onCardLeftScreen, onSwipe, pictures }, ref) => {
+  ({ distance, id, index, name, onCardLeftScreen, onSwipe, pictures, bio }, ref) => {
     const [selectedPicture, setSelectedPicture] = useState(0);
     const [open, setOpen] = useState(false);
     const handleRightButton = () => {
@@ -18,6 +18,7 @@ const Card = forwardRef(
     const handleOpen = () => {
       setOpen(true);
     };
+
     return (
       <div
         style={{
@@ -43,13 +44,15 @@ const Card = forwardRef(
               {selectedPicture + 1}/{pictures.length}
             </div>
 
-            <div className={styles.Card__Info}>
-              <button className={styles.Card__Info__Button} type="button" onClick={handleOpen}>
-                i
-              </button>
-            </div>
+            {bio && (
+              <div className={styles.Card__Info}>
+                <button className={styles.Card__Info__Button} type="button" onClick={handleOpen}>
+                  i
+                </button>
+              </div>
+            )}
 
-            <RestaurantBio name={name} open={open} setOpen={setOpen} />
+            <RestaurantBio name={name} open={open} setOpen={setOpen} bio={bio} />
             <img
               className={styles.Card__Image}
               src={pictures[selectedPicture]}
@@ -92,6 +95,7 @@ const Card = forwardRef(
 Card.defaultProps = {
   onCardLeftScreen: () => {},
   name: 'Restaurante',
+  bio: '',
 };
 
 Card.propTypes = {
@@ -102,6 +106,7 @@ Card.propTypes = {
   onCardLeftScreen: PropTypes.func,
   onSwipe: PropTypes.func.isRequired,
   pictures: PropTypes.arrayOf(PropTypes.string).isRequired,
+  bio: PropTypes.string,
 };
 
 export default Card;

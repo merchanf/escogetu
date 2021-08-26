@@ -11,6 +11,7 @@ import {
   RestaurantDetails,
   Instructions,
 } from '@app/components';
+import useWindowDimensions from '@hooks/useWindowDimensions';
 import { FEEDBACK_ID, DOMAIN } from '@constants/env.constants';
 import { CrossIconButton, LikeIconButton } from '@components/Icons/Icons';
 import 'react-morphing-modal/dist/ReactMorphingModal.css';
@@ -19,10 +20,12 @@ import './home.view.scss';
 import { useRestaurants } from '@hooks/useRestaurants';
 
 const HomeViewBase = ({ sessionId, match, likes }) => {
+  const { width } = useWindowDimensions();
   const { restaurants, swipe, onSwipe, onCardLeftScreen } = useRestaurants();
   const [showInstructions, setShowInstructions] = useState(
     !localStorage.getItem('closeAndNeverShowAgain'),
   );
+  const [size, setSize] = useState('medium');
   const modalRef = useRef(null);
   const { open, modalProps } = useModal();
 
@@ -42,6 +45,11 @@ const HomeViewBase = ({ sessionId, match, likes }) => {
     // Open is out of control, so we must skip that dependency
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match]);
+
+  useEffect(() => {
+    if (width > 768) setSize('large');
+    else setSize('medium');
+  }, [width]);
 
   const onClose = () => {
     setShowInstructions(false);
@@ -72,9 +80,9 @@ const HomeViewBase = ({ sessionId, match, likes }) => {
           <CardList list={restaurants} onSwipe={onSwipe} onCardLeftScreen={onCardLeftScreen} />
         </div>
         <div className="Home__Buttons">
-          <CrossIconButton onClick={() => swipe('left')} size="medium" color="red" />
+          <CrossIconButton onClick={() => swipe('left')} size={size} color="red" />
           <ShareButton sessionId={sessionId} domain={DOMAIN} />
-          <LikeIconButton onClick={() => swipe('right')} size="medium" color="green" />
+          <LikeIconButton onClick={() => swipe('right')} size={size} color="green" />
         </div>
         <FeedbackButton projectId={FEEDBACK_ID} />
       </div>
