@@ -65,7 +65,7 @@ const HomeViewBase = ({ sessionId, match, likes }) => {
       return <Instructions onClose={onClose} onCloseAndNeverShowAgain={onCloseAndNeverShowAgain} />;
     }
     if (!restaurantsWithPhoto.length) {
-      return <LoadingIcon />;
+      return <h1>No hay más restaurantes en tu área :(</h1>;
     }
     return (
       <div className="Home" ref={modalRef}>
