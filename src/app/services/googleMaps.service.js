@@ -4,7 +4,7 @@ import { distance } from '@utils/utils';
 const isNotARestaurant = (types) => types.includes('lodging') || types.includes('spa');
 const excludeNotRestaurantsFromResults = (results) =>
   results.filter(({ types }) => !isNotARestaurant(types));
-const excludeResultsWithNullPhotos = (results) => results.filter(({ photos }) => photos);
+const excludeResultsWithNullPhotos = (results) => results && results.filter(({ photos }) => photos);
 const filterResults = (results) => {
   const filteredResults = excludeResultsWithNullPhotos(results);
   return excludeNotRestaurantsFromResults(filteredResults);
@@ -76,6 +76,10 @@ export const getRestaurantDetailsWithRestaurant = async (client, restaurant) =>
     };
     const service = new window.google.maps.places.PlacesService(client);
     service.getDetails(request, (details) => {
+      const pictures =
+        details?.photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })) ||
+        restaurant.pictures;
+      if (pictures && pictures.length > 1) pictures.shift();
       resolve({
         ...restaurant,
         address: details?.vicinity,
@@ -87,9 +91,7 @@ export const getRestaurantDetailsWithRestaurant = async (client, restaurant) =>
         rating: details?.rating,
         phoneNumber: details?.international_phone_number,
         priceLevel: details?.price_level,
-        pictures:
-          details?.photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })) ||
-          restaurant.pictures,
+        pictures,
       });
     });
   });
