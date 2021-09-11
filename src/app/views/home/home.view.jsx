@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { useModal, Modal } from 'react-morphing-modal';
 import {
   CardList,
-  LoadingIcon,
   ShareButton,
   FeedbackButton,
   Layout,
