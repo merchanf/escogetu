@@ -2,7 +2,6 @@ import { useState, useCallback, useEffect } from 'react';
 import { useStore, useDispatch } from 'react-redux';
 import { getNearRestaurants, getRestaurantDetails } from '@services/googleMaps.service';
 import { like } from '@actions/user.actions';
-import { useMount } from '@hooks/use-mount.hook';
 import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
 
 export const useRestaurants = () => {
@@ -24,7 +23,6 @@ export const useRestaurants = () => {
 
   const onCardLeftScreen = () => {
     setRestaurants((oldRestaurants) => oldRestaurants.slice(0, oldRestaurants.length - 1));
-    setRestaurantPreviews((oldPreviews) => oldPreviews.slice(0, oldPreviews.length - 1));
     setSwiping(false);
   };
 
@@ -43,39 +41,34 @@ export const useRestaurants = () => {
     }
   };
 
-  const refreshRestaurants = useCallback(() => {
+  const refreshRestaurantPreviews = useCallback(() => {
     if (googleMaps) {
       const location = new googleMaps.LatLng(parseFloat(latitude), parseFloat(longitude));
       getNearRestaurants({ client, location, radius: 2500 }, (results) =>
-        setRestaurantPreviews((previews) => [...results, ...previews]),
+        setRestaurantPreviews((previews) => [...results.reverse(), ...previews]),
       );
     }
   }, [client, googleMaps, latitude, longitude]);
 
   useEffect(() => {
-    if (restaurantPreviews.length === MIN_DETAILED_RESTAURANTS) {
-      refreshRestaurants();
+    if (restaurantPreviews.length < MIN_DETAILED_RESTAURANTS) {
+      refreshRestaurantPreviews();
     }
-  }, [refreshRestaurants, restaurantPreviews]);
+  }, [refreshRestaurantPreviews, restaurantPreviews]);
 
-  // Get details of next restaurants
   useEffect(() => {
-    const restaurantsToDetail = MIN_DETAILED_RESTAURANTS - restaurants.length;
-    if (restaurantsToDetail) {
+    if (restaurantPreviews.length > 0 && restaurants.length <= 3) {
+      const length = restaurantPreviews.length > 7 ? 7 : restaurantPreviews.length;
       Promise.all(
         restaurantPreviews
-          .slice(
-            restaurantPreviews.length - restaurantsToDetail - restaurants.length,
-            restaurantPreviews.length - restaurants.length,
-          )
+          .slice(0, length)
           .map((restaurantToDetail) => getRestaurantDetails(client, restaurantToDetail)),
-      ).then((detailedRestaurants) => setRestaurants([...detailedRestaurants, ...restaurants]));
+      ).then((detailedRestaurants) => {
+        setRestaurants([...detailedRestaurants, ...restaurants]);
+        setRestaurantPreviews((prevState) => prevState.slice(length));
+      });
     }
-    // if resturants is added a infite loop will happen after many swipes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [client, restaurantPreviews]);
-
-  useMount(() => refreshRestaurants());
+  }, [client, restaurantPreviews, restaurants]);
 
   return { restaurants, swipe, onSwipe, onCardLeftScreen };
 };
