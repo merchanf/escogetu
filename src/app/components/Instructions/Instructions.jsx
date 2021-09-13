@@ -5,11 +5,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Layout from '../Layout/Layout';
 import styles from './Instructions.module.scss';
-import Step1 from './png/1Step.png';
-import Step2 from './png/2Step.png';
-import Step3 from './png/3Step.png';
-import Step4 from './png/4Step.png';
-import Step5 from './png/5Step.png';
+import Step1 from './png/1Step.webp';
+import Step2 from './png/2Step.webp';
+import Step3 from './png/3Step.webp';
+import Step4 from './png/4Step.webp';
+import Step5 from './png/5Step.webp';
 
 const useStyles = makeStyles({
   root: {
