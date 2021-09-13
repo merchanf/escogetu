@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     marginLeft: '12px',
   },
   dotActive: {
-    backgroundColor: '#A350EF',
+    backgroundColor: '#50ECEF',
   },
 });
 
@@ -56,6 +56,7 @@ const Instructions = (props) => {
       <main className={styles.Instructions}>
         <div className={styles.Instructions__Body}>
           <h1 className={styles.Instructions__Body__Title}>¿Cómo es la vuelta?</h1>
+          <h2 className={styles.Instructions__Body__Subtitle}>(Instrucciones de uso)</h2>
           <div className={styles.Instructions__Body__Stepper}>
             <MobileStepper
               variant="dots"
