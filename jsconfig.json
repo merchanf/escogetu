@@ -13,7 +13,8 @@
       "@assets/*": ["./src/assets/*"],
       "@reducers/*": ["./src/app/redux/reducers/*"],
       "@actions/*": ["./src/app/redux/actions/*"],
-      "@stores/*": ["./src/app/redux/stores/*"]
+      "@stores/*": ["./src/app/redux/stores/*"],
+      "@views/*": ["./src/app/views/*"]
     }
   }
 }

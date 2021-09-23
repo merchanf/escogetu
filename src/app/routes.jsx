@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { HomeView } from '@app/views/home/home.view';
+import { HomeView } from '@app/views/index';
 import { InitializationWrapper } from '@components/initializationWrapper/initialization-wrapper';
 
 export const routes = (

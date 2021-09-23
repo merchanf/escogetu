@@ -2,20 +2,14 @@ import React, { useMemo, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useModal, Modal } from 'react-morphing-modal';
-import {
-  CardList,
-  ShareButton,
-  FeedbackButton,
-  Layout,
-  RestaurantDetails,
-  Instructions,
-} from '@app/components';
+import { CardList, ShareButton, FeedbackButton, Layout, RestaurantDetails } from '@app/components';
 import useWindowDimensions from '@hooks/useWindowDimensions';
 import { FEEDBACK_ID, DOMAIN } from '@constants/env.constants';
 import { CrossIconButton, LikeIconButton } from '@components/Icons/Icons';
 import 'react-morphing-modal/dist/ReactMorphingModal.css';
+import { Instructions } from '@app/views';
+import './home.scss';
 
-import './home.view.scss';
 import { useRestaurants } from '@hooks/useRestaurants';
 
 const HomeViewBase = ({ sessionId, match, likes }) => {
@@ -110,4 +104,5 @@ HomeViewBase.propTypes = {
   likes: PropTypes.object.isRequired,
 };
 
-export const HomeView = connect(mapStateToProps)(HomeViewBase);
+const HomeView = connect(mapStateToProps)(HomeViewBase);
+export default HomeView;

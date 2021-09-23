@@ -3,7 +3,7 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
-import Layout from '../Layout/Layout';
+import Layout from '../../components/Layout/Layout';
 import styles from './Instructions.module.scss';
 import Step1 from './png/1Step.webp';
 import Step2 from './png/2Step.webp';
