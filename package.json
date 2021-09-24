@@ -51,6 +51,7 @@
     "prop-types": "^15.7.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-google-places-autocomplete": "^3.3.2",
     "react-helmet-async": "^1.0.7",
     "react-morphing-modal": "^0.2.2",
     "react-redux": "^7.2.3",
