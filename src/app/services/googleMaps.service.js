@@ -54,7 +54,9 @@ export const getRestaurantDetailsWithoutRestaurant = async (client, placeId) => 
         rating: details?.rating,
         phoneNumber: details?.international_phone_number,
         priceLevel: details?.price_level,
-        pictures: details?.photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })),
+        pictures:
+          details?.photos &&
+          details?.photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })),
       });
     });
   });
