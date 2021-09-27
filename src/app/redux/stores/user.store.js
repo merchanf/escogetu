@@ -8,7 +8,7 @@ export const UserStore = {
       latitude: null,
       longitude: null,
     },
-    loading: true,
+    loading: false,
   },
 };
 

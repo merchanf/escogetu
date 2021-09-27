@@ -1,12 +1,11 @@
 /* eslint-disable react/forbid-prop-types */
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { setMatch } from '@actions/user.actions';
 import { useMount } from '@hooks/use-mount.hook';
 import { hydrate } from '@actions/hydrate.action';
-import { LoadingIcon } from '@app/components';
 import { markAsShown } from '@services/firestore.service';
 
 const InitializationWrapperBase = ({
@@ -30,8 +29,8 @@ const InitializationWrapperBase = ({
         if (snapshot.data()) {
           const { likedRestaurants, users } = snapshot.data();
           const usersAmount = users.length;
-          likedRestaurants.forEach(({ likes, poppedUp, id }) => {
-            const likesAmount = likes.length;
+          likedRestaurants.forEach(({ likes_, poppedUp, id }) => {
+            const likesAmount = likes_?.length || 0;
             if (likesAmount === usersAmount && !poppedUp) {
               dispatch(setMatch(id));
               markAsShown(sessionId, userUid, id, database);
@@ -42,10 +41,6 @@ const InitializationWrapperBase = ({
     }
     return () => unsubscribe && unsubscribe();
   }, [database, dispatch, sessionId, userUid]);
-
-  if (!isMinimumAppDataLoaded) {
-    return <LoadingIcon />;
-  }
 
   return children;
 };
@@ -64,7 +59,6 @@ const mapStateToProps = ({
   userUid,
   sessionId,
   likes,
-  isMinimumAppDataLoaded: !loadingLocation,
   database,
 });
 
@@ -74,7 +68,6 @@ InitializationWrapperBase.defaultProps = {
 
 InitializationWrapperBase.propTypes = {
   userUid: PropTypes.string,
-  isMinimumAppDataLoaded: PropTypes.bool.isRequired,
   database: PropTypes.object,
   likes: PropTypes.object,
 };

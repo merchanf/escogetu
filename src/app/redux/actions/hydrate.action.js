@@ -1,6 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
 import { uid } from 'uid';
-import { getGeoLocation } from '@services/geoLocation.service';
 import {
   createSession as createSessionInFirestore,
   getSession,
@@ -19,7 +18,7 @@ export const setGeoLocation = createAction(`${USER_SECTION_NAME}/setGeoLocation`
 export const setGeoLocationLoading = createAction(`${USER_SECTION_NAME}/setGeoLocationLoading`);
 export const setGeoLocationError = createAction(`${USER_SECTION_NAME}/setGeoLocationError`);
 
-export const initGeoLocation = () => async (dispatch, store) => {
+export const initSession = (location) => async (dispatch, store) => {
   const {
     hydrate: {
       firebase: { database },
@@ -29,10 +28,6 @@ export const initGeoLocation = () => async (dispatch, store) => {
 
   try {
     let userUid;
-    const {
-      coords: { longitude, latitude },
-    } = await getGeoLocation(userUid);
-    let location = { longitude, latitude };
 
     // Setting User Id
     userUid = myStorage.getItem('userUid');
@@ -43,9 +38,8 @@ export const initGeoLocation = () => async (dispatch, store) => {
     dispatch(setUserUid(userUid));
 
     // Setting Session Id
-    const storageSessionId = myStorage.getItem('sessionId');
     const urlParams = new URLSearchParams(window.location.search);
-    let sessionId = urlParams.get('session') || storageSessionId;
+    let sessionId = urlParams.get('session');
 
     // Hydrating
     dispatch(setGeoLocationLoading(true));
@@ -72,5 +66,4 @@ export const initGeoLocation = () => async (dispatch, store) => {
 
 export const hydrate = () => async (dispatch) => {
   dispatch(initFirebase());
-  await dispatch(initGeoLocation());
 };

@@ -7,9 +7,11 @@ import { InitializationWrapper } from '@components/initializationWrapper/initial
 export const routes = (
   <InitializationWrapper>
     <Switch>
-      <Route path="/" component={SettingUp} />
-      <Route exact path={routesConst.HomeView} component={HomeView} />
-      <Route exact path={routesConst.Instructions} component={Instructions} />
+      <Route exact path="/" component={SettingUp} />
+      <Route path={`/${routesConst.HOME}`}>
+        <HomeView />
+      </Route>
+      <Route path={`/${routesConst.INSTRUCTIONS}`} component={Instructions} />
     </Switch>
   </InitializationWrapper>
 );

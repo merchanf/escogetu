@@ -1,6 +1,6 @@
 export const HydrateStore = {
   googleMaps: {
-    loading: true,
+    loading: false,
     client: null,
     error: null,
     googleMaps: null,

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useHistory } from 'react-router-dom';
 import { createAction } from '@reduxjs/toolkit';
 import { getGeoLocation } from '@services/geoLocation.service';
 import { getRestaurantDetailsWithoutRestaurant } from '@services/googleMaps.service';
+import { initSession } from '@actions/hydrate.action';
 import { USER_SECTION_NAME } from '@stores/user.store';
 import { GOOGLE_API_KEY } from '@constants/env.constants';
+import routes from '@constants/routes.constants';
 import colors from '@constants/colors.constants';
 import styles from './SettingUp.module.scss';
 
@@ -49,40 +52,49 @@ const autocompleteStyles = {
   }),
 };
 
-const SettingUpView = (props) => {
-  const { client } = props;
+const SettingUp = (props) => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const [location, setLocation] = useState();
   const [value, setValue] = useState(null);
+  const [currentLocationLoading, setCurrentLocationLoading] = useState(false);
+  const [autoCompleteLoading, setAutoCompleteLoading] = useState(false);
 
   const startFirebaseFlow = (zone) => {};
 
   const getCurrentLocation = async () => {
+    setCurrentLocationLoading(true);
     const {
       coords: { longitude, latitude },
     } = await getGeoLocation();
-    setLocation({ lat: latitude, lng: longitude });
+    setLocation({ latitude, longitude });
   };
 
+  // start google maps flow if location provided
   useEffect(() => {
-    const startGoogleMapsFlow = () => {
+    const startGoogleMapsFlow = async () => {
       dispatch(setGeoLocation(location));
+      await dispatch(initSession(location));
+      setAutoCompleteLoading(false);
+      setCurrentLocationLoading(false);
+      history.push(`/${routes.HOME}`);
     };
 
     if (location) {
       startGoogleMapsFlow();
     }
-  }, [dispatch, location]);
+  }, [dispatch, history, location]);
 
   useEffect(() => {
     const getLocation = async (placeId) => {
       const {
         location: { lat, lng },
-      } = await getRestaurantDetailsWithoutRestaurant(client, placeId);
-      setLocation({ lat, lng });
+      } = await getRestaurantDetailsWithoutRestaurant(placeId);
+      setLocation({ latitude: lat, longitude: lng });
     };
 
-    if (client && value) {
+    if (value) {
+      setAutoCompleteLoading(true);
       const {
         // That's how google maps send it
         // eslint-disable-next-line camelcase
@@ -90,7 +102,7 @@ const SettingUpView = (props) => {
       } = value;
       getLocation(place_id);
     }
-  }, [client, value]);
+  }, [value]);
 
   return (
     <section className={styles.SettingUp}>
@@ -132,31 +144,18 @@ const SettingUpView = (props) => {
             }}
           />
         </div>
-        <button type="button">Ir</button>
+        {autoCompleteLoading && <CircularProgress />}
       </div>
       <h3>O buscar restaurantes cerca a ti</h3>
       <h4>(Deberás darnos acceso a tu ubicación)</h4>
-      <button type="button" onClick={getCurrentLocation}>
-        Usar mi ubicación actual
-      </button>
+      <div className={styles.SettingUp__CurrentLocation}>
+        <button type="button" onClick={getCurrentLocation}>
+          Usar mi ubicación actual
+        </button>
+        {currentLocationLoading && <CircularProgress />}
+      </div>
     </section>
   );
 };
-
-const mapStateToProps = ({
-  hydrate: {
-    googleMaps: { client },
-  },
-}) => ({
-  client,
-});
-
-SettingUpView.propTypes = {
-  // Complex object out of control
-  // eslint-disable-next-line react/forbid-prop-types
-  client: PropTypes.object.isRequired,
-};
-
-const SettingUp = connect(mapStateToProps)(SettingUpView);
 
 export default SettingUp;

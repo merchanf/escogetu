@@ -27,7 +27,7 @@ const mapper = (
   ref: createRef(),
 });
 
-export const getRestaurantDetailsWithoutRestaurant = async (client, placeId) => {
+export const getRestaurantDetailsWithoutRestaurant = async (placeId) => {
   return new Promise((resolve) => {
     const request = {
       placeId,
@@ -41,7 +41,7 @@ export const getRestaurantDetailsWithoutRestaurant = async (client, placeId) => 
         'photos',
       ],
     };
-    const service = new window.google.maps.places.PlacesService(client);
+    const service = new window.google.maps.places.PlacesService(document.getElementById('map'));
     service.getDetails(request, (details) => {
       resolve({
         placeId,
