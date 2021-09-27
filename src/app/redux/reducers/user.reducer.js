@@ -5,8 +5,9 @@ import {
   setGeoLocationLoading,
   setSession,
   setUserUid,
+  setFlow,
 } from '@actions/hydrate.action';
-import { addLike, setMatch } from '@actions/user.actions';
+import { addLike, setMatch, setZone } from '@actions/user.actions';
 
 const userReducer = createReducer(UserStore, (builder) => {
   builder.addCase(setGeoLocationLoading, (state, { payload }) => ({
@@ -14,6 +15,17 @@ const userReducer = createReducer(UserStore, (builder) => {
     geoLocation: {
       ...state.geoLocation,
       loading: payload,
+    },
+  }));
+  builder.addCase(setFlow, (state, { payload }) => ({
+    ...state,
+    flow: payload,
+  }));
+  builder.addCase(setZone, (state, { payload }) => ({
+    ...state,
+    firestore: {
+      ...state.firestore,
+      zone: payload,
     },
   }));
   builder.addCase(setGeoLocation, (state, { payload }) => ({

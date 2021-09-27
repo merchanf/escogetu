@@ -3,17 +3,16 @@ import { useDispatch } from 'react-redux';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useHistory } from 'react-router-dom';
-import { createAction } from '@reduxjs/toolkit';
+import { setZone } from '@actions/user.actions';
 import { getGeoLocation } from '@services/geoLocation.service';
 import { getRestaurantDetailsWithoutRestaurant } from '@services/googleMaps.service';
-import { initSession } from '@actions/hydrate.action';
-import { USER_SECTION_NAME } from '@stores/user.store';
+import { initSession, setGeoLocation, setFlow } from '@actions/hydrate.action';
 import { GOOGLE_API_KEY } from '@constants/env.constants';
 import routes from '@constants/routes.constants';
 import colors from '@constants/colors.constants';
+import flows from '@constants/flows.constants';
+import zones from '@constants/zones.constants';
 import styles from './SettingUp.module.scss';
-
-export const setGeoLocation = createAction(`${USER_SECTION_NAME}/setGeoLocation`);
 
 const { blue } = colors;
 
@@ -60,7 +59,11 @@ const SettingUp = (props) => {
   const [currentLocationLoading, setCurrentLocationLoading] = useState(false);
   const [autoCompleteLoading, setAutoCompleteLoading] = useState(false);
 
-  const startFirebaseFlow = (zone) => {};
+  const startFirebaseFlow = (zone) => {
+    dispatch(setFlow(flows.FIRESTORE));
+    dispatch(setZone(zone));
+    // history.push(`/${routes.HOME}`);
+  };
 
   const getCurrentLocation = async () => {
     setCurrentLocationLoading(true);
@@ -73,6 +76,7 @@ const SettingUp = (props) => {
   // start google maps flow if location provided
   useEffect(() => {
     const startGoogleMapsFlow = async () => {
+      dispatch(setFlow(flows.GOOGLE_MAPS));
       dispatch(setGeoLocation(location));
       await dispatch(initSession(location));
       setAutoCompleteLoading(false);
@@ -109,11 +113,16 @@ const SettingUp = (props) => {
       <h1> ¿Dónde vamos a comer hoy? </h1>
       <h3>Puedes escoger la zona (recomendado)</h3>
       <div className={styles.SettingUp__ZoneButtons}>
-        <button type="button" onClick={() => {}}>
+        <button
+          type="button"
+          onClick={() => {
+            startFirebaseFlow(zones.ZONA_G);
+          }}
+        >
           Zona G
         </button>
         <button type="button" disabled>
-          Zona T (Proximamente)
+          Quinta de camacho (Proximamente)
         </button>
         <button type="button" disabled>
           Macarena (Proximamente)

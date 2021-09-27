@@ -17,6 +17,7 @@ export const setSession = createAction(`${USER_SECTION_NAME}/setSession`);
 export const setGeoLocation = createAction(`${USER_SECTION_NAME}/setGeoLocation`);
 export const setGeoLocationLoading = createAction(`${USER_SECTION_NAME}/setGeoLocationLoading`);
 export const setGeoLocationError = createAction(`${USER_SECTION_NAME}/setGeoLocationError`);
+export const setFlow = createAction(`${USER_SECTION_NAME}/setFlow`);
 
 export const initSession = (location) => async (dispatch, store) => {
   const {

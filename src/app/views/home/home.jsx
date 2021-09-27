@@ -12,9 +12,10 @@ import './home.scss';
 
 import { useRestaurants } from '@hooks/useRestaurants';
 
-const HomeViewBase = ({ sessionId, match, likes }) => {
+const HomeViewBase = (props) => {
+  const { sessionId, match, likes, flow } = props;
   const { width } = useWindowDimensions();
-  const { restaurants, swipe, onSwipe, onCardLeftScreen } = useRestaurants();
+  const { restaurants, swipe, onSwipe, onCardLeftScreen } = useRestaurants(flow);
   const [showInstructions, setShowInstructions] = useState(
     !localStorage.getItem('closeAndNeverShowAgain'),
   );
@@ -85,11 +86,12 @@ const HomeViewBase = ({ sessionId, match, likes }) => {
   return render();
 };
 
-const mapStateToProps = ({ user: { userUid, sessionId, match, likes } }) => ({
+const mapStateToProps = ({ user: { userUid, sessionId, match, likes, flow } }) => ({
   userUid,
   sessionId,
   match,
   likes,
+  flow,
 });
 
 HomeViewBase.defaultProps = {
@@ -102,6 +104,7 @@ HomeViewBase.propTypes = {
   // Add base object.
   // eslint-disable-next-line react/forbid-prop-types
   likes: PropTypes.object.isRequired,
+  flow: PropTypes.string.isRequired,
 };
 
 const HomeView = connect(mapStateToProps)(HomeViewBase);
