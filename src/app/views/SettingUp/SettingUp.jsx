@@ -62,7 +62,7 @@ const SettingUp = (props) => {
   const startFirebaseFlow = (zone) => {
     dispatch(setFlow(flows.FIRESTORE));
     dispatch(setZone(zone));
-    // history.push(`/${routes.HOME}`);
+    history.push(`/${routes.HOME}`);
   };
 
   const getCurrentLocation = async () => {

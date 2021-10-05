@@ -1,3 +1,22 @@
+import { collection, query, where, getDocs, getFirestore } from 'firebase/firestore';
+
+export const getRestaurantsFromOptions = async (options, database) => {
+  try {
+    const db = getFirestore();
+    const citiesRef = collection(db, 'restaurantes');
+    const q = query(citiesRef, where('name', '==', 'chef burger'));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, ' => ', doc.data());
+    });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
+  return null;
+};
+
 export const createSession = async (userUid, location, database) => {
   try {
     const document = await database.collection('session').add({

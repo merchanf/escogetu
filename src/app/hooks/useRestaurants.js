@@ -1,16 +1,16 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-// This one breaks hooks rules, but is the easiest way to
-// decide which hook should we use.
 import flows from '@constants/flows.constants';
 import useGoogleMapsRestaurants from './useGoogleMapsRestaurants';
+import useFirestoreRestaurants from './useFirestoreRestaurants';
 
 export const useRestaurants = (flow) => {
+  const firestoreRestaurants = useFirestoreRestaurants();
+  const googleMapsRestaurants = useGoogleMapsRestaurants();
+
   if (flow === flows.FIRESTORE) {
-    console.log('do firestore stuff');
-    return null;
+    return firestoreRestaurants;
   }
   if (flow === flows.GOOGLE_MAPS) {
-    return useGoogleMapsRestaurants();
+    return googleMapsRestaurants;
   }
   return { restaurants: [] };
 };

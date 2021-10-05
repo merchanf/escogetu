@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useStore, useDispatch } from 'react-redux';
 import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
+import { getRestaurantsFromOptions } from '@services/firestore.service';
 import { like } from '@actions/user.actions';
 
 const useFirestoreRestaurants = () => {
@@ -35,7 +36,7 @@ const useFirestoreRestaurants = () => {
   };
 
   useEffect(() => {
-    console.log(zone);
+    getRestaurantsFromOptions();
   }, [zone]);
 
   return { restaurants, swipe, onSwipe, onCardLeftScreen };

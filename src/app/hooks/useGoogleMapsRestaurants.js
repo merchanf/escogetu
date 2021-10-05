@@ -4,7 +4,7 @@ import { getNearRestaurants, getRestaurantDetails } from '@services/googleMaps.s
 import { like } from '@actions/user.actions';
 import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
 
-const useGoogleMapsRestaurants = (flow) => {
+const useGoogleMapsRestaurants = () => {
   const [restaurantPreviews, setRestaurantPreviews] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [swiping, setSwiping] = useState(false);
@@ -42,7 +42,7 @@ const useGoogleMapsRestaurants = (flow) => {
   };
 
   const refreshRestaurantPreviews = useCallback(() => {
-    if (googleMaps) {
+    if (googleMaps && latitude && longitude) {
       const location = new googleMaps.LatLng(parseFloat(latitude), parseFloat(longitude));
       getNearRestaurants({ client, location, radius: 2500 }, (results) =>
         setRestaurantPreviews((previews) => [...results.reverse(), ...previews]),
