@@ -1,4 +1,14 @@
-import { collection, query, where, getDocs, getFirestore } from 'firebase/firestore';
+import {
+  doc,
+  addDoc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  getFirestore,
+  setDoc,
+} from 'firebase/firestore';
 
 export const getRestaurantsFromOptions = async (options, database) => {
   try {
@@ -19,11 +29,13 @@ export const getRestaurantsFromOptions = async (options, database) => {
 
 export const createSession = async (userUid, location, database) => {
   try {
-    const document = await database.collection('session').add({
+    const db = getFirestore();
+    const userObject = {
       users: [userUid],
       location,
       likedRestaurants: [],
-    });
+    };
+    const document = await addDoc(collection(db, 'session'), userObject);
     return document.id;
   } catch (err) {
     // eslint-disable-next-line no-console
@@ -63,9 +75,10 @@ export const getSession = async (sessionId, database) => {
 
 export const addLike = async (sessionId, userUid, restaurantId, database) => {
   try {
-    const doc = database.doc(`session/${sessionId}`);
-    const document = await doc.get();
-    if (document.exists) {
+    const db = getFirestore();
+    const docRef = doc(db, 'session', sessionId);
+    const document = await getDoc(docRef);
+    if (document.exists()) {
       const storedDoc = document.data();
       if (
         storedDoc.likedRestaurants.length === 0 ||
@@ -85,7 +98,7 @@ export const addLike = async (sessionId, userUid, restaurantId, database) => {
           return rest;
         });
       }
-      doc.set(storedDoc, { merge: true });
+      await setDoc(doc(docRef, sessionId), storedDoc, { merge: true });
     }
   } catch (err) {
     // eslint-disable-next-line no-console
