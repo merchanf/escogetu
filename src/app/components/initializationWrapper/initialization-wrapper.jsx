@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import { doc, onSnapshot, getFirestore } from 'firebase/firestore';
 
 import { setMatch } from '@actions/user.actions';
 import { useMount } from '@hooks/use-mount.hook';
@@ -13,8 +14,8 @@ const InitializationWrapperBase = ({
   userUid,
   isMinimumAppDataLoaded,
   sessionId,
-  database,
   likes,
+  isFirebaseLoading,
 }) => {
   const dispatch = useDispatch();
 
@@ -24,23 +25,26 @@ const InitializationWrapperBase = ({
 
   useEffect(() => {
     let unsubscribe;
-    if (database) {
-      unsubscribe = database.doc(`session/${sessionId}`).onSnapshot((snapshot) => {
+    if (!isFirebaseLoading && sessionId) {
+      const db = getFirestore();
+      const docRef = doc(db, 'session', sessionId);
+      unsubscribe = onSnapshot(docRef, (snapshot) => {
         if (snapshot.data()) {
           const { likedRestaurants, users } = snapshot.data();
           const usersAmount = users.length;
-          likedRestaurants.forEach(({ likes_, poppedUp, id }) => {
+          likedRestaurants.forEach(({ likes: likes_, poppedUp, id }) => {
             const likesAmount = likes_?.length || 0;
             if (likesAmount === usersAmount && !poppedUp) {
               dispatch(setMatch(id));
-              markAsShown(sessionId, userUid, id, database);
+              markAsShown(sessionId, userUid, id);
             }
           });
         }
       });
     }
+
     return () => unsubscribe && unsubscribe();
-  }, [database, dispatch, sessionId, userUid]);
+  }, [dispatch, isFirebaseLoading, sessionId, userUid]);
 
   return children;
 };
@@ -53,13 +57,13 @@ const mapStateToProps = ({
     geoLocation: { loading: loadingLocation },
   },
   hydrate: {
-    firebase: { database },
+    firebase: { loading: isFirebaseLoading },
   },
 }) => ({
   userUid,
   sessionId,
   likes,
-  database,
+  isFirebaseLoading,
 });
 
 InitializationWrapperBase.defaultProps = {
@@ -68,7 +72,7 @@ InitializationWrapperBase.defaultProps = {
 
 InitializationWrapperBase.propTypes = {
   userUid: PropTypes.string,
-  database: PropTypes.object,
+  isFirebaseLoading: PropTypes.bool,
   likes: PropTypes.object,
 };
 

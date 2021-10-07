@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
-import firebaseInstance from 'firebase/compat/app';
 import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 import { HYDRATE_SECTION_NAME } from '@stores/hydrate.store';
 import {
   FIREBASE_API_KEY,
@@ -30,17 +30,14 @@ const config = {
   measurementId: FIREBASE_MEASUREMENT_ID,
 };
 
-export const initFirebase = () => async (dispatch) => {
+export const initFirebase = () => (dispatch) => {
   dispatch(setFirebaseLoading(true));
   try {
-    const app = !firebaseInstance.apps.length
-      ? firebaseInstance.initializeApp(config)
-      : firebaseInstance.app();
-
-    const firebaseApp = initializeApp(config);
+    const app = initializeApp(config);
+    const db = getFirestore();
 
     dispatch(setFirebaseInstance(app));
-    dispatch(setDatabaseInstance(app.firestore()));
+    dispatch(setDatabaseInstance(db));
   } catch (e) {
     dispatch(setFirebaseError(e.message));
   } finally {
