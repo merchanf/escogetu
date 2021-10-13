@@ -13,7 +13,7 @@ import {
 export const getRestaurantsFromOptions = async (options, database) => {
   try {
     const db = getFirestore();
-    const citiesRef = collection(db, 'restaurantes');
+    const citiesRef = collection(db, 'restaurants');
     const q = query(citiesRef, where('name', '==', 'chef burger'));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {

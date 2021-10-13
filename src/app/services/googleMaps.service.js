@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { createRef } from 'react';
 import { distance } from '@utils/utils';
 
@@ -9,6 +10,7 @@ const filterResults = (results) => {
   const filteredResults = excludeResultsWithNullPhotos(results);
   return excludeNotRestaurantsFromResults(filteredResults);
 };
+
 const mapper = (
   {
     place_id: placeId,
@@ -27,73 +29,74 @@ const mapper = (
   ref: createRef(),
 });
 
+const getPictures = (photos, backupPictures) => {
+  if (!photos || !backupPictures) return null;
+  const pictures =
+    photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })) || backupPictures;
+  if (pictures && pictures.length > 1) pictures.shift();
+  return pictures;
+};
+
+const restaurantAdapter = (
+  placeId,
+  {
+    vicinity,
+    geometry: {
+      location: { lat, lng },
+    },
+    name,
+    rating,
+    international_phone_number,
+    price_level,
+    photos,
+  },
+  backupPictures,
+) => ({
+  placeId,
+  address: vicinity,
+  location: {
+    lat: lat(),
+    lng: lng(),
+  },
+  name,
+  rating,
+  phoneNumber: international_phone_number,
+  priceLevel: price_level,
+  pictures: getPictures(photos, backupPictures),
+});
+
+const fields = [
+  'international_phone_number',
+  'name',
+  'rating',
+  'vicinity',
+  'geometry',
+  'price_level',
+  'photos',
+];
+
 export const getRestaurantDetailsWithoutRestaurant = async (placeId) => {
   return new Promise((resolve) => {
     const request = {
       placeId,
-      fields: [
-        'international_phone_number',
-        'name',
-        'rating',
-        'vicinity',
-        'geometry',
-        'price_level',
-        'photos',
-      ],
+      fields,
+    };
+    const service = new window.google.maps.places.PlacesService(document.getElementById('map'));
+    service.getDetails(request, (details) => restaurantAdapter(placeId, details));
+  });
+};
+
+export const getRestaurantDetailsWithRestaurant = async (restaurant) =>
+  new Promise((resolve) => {
+    const request = {
+      placeId: restaurant.placeId,
+      fields,
     };
     const service = new window.google.maps.places.PlacesService(document.getElementById('map'));
     service.getDetails(request, (details) => {
       resolve({
-        placeId,
-        address: details?.vicinity,
-        location: {
-          lat: details?.geometry?.location?.lat(),
-          lng: details?.geometry?.location?.lng(),
-        },
-        name: details?.name,
-        rating: details?.rating,
-        phoneNumber: details?.international_phone_number,
-        priceLevel: details?.price_level,
-        pictures:
-          details?.photos &&
-          details?.photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })),
-      });
-    });
-  });
-};
-
-export const getRestaurantDetailsWithRestaurant = async (client, restaurant) =>
-  new Promise((resolve) => {
-    const request = {
-      placeId: restaurant.placeId,
-      fields: [
-        'international_phone_number',
-        'name',
-        'rating',
-        'vicinity',
-        'geometry',
-        'price_level',
-        'photos',
-      ],
-    };
-    const service = new window.google.maps.places.PlacesService(client);
-    service.getDetails(request, (details) => {
-      const pictures =
-        details?.photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })) ||
-        restaurant.pictures;
-      if (pictures && pictures.length > 1) pictures.shift();
-      resolve({
         ...restaurant,
-        address: details?.vicinity,
-        location: {
-          lat: details?.geometry?.location?.lat(),
-          lng: details?.geometry?.location?.lng(),
-        },
-        name: details?.name,
-        rating: details?.rating,
-        phoneNumber: details?.international_phone_number,
-        priceLevel: details?.price_level,
-        pictures,
+        ...restaurantAdapter(restaurant.placeId, details, restaurant.pictures),
       });
     });
   });
@@ -118,8 +121,8 @@ export const getNearRestaurants = async ({ client, location, radius = 2500 }, ca
   }
 };
 
-export const getRestaurantDetails = async (client, restaurant) => {
+export const getRestaurantDetails = async (restaurant) => {
   const isObject = typeof restaurant === 'object';
-  if (restaurant != null && isObject) return getRestaurantDetailsWithRestaurant(client, restaurant);
-  return getRestaurantDetailsWithoutRestaurant(client, restaurant);
+  if (restaurant != null && isObject) return getRestaurantDetailsWithRestaurant(restaurant);
+  return getRestaurantDetailsWithoutRestaurant(restaurant);
 };

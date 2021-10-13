@@ -9,7 +9,7 @@ const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
 
   return (
     <div className={styles.Container} ref={ref}>
-      {list.map(({ placeId, name, details, pictures, distance, ref }, index) => (
+      {list.map(({ placeId, name, details, pictures, distance, ref: innerRef }, index) => (
         <Card
           id={placeId}
           name={name}
@@ -19,7 +19,7 @@ const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
           onSwipe={onSwipe}
           index={index}
           onCardLeftScreen={onCardLeftScreen}
-          ref={ref}
+          ref={innerRef}
         />
       ))}
     </div>
