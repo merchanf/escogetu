@@ -55,13 +55,13 @@ const restaurantAdapter = (
   placeId,
   address: vicinity,
   location: {
-    lat: lat(),
-    lng: lng(),
+    latitude: lat(),
+    longitude: lng(),
   },
   name,
   rating,
   phoneNumber: international_phone_number,
-  priceLevel: price_level,
+  pricing: price_level,
   pictures: getPictures(photos, backupPictures),
 });
 

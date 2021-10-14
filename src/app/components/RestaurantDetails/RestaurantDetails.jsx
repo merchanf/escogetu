@@ -30,12 +30,12 @@ const detailIcons = { ...iconStyles, marginRight: '12px' };
 
 const RestaurantDetails = ({
   name,
-  location,
+  location: { latitude: lat, longitude: lng },
   apiKey,
   phoneNumber,
   address,
   rating,
-  priceLevel,
+  pricing,
 }) => {
   return (
     <div className={styles.RestaurantDetails}>
@@ -44,19 +44,19 @@ const RestaurantDetails = ({
       <div style={{ height: '250px', width: '80%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: apiKey, libraries: ['places'], version: 'weekly' }}
-          center={location}
+          center={{ lat, lng }}
           defaultZoom={defaultProps.zoom}
         >
-          <IconWrapper lat={location.lat} lng={location.lng} />
+          <IconWrapper lat={lat} lng={lng} />
         </GoogleMapReact>
       </div>
 
       <div className={styles.RestaurantDetails__Details}>
         <div className={styles.RestaurantDetails__Details__Ratings}>
-          {priceLevel ? (
+          {pricing ? (
             <StyledRating
               name="price-rating"
-              value={priceLevel}
+              value={pricing}
               precision={0.5}
               icon={<AttachMoneyIcon style={iconStyles} />}
               readOnly
@@ -95,7 +95,7 @@ const RestaurantDetails = ({
 
 RestaurantDetails.defaultProps = {
   rating: null,
-  priceLevel: null,
+  pricing: null,
   phoneNumber: null,
   apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
 };
@@ -103,14 +103,14 @@ RestaurantDetails.defaultProps = {
 RestaurantDetails.propTypes = {
   name: PropTypes.string.isRequired,
   location: PropTypes.shape({
-    lat: PropTypes.number,
-    lng: PropTypes.number,
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
   }).isRequired,
   apiKey: PropTypes.string,
   phoneNumber: PropTypes.string,
   address: PropTypes.string.isRequired,
   rating: PropTypes.number,
-  priceLevel: PropTypes.number,
+  pricing: PropTypes.number,
 };
 
 export default RestaurantDetails;

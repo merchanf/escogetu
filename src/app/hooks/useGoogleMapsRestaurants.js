@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useStore, useDispatch } from 'react-redux';
-import { getNearRestaurants, getRestaurantDetails } from '@services/googleMaps.service';
+import { getNearRestaurants } from '@services/googleMaps.service';
+import { getRestaurantDetails } from '@services/restaurants.service';
 import { like } from '@actions/user.actions';
 import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
 
@@ -62,13 +63,13 @@ const useGoogleMapsRestaurants = () => {
       Promise.all(
         restaurantPreviews
           .slice(0, length)
-          .map((restaurantToDetail) => getRestaurantDetails(client, restaurantToDetail)),
+          .map((restaurantToDetail) => getRestaurantDetails(restaurantToDetail)),
       ).then((detailedRestaurants) => {
         setRestaurants([...detailedRestaurants, ...restaurants]);
         setRestaurantPreviews((prevState) => prevState.slice(length));
       });
     }
-  }, [client, restaurantPreviews, restaurants]);
+  }, [restaurantPreviews, restaurants]);
 
   return { restaurants, swipe, onSwipe, onCardLeftScreen };
 };
