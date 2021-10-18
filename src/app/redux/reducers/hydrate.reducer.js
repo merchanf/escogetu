@@ -11,6 +11,7 @@ import {
   setFirebaseError,
   setFirebaseInstance,
   setDatabaseInstance,
+  setFirebaseStorage,
 } from '@actions/firebase.actions';
 
 const hydrateReducer = createReducer(HydrateStore, (builder) => {
@@ -68,6 +69,13 @@ const hydrateReducer = createReducer(HydrateStore, (builder) => {
     firebase: {
       ...state.firebase,
       database: payload,
+    },
+  }));
+  builder.addCase(setFirebaseStorage, (state, { payload }) => ({
+    ...state,
+    firebase: {
+      ...state.firebase,
+      storage: payload,
     },
   }));
 });

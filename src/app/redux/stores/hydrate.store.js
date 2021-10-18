@@ -8,6 +8,7 @@ export const HydrateStore = {
   firebase: {
     loading: true,
     error: null,
+    storage: null,
   },
 };
 

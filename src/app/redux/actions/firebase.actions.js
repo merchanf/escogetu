@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 import { HYDRATE_SECTION_NAME } from '@stores/hydrate.store';
 import {
   FIREBASE_API_KEY,
@@ -19,6 +20,7 @@ export const setFirebaseLoading = createAction(`${HYDRATE_SECTION_NAME}/setFireb
 export const setFirebaseError = createAction(`${HYDRATE_SECTION_NAME}/setFirebaseError`);
 export const setFirebaseInstance = createAction(`${HYDRATE_SECTION_NAME}/setFirebaseInstance`);
 export const setDatabaseInstance = createAction(`${HYDRATE_SECTION_NAME}/setDatabaseInstance`);
+export const setFirebaseStorage = createAction(`${HYDRATE_SECTION_NAME}/setFirebaseStorage`);
 
 const config = {
   apiKey: FIREBASE_API_KEY,
@@ -35,9 +37,11 @@ export const initFirebase = () => (dispatch) => {
   try {
     const app = initializeApp(config);
     const db = getFirestore();
+    const storage = getStorage(app);
 
     dispatch(setFirebaseInstance(app));
     dispatch(setDatabaseInstance(db));
+    dispatch(setFirebaseStorage(storage));
   } catch (e) {
     dispatch(setFirebaseError(e.message));
   } finally {
