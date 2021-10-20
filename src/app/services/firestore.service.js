@@ -9,6 +9,7 @@ import {
   getFirestore,
   setDoc,
 } from 'firebase/firestore';
+import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
 
 export const getRestaurantsFromOptions = async (options, database) => {
   try {
@@ -145,4 +146,12 @@ export const markAsShown = async (sessionId, userUid, restaurantId) => {
     console.log(err);
   }
   return null;
+};
+
+export const getPicturesURL = async (restaurantId) => {
+  const storage = getStorage();
+  const listRef = ref(storage, `restaurants/${restaurantId}/pictures`);
+  const res = await listAll(listRef);
+  const urlsPromises = res.items.map(getDownloadURL);
+  return Promise.all(urlsPromises);
 };
