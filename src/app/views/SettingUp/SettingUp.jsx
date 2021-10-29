@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useHistory } from 'react-router-dom';
+import { getQueryParams } from '@utils/utils';
 import { setZone } from '@actions/user.actions';
 import { getGeoLocation } from '@services/geoLocation.service';
 import { getRestaurantDetailsWithoutRestaurant } from '@services/googleMaps.service';
@@ -53,6 +54,9 @@ const autocompleteStyles = {
 
 const SettingUp = (props) => {
   const history = useHistory();
+  const session = getQueryParams('session');
+  // if (session) history.push(`/${routes.HOME}`);
+
   const dispatch = useDispatch();
   const [location, setLocation] = useState();
   const [value, setValue] = useState(null);
