@@ -9,18 +9,11 @@ import { useMount } from '@hooks/use-mount.hook';
 import { hydrate } from '@actions/hydrate.action';
 import { markAsShown } from '@services/firestore.service';
 
-const InitializationWrapperBase = ({
-  children,
-  userUid,
-  isMinimumAppDataLoaded,
-  sessionId,
-  likes,
-  isFirebaseLoading,
-}) => {
+const InitializationWrapperBase = ({ children, userUid, sessionId, isFirebaseLoading }) => {
   const dispatch = useDispatch();
 
   useMount(() => {
-    dispatch(hydrate(userUid));
+    dispatch(hydrate());
   });
 
   useEffect(() => {

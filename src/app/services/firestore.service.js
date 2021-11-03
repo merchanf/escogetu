@@ -28,12 +28,11 @@ export const getRestaurantsFromOptions = async (options, database) => {
   return null;
 };
 
-export const createSession = async (userUid, location, database) => {
+export const createSession = async (userUid) => {
   try {
     const db = getFirestore();
     const userObject = {
       users: [userUid],
-      location,
       likedRestaurants: [],
     };
     const document = await addDoc(collection(db, 'session'), userObject);
@@ -45,7 +44,17 @@ export const createSession = async (userUid, location, database) => {
   return null;
 };
 
-export const addUserToSession = async (sessionId, userUid, database) => {
+export const setLocation = async (sessionId, location) => {
+  const db = getFirestore();
+  const docRef = doc(db, `session/${sessionId}`);
+  const document = await getDoc(docRef);
+  if (document.exists()) {
+    const storedDoc = { ...document.data(), location };
+    await setDoc(docRef, storedDoc, { merge: true });
+  }
+};
+
+export const addUserToSession = async (sessionId, userUid) => {
   try {
     const db = getFirestore();
     const docRef = doc(db, `session/${sessionId}`);
@@ -64,10 +73,12 @@ export const addUserToSession = async (sessionId, userUid, database) => {
   return null;
 };
 
-export const getSession = async (sessionId, database) => {
+export const getSession = async (sessionId) => {
   try {
-    const document = await database.doc(`session/${sessionId}`).get();
-    if (document.exists) return document.data();
+    const db = getFirestore();
+    const docRef = doc(db, `session/${sessionId}`);
+    const document = await getDoc(docRef);
+    if (document.exists()) return document.data();
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
@@ -75,7 +86,7 @@ export const getSession = async (sessionId, database) => {
   return null;
 };
 
-export const addLike = async (sessionId, userUid, restaurantId, database) => {
+export const addLike = async (sessionId, userUid, restaurantId) => {
   try {
     const db = getFirestore();
     const docRef = doc(db, 'session', sessionId);

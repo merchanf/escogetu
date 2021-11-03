@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import { connect, useDispatch } from 'react-redux';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useHistory } from 'react-router-dom';
-import { getQueryParams } from '@utils/utils';
 import { setZone } from '@actions/user.actions';
 import { getGeoLocation } from '@services/geoLocation.service';
 import { getRestaurantDetailsWithoutRestaurant } from '@services/googleMaps.service';
-import { initSession, setGeoLocation, setFlow } from '@actions/hydrate.action';
+import {
+  initSession,
+  setGeoLocation,
+  setFlow,
+  initializeGoogleMaps,
+} from '@actions/hydrate.action';
 import { GOOGLE_API_KEY } from '@constants/env.constants';
 import routes from '@constants/routes.constants';
 import colors from '@constants/colors.constants';
@@ -52,10 +57,9 @@ const autocompleteStyles = {
   }),
 };
 
-const SettingUp = (props) => {
+const SettingUpBase = (props) => {
   const history = useHistory();
-  const session = getQueryParams('session');
-  // if (session) history.push(`/${routes.HOME}`);
+  const { isFirebaseLoading } = props;
 
   const dispatch = useDispatch();
   const [location, setLocation] = useState();
@@ -77,20 +81,24 @@ const SettingUp = (props) => {
     setLocation({ latitude, longitude });
   };
 
+  useEffect(() => {
+    const hydrate = async () => {
+      await dispatch(initSession());
+    };
+    if (!isFirebaseLoading) hydrate();
+  }, [dispatch, isFirebaseLoading]);
+
   // start google maps flow if location provided
   useEffect(() => {
-    const startGoogleMapsFlow = async () => {
+    const initGoogleMaps = async () => {
       dispatch(setFlow(flows.GOOGLE_MAPS));
       dispatch(setGeoLocation(location));
-      await dispatch(initSession(location));
+      await dispatch(initializeGoogleMaps(location));
       setAutoCompleteLoading(false);
       setCurrentLocationLoading(false);
       history.push(`/${routes.HOME}`);
     };
-
-    if (location) {
-      startGoogleMapsFlow();
-    }
+    if (location) initGoogleMaps();
   }, [dispatch, history, location]);
 
   useEffect(() => {
@@ -171,4 +179,21 @@ const SettingUp = (props) => {
   );
 };
 
+const mapStateToProps = ({
+  hydrate: {
+    firebase: { loading: isFirebaseLoading },
+  },
+}) => ({
+  isFirebaseLoading,
+});
+
+SettingUpBase.defaultProps = {
+  isFirebaseLoading: true,
+};
+
+SettingUpBase.propTypes = {
+  isFirebaseLoading: PropTypes.bool,
+};
+
+const SettingUp = connect(mapStateToProps)(SettingUpBase);
 export default SettingUp;
