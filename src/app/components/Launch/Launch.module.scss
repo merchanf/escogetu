@@ -1,0 +1,14 @@
+@import '../../../scss/colors';
+
+.Launch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: $blue;
+
+  & img{
+    width: 20%;
+    height: auto;
+  }
+}
