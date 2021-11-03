@@ -10,6 +10,7 @@ export const HydrateStore = {
     error: null,
     storage: null,
   },
+  hydrating: true,
 };
 
 export const HYDRATE_SECTION_NAME = 'hydrate';

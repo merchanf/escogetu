@@ -13,6 +13,7 @@ import {
   setDatabaseInstance,
   setFirebaseStorage,
 } from '@actions/firebase.actions';
+import { setHydrating } from '@actions/hydrate.action';
 
 const hydrateReducer = createReducer(HydrateStore, (builder) => {
   builder.addCase(setGoogleMapsLoading, (state, { payload }) => ({
@@ -77,6 +78,10 @@ const hydrateReducer = createReducer(HydrateStore, (builder) => {
       ...state.firebase,
       storage: payload,
     },
+  }));
+  builder.addCase(setHydrating, (state, { payload }) => ({
+    ...state,
+    hydrating: payload,
   }));
 });
 

@@ -1,6 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
 import { uid } from 'uid';
-import { useHistory } from 'react-router-dom';
 import {
   createSession as createSessionInFirestore,
   getSession,
@@ -9,8 +8,8 @@ import {
 import { USER_SECTION_NAME } from '@stores/user.store';
 import { initGoogleMaps } from '@actions/googleMaps.action';
 import { initFirebase } from '@actions/firebase.actions';
-import routes from '@constants/routes.constants';
 
+export const setHydrating = createAction(`${USER_SECTION_NAME}/setHydrating`);
 // User uid
 export const setUserUid = createAction(`${USER_SECTION_NAME}/setUserUid`);
 // Session
@@ -22,9 +21,9 @@ export const setGeoLocationError = createAction(`${USER_SECTION_NAME}/setGeoLoca
 export const setFlow = createAction(`${USER_SECTION_NAME}/setFlow`);
 
 export const initSession = (location) => async (dispatch) => {
+  dispatch(setHydrating(true));
   const mySessionStorage = window.sessionStorage;
   const myLocalStorage = window.localStorage;
-  const history = useHistory();
 
   let userUid;
 
@@ -46,7 +45,6 @@ export const initSession = (location) => async (dispatch) => {
     if (firestoreSession) {
       location = firestoreSession.location;
     }
-    history.push(`/${routes.HOME}`);
   } else {
     sessionId = await createSessionInFirestore(userUid, location);
   }
@@ -54,6 +52,7 @@ export const initSession = (location) => async (dispatch) => {
   await dispatch(setSession(sessionId));
   addUserToSession(sessionId, userUid);
   mySessionStorage.setItem('sessionId', sessionId);
+  dispatch(setHydrating(false));
 };
 
 export const initializeGoogleMaps = (location) => async (dispatch) => {

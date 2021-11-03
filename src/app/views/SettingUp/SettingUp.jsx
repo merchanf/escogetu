@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { setZone } from '@actions/user.actions';
 import { getGeoLocation } from '@services/geoLocation.service';
 import { getRestaurantDetailsWithoutRestaurant } from '@services/googleMaps.service';
+import { Launch } from '@components/index';
 import {
   initSession,
   setGeoLocation,
@@ -59,7 +60,7 @@ const autocompleteStyles = {
 
 const SettingUpBase = (props) => {
   const history = useHistory();
-  const { isFirebaseLoading } = props;
+  const { isFirebaseLoading, hydrating, sessionId } = props;
 
   const dispatch = useDispatch();
   const [location, setLocation] = useState();
@@ -85,7 +86,9 @@ const SettingUpBase = (props) => {
     const hydrate = async () => {
       await dispatch(initSession());
     };
-    if (!isFirebaseLoading) hydrate();
+    if (!isFirebaseLoading) {
+      hydrate();
+    }
   }, [dispatch, isFirebaseLoading]);
 
   // start google maps flow if location provided
@@ -120,7 +123,17 @@ const SettingUpBase = (props) => {
     }
   }, [value]);
 
-  return (
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session');
+    if (!hydrating && sessionId) {
+      history.push(`/${routes.HOME}?session=${sessionId}`);
+    }
+  }, [dispatch, history, hydrating, isFirebaseLoading, sessionId]);
+
+  return hydrating ? (
+    <Launch />
+  ) : (
     <section className={styles.SettingUp}>
       <h1> ¿Dónde vamos a comer hoy? </h1>
       <h3>Puedes escoger la zona (recomendado)</h3>
@@ -182,17 +195,25 @@ const SettingUpBase = (props) => {
 const mapStateToProps = ({
   hydrate: {
     firebase: { loading: isFirebaseLoading },
+    hydrating,
   },
+  user: { sessionId },
 }) => ({
   isFirebaseLoading,
+  hydrating,
+  sessionId,
 });
 
 SettingUpBase.defaultProps = {
   isFirebaseLoading: true,
+  hydrating: true,
+  sessionId: '',
 };
 
 SettingUpBase.propTypes = {
   isFirebaseLoading: PropTypes.bool,
+  hydrating: PropTypes.bool,
+  sessionId: PropTypes.string,
 };
 
 const SettingUp = connect(mapStateToProps)(SettingUpBase);
