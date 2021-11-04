@@ -4,16 +4,12 @@ import { connect, useDispatch } from 'react-redux';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useHistory } from 'react-router-dom';
+import { setGeoLocation, setFlow } from '@actions/session.action';
 import { setZone } from '@actions/user.actions';
 import { getGeoLocation } from '@services/geoLocation.service';
 import { getRestaurantDetailsWithoutRestaurant } from '@services/googleMaps.service';
 import { Launch } from '@components/index';
-import {
-  initSession,
-  setGeoLocation,
-  setFlow,
-  initializeGoogleMaps,
-} from '@actions/hydrate.action';
+import { initSession, initializeGoogleMaps } from '@actions/hydrate.action';
 import { GOOGLE_API_KEY } from '@constants/env.constants';
 import routes from '@constants/routes.constants';
 import colors from '@constants/colors.constants';
