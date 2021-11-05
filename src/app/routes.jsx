@@ -1,17 +1,24 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import routesConst from '@constants/routes.constants';
-import { HomeView, Instructions, SettingUp } from '@app/views/index';
+import { HomeView, Instructions, SettingUp, Launcher } from '@app/views/index';
 import { InitializationWrapper } from '@components/initializationWrapper/initialization-wrapper';
 
 export const routes = (
   <InitializationWrapper>
     <Switch>
-      <Route exact path="/" component={SettingUp} />
-      <Route path={`/${routesConst.HOME}`}>
+      <Route exact path="/">
+        <Launcher />
+      </Route>
+      <Route path={`/${routesConst.SETTING_UP}`}>
+        <SettingUp />
+      </Route>
+      <Route path={`/${routesConst.SWIPE}`}>
         <HomeView />
       </Route>
-      <Route path={`/${routesConst.INSTRUCTIONS}`} component={Instructions} />
+      <Route path={`/${routesConst.INSTRUCTIONS}`}>
+        <Instructions />
+      </Route>
     </Switch>
   </InitializationWrapper>
 );

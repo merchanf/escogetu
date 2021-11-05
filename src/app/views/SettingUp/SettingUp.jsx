@@ -8,7 +8,6 @@ import { setGeoLocation, setFlow } from '@actions/session.action';
 import { setZone } from '@actions/user.actions';
 import { getGeoLocation } from '@services/geoLocation.service';
 import { getRestaurantDetailsWithoutRestaurant } from '@services/googleMaps.service';
-import { Launch } from '@components/index';
 import { initSession, initializeGoogleMaps } from '@actions/hydrate.action';
 import { GOOGLE_API_KEY } from '@constants/env.constants';
 import routes from '@constants/routes.constants';
@@ -127,9 +126,7 @@ const SettingUpBase = (props) => {
     }
   }, [dispatch, history, hydrating, isFirebaseLoading, sessionId]);
 
-  return hydrating ? (
-    <Launch />
-  ) : (
+  return (
     <section className={styles.SettingUp}>
       <h1> ¿Dónde vamos a comer hoy? </h1>
       <h3>Puedes escoger la zona (recomendado)</h3>
