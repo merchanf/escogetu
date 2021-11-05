@@ -69,4 +69,5 @@ export const initializeGoogleMaps = (location) => async (dispatch) => {
 
 export const hydrate = () => async (dispatch) => {
   dispatch(initFirebase());
+  dispatch(initSession());
 };

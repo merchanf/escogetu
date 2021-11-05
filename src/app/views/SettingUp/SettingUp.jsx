@@ -94,7 +94,7 @@ const SettingUpBase = (props) => {
       await dispatch(initializeGoogleMaps(location));
       setAutoCompleteLoading(false);
       setCurrentLocationLoading(false);
-      history.push(`/${routes.HOME}`);
+      history.push(`/${routes.SWIPE}`);
     };
     if (location) initGoogleMaps();
   }, [dispatch, history, location]);
@@ -117,14 +117,6 @@ const SettingUpBase = (props) => {
       getLocation(place_id);
     }
   }, [value]);
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const sessionId = urlParams.get('session');
-    if (!hydrating && sessionId) {
-      history.push(`/${routes.HOME}?session=${sessionId}`);
-    }
-  }, [dispatch, history, hydrating, isFirebaseLoading, sessionId]);
 
   return (
     <section className={styles.SettingUp}>
