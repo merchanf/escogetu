@@ -43,9 +43,9 @@ const useGoogleMapsRestaurants = () => {
   };
 
   const refreshRestaurantPreviews = useCallback(() => {
-    console.log('googleMaps', googleMaps);
-    console.log('latitude', latitude);
-    console.log('longitude', longitude);
+    // console.log('googleMaps', googleMaps);
+    // console.log('latitude', latitude);
+    // console.log('longitude', longitude);
     if (googleMaps && latitude && longitude) {
       const location = new googleMaps.LatLng(parseFloat(latitude), parseFloat(longitude));
       getNearRestaurants({ client, location, radius: 2500 }, (results) =>
@@ -62,7 +62,6 @@ const useGoogleMapsRestaurants = () => {
 
   useEffect(() => {
     if (restaurantPreviews.length > 0 && restaurants.length <= 3) {
-      console.log('restaurant previews', restaurantPreviews);
       const length = restaurantPreviews.length > 7 ? 7 : restaurantPreviews.length;
       Promise.all(
         restaurantPreviews

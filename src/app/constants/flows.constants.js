@@ -1,6 +1,7 @@
 const flows = {
   FIRESTORE: 'FIRESTORE',
-  GOOGLE_MAPS: 'GOOGLE_MAPS',
+  NEARBY: 'NEARBY',
+  SPECIFIC_POINT: 'SPECIFIC_POINT',
 };
 
 export default flows;

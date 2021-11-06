@@ -20,6 +20,18 @@ export const setUserUid = createAction(`${USER_SECTION_NAME}/setUserUid`);
 // Session
 export const setSession = createAction(`${USER_SECTION_NAME}/setSession`);
 
+export const initializeGoogleMaps = (location) => async (dispatch) => {
+  dispatch(setGeoLocationLoading(true));
+  try {
+    await dispatch(initGoogleMaps(location));
+    dispatch(setGeoLocation(location));
+  } catch (e) {
+    dispatch(setGeoLocationError(e.message));
+  } finally {
+    dispatch(setGeoLocationLoading(false));
+  }
+};
+
 export const initSession = (location) => async (dispatch) => {
   dispatch(setHydrating(true));
   const mySessionStorage = window.sessionStorage;
@@ -44,6 +56,8 @@ export const initSession = (location) => async (dispatch) => {
     const firestoreSession = await getSession(sessionId);
     if (firestoreSession) {
       location = firestoreSession.location;
+      await dispatch(initializeGoogleMaps(location));
+      console.log('location', location);
     }
   } else {
     sessionId = await createSessionInFirestore(userUid, location);
@@ -53,18 +67,6 @@ export const initSession = (location) => async (dispatch) => {
   addUserToSession(sessionId, userUid);
   mySessionStorage.setItem('sessionId', sessionId);
   dispatch(setHydrating(false));
-};
-
-export const initializeGoogleMaps = (location) => async (dispatch) => {
-  dispatch(setGeoLocationLoading(true));
-  try {
-    await dispatch(initGoogleMaps(location));
-    dispatch(setGeoLocation(location));
-  } catch (e) {
-    dispatch(setGeoLocationError(e.message));
-  } finally {
-    dispatch(setGeoLocationLoading(false));
-  }
 };
 
 export const hydrate = () => async (dispatch) => {

@@ -7,18 +7,19 @@ import routes from '@constants/routes.constants';
 import Logo from './logo.webp';
 import styles from './Launcher.module.scss';
 
-const LauncherBase = ({ isFirebaseLoading, hydrating }) => {
+const LauncherBase = ({ isFirebaseLoading, hydrating, isGoogleMapsLoading, geoLocation }) => {
   const history = useHistory();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session');
-    if (!hydrating && !isFirebaseLoading) {
+    if (!hydrating && !isFirebaseLoading && !isGoogleMapsLoading) {
       let route = `/${routes.SETTING_UP}`;
       if (sessionId) route = `/${routes.SWIPE}?session=${sessionId}`;
+      console.log('geoLocation', geoLocation);
       history.push(route);
     }
-  }, [history, hydrating, isFirebaseLoading]);
+  }, [geoLocation, history, hydrating, isFirebaseLoading, isGoogleMapsLoading]);
 
   return (
     <Layout>
@@ -33,22 +34,27 @@ const mapStateToProps = ({
   hydrate: {
     firebase: { loading: isFirebaseLoading },
     hydrating,
+    googleMaps: { loading: isGoogleMapsLoading },
   },
-  user: { sessionId },
+  user: { sessionId, geoLocation },
 }) => ({
   isFirebaseLoading,
   hydrating,
   sessionId,
+  isGoogleMapsLoading,
+  geoLocation,
 });
 
 LauncherBase.defaultProps = {
   isFirebaseLoading: true,
   hydrating: true,
+  isGoogleMapsLoading: true,
 };
 
 LauncherBase.propTypes = {
   isFirebaseLoading: PropTypes.bool,
   hydrating: PropTypes.bool,
+  isGoogleMapsLoading: PropTypes.bool,
 };
 
 const Launcher = connect(mapStateToProps)(LauncherBase);
