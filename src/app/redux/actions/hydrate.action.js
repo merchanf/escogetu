@@ -59,7 +59,7 @@ export const initSession = (location) => async (dispatch) => {
       location = firestoreSession.location;
       const { flow } = firestoreSession;
       await dispatch(initializeGoogleMaps(location));
-      await dispatch(setGeoLocation(sessionId, location));
+      await dispatch(setGeoLocation(location));
       await dispatch(setStateFlow(flow));
     }
   } else {
