@@ -82,7 +82,7 @@ export const getRestaurantDetailsWithoutRestaurant = async (placeId) => {
       fields,
     };
     const service = new window.google.maps.places.PlacesService(document.getElementById('map'));
-    service.getDetails(request, (details) => restaurantAdapter(placeId, details));
+    service.getDetails(request, (details) => resolve(restaurantAdapter(placeId, details)));
   });
 };
 

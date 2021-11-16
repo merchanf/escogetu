@@ -95,9 +95,9 @@ const SettingUpBase = (props) => {
   useEffect(() => {
     const getLocation = async (placeId) => {
       const {
-        location: { lat, lng },
+        location: { latitude, longitude },
       } = await getRestaurantDetailsWithoutRestaurant(placeId);
-      setStateLocation({ latitude: lat, longitude: lng });
+      setStateLocation({ latitude, longitude });
       setStateFlow(flows.SPECIFIC_POINT);
     };
 
@@ -122,8 +122,9 @@ const SettingUpBase = (props) => {
           onClick={() => {
             startFirebaseFlow(sessionId, zones.ZONA_G);
           }}
+          disabled
         >
-          Zona G
+          Zona G (Proximamente)
         </button>
         <button type="button" disabled>
           Quinta de camacho (Proximamente)
@@ -154,6 +155,7 @@ const SettingUpBase = (props) => {
               value,
               onChange: setValue,
               styles: autocompleteStyles,
+              placeholder: 'Busca un lugar ej: Plaza de bolivar',
             }}
           />
         </div>
