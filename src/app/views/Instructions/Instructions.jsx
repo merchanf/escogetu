@@ -93,9 +93,14 @@ const Instructions = (props) => {
   );
 };
 
+Instructions.defaultProps = {
+  onCloseAndNeverShowAgain: () => {},
+  onClose: () => {},
+};
+
 Instructions.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  onCloseAndNeverShowAgain: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
+  onCloseAndNeverShowAgain: PropTypes.func,
 };
 
 export default Instructions;
