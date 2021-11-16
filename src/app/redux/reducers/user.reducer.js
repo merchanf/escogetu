@@ -1,7 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { USER_SECTION_NAME, UserStore } from '@stores/user.store';
 import { setSession, setUserUid } from '@actions/hydrate.action';
-import { setGeoLocation, setGeoLocationLoading, setFlow } from '@actions/session.action';
+import {
+  setGeoLocation,
+  setGeoLocationLoading,
+  setStateFlow as setFlow,
+} from '@actions/session.action';
 import { addLike, setMatch, setZone } from '@actions/user.actions';
 
 const userReducer = createReducer(UserStore, (builder) => {

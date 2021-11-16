@@ -57,7 +57,6 @@ export const setLocation = async (sessionId, location) => {
 export const setFlow = async (sessionId, flow) => {
   const db = getFirestore();
   const docRef = doc(db, `session/${sessionId}`);
-  console.log('sessionId', sessionId);
   const document = await getDoc(docRef);
   if (document.exists()) {
     const storedDoc = { ...document.data(), flow };

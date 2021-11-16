@@ -12,6 +12,7 @@ import {
   setGeoLocationError,
   setGeoLocationLoading,
   setGeoLocation,
+  setStateFlow,
 } from '@actions/session.action';
 
 export const setHydrating = createAction(`${USER_SECTION_NAME}/setHydrating`);
@@ -56,8 +57,10 @@ export const initSession = (location) => async (dispatch) => {
     const firestoreSession = await getSession(sessionId);
     if (firestoreSession) {
       location = firestoreSession.location;
+      const { flow } = firestoreSession;
       await dispatch(initializeGoogleMaps(location));
-      console.log('location', location);
+      await dispatch(setGeoLocation(sessionId, location));
+      await dispatch(setStateFlow(flow));
     }
   } else {
     sessionId = await createSessionInFirestore(userUid, location);

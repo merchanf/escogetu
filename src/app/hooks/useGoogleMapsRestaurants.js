@@ -43,9 +43,6 @@ const useGoogleMapsRestaurants = () => {
   };
 
   const refreshRestaurantPreviews = useCallback(() => {
-    // console.log('googleMaps', googleMaps);
-    // console.log('latitude', latitude);
-    // console.log('longitude', longitude);
     if (googleMaps && latitude && longitude) {
       const location = new googleMaps.LatLng(parseFloat(latitude), parseFloat(longitude));
       getNearRestaurants({ client, location, radius: 2500 }, (results) =>

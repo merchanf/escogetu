@@ -64,8 +64,8 @@ const SettingUpBase = (props) => {
   const [currentLocationLoading, setCurrentLocationLoading] = useState(false);
   const [autoCompleteLoading, setAutoCompleteLoading] = useState(false);
 
-  const startFirebaseFlow = (zone) => {
-    dispatch(setFlow(flows.FIRESTORE));
+  const startFirebaseFlow = (sessionId, zone) => {
+    dispatch(setFlow(sessionId, flows.FIRESTORE));
     dispatch(setZone(zone));
     // history.push(`/${routes.SWIPE}`);
   };
@@ -120,7 +120,7 @@ const SettingUpBase = (props) => {
         <button
           type="button"
           onClick={() => {
-            startFirebaseFlow(zones.ZONA_G);
+            startFirebaseFlow(sessionId, zones.ZONA_G);
           }}
         >
           Zona G

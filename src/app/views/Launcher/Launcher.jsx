@@ -16,7 +16,6 @@ const LauncherBase = ({ isFirebaseLoading, hydrating, isGoogleMapsLoading, geoLo
     if (!hydrating && !isFirebaseLoading && !isGoogleMapsLoading) {
       let route = `/${routes.SETTING_UP}`;
       if (sessionId) route = `/${routes.SWIPE}?session=${sessionId}`;
-      console.log('geoLocation', geoLocation);
       history.push(route);
     }
   }, [geoLocation, history, hydrating, isFirebaseLoading, isGoogleMapsLoading]);
@@ -49,12 +48,14 @@ LauncherBase.defaultProps = {
   isFirebaseLoading: true,
   hydrating: true,
   isGoogleMapsLoading: true,
+  geoLocation: null,
 };
 
 LauncherBase.propTypes = {
   isFirebaseLoading: PropTypes.bool,
   hydrating: PropTypes.bool,
   isGoogleMapsLoading: PropTypes.bool,
+  geoLocation: PropTypes.shape({ latitude: PropTypes.number, longitude: PropTypes.number }),
 };
 
 const Launcher = connect(mapStateToProps)(LauncherBase);
