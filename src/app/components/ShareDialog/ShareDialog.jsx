@@ -53,13 +53,6 @@ const ShareDialog = ({ onClose, open, url }) => {
             <WhatsappIcon size="small" />
             whatsapp
           </button>
-          <button
-            onClick={() => (location.href = `https://telegram.me/share/url?text=${text}`)}
-            type="button"
-          >
-            <TelegramIcon size="small" />
-            Telegram
-          </button>
           <button onClick={() => onClose(false)} type="button">
             <CrossIcon className={styles.ShareDialog__Button__Icon} size="small" />
             Close
