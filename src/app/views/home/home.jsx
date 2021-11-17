@@ -2,10 +2,18 @@ import React, { useMemo, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useModal, Modal } from 'react-morphing-modal';
-import { CardList, ShareButton, FeedbackButton, Layout, RestaurantDetails } from '@app/components';
+import {
+  CardList,
+  ShareButton,
+  FeedbackButton,
+  Layout,
+  RestaurantDetails,
+  LoadingIcon,
+} from '@app/components';
 import useWindowDimensions from '@hooks/useWindowDimensions';
 import { FEEDBACK_ID, DOMAIN } from '@constants/env.constants';
 import { CrossIconButton, LikeIconButton } from '@components/Icons/Icons';
+
 import 'react-morphing-modal/dist/ReactMorphingModal.css';
 import { Instructions } from '@app/views';
 import './home.scss';
@@ -15,7 +23,7 @@ import { useRestaurants } from '@hooks/useRestaurants';
 const HomeViewBase = (props) => {
   const { sessionId, match, likes, flow } = props;
   const { width } = useWindowDimensions();
-  const { restaurants, swipe, onSwipe, onCardLeftScreen } = useRestaurants(flow);
+  const { restaurants, loading, swipe, onSwipe, onCardLeftScreen } = useRestaurants(flow);
   const [showInstructions, setShowInstructions] = useState(
     !localStorage.getItem('closeAndNeverShowAgain'),
   );
@@ -55,12 +63,11 @@ const HomeViewBase = (props) => {
   };
 
   const render = () => {
-    if (showInstructions) {
+    if (loading) return <LoadingIcon />;
+    if (restaurants.length === 0) return <h1>No hay más restaurantes en tu área :(</h1>;
+    if (showInstructions)
       return <Instructions onClose={onClose} onCloseAndNeverShowAgain={onCloseAndNeverShowAgain} />;
-    }
-    if (!restaurantsWithPhoto.length) {
-      return <h1>No hay más restaurantes en tu área :(</h1>;
-    }
+
     return (
       <div className="Home" ref={modalRef}>
         {match && (

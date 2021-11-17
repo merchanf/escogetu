@@ -6,6 +6,7 @@ import { like } from '@actions/user.actions';
 import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
 
 const useGoogleMapsRestaurants = () => {
+  const [loading, setLoading] = useState(true);
   const [restaurantPreviews, setRestaurantPreviews] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [swiping, setSwiping] = useState(false);
@@ -59,6 +60,7 @@ const useGoogleMapsRestaurants = () => {
 
   useEffect(() => {
     if (restaurantPreviews.length > 0 && restaurants.length <= 3) {
+      setLoading(true);
       const length = restaurantPreviews.length > 7 ? 7 : restaurantPreviews.length;
       Promise.all(
         restaurantPreviews
@@ -68,10 +70,11 @@ const useGoogleMapsRestaurants = () => {
         setRestaurants([...detailedRestaurants, ...restaurants]);
         setRestaurantPreviews((prevState) => prevState.slice(length));
       });
+      setLoading(false);
     }
   }, [restaurantPreviews, restaurants]);
 
-  return { restaurants, swipe, onSwipe, onCardLeftScreen };
+  return { restaurants, loading, swipe, onSwipe, onCardLeftScreen };
 };
 
 export default useGoogleMapsRestaurants;
