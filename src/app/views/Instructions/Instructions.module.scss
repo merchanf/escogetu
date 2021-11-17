@@ -107,13 +107,13 @@
                 vertical-align: center;
     
                 &:hover{
-                    color: $yellow;
-                    background-color: $blue;
+                    color: $yellow_dark;
+                    background-color: $blue_darkest;
                 }
     
                 &:active{
-                    color: $yellow;
-                    background-color: $blue_darker;
+                    color: $yellow_darker;
+                    background-color: $blue_darkest;
                 }
             }
         }
