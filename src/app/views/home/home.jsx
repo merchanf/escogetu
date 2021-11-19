@@ -64,7 +64,7 @@ const HomeViewBase = (props) => {
 
   const render = () => {
     if (loading) return <LoadingIcon />;
-    if (restaurants.length === 0) return <h1>No hay más restaurantes en tu área :(</h1>;
+    if (restaurantsWithPhoto.length === 0) return <h1>No hay más restaurantes en tu área :(</h1>;
     if (showInstructions)
       return <Instructions onClose={onClose} onCloseAndNeverShowAgain={onCloseAndNeverShowAgain} />;
 

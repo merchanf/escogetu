@@ -15,9 +15,8 @@ const Img = ({ lowResSrc, src, alt, className }) => {
 
   return (
     <div className={classnames(className, styles.Image)}>
-      <img src={lowResSrc} alt={alt} />
+      {lowResSrc && !loaded && <img src={lowResSrc} alt={alt} aria-hidden="true" />}
       <img
-        loading="lazy"
         src={src}
         alt={alt}
         ref={ref}
@@ -35,7 +34,7 @@ Img.defaultProps = {
 Img.propTypes = {
   lowResSrc: PropTypes.string.isRequired,
   src: PropTypes.string.isRequired,
-  alt: PropTypes.number.isRequired,
+  alt: PropTypes.string.isRequired,
   className: PropTypes.string,
 };
 
