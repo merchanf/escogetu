@@ -25,14 +25,22 @@ const mapper = (
   placeId,
   name,
   distance: distance(location.lat(), location.lng(), lat(), lng()),
-  pictures: photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })),
+  pictures: photos.map((photo) => photo.getUrl({ maxWidth: 1280, maxHeight: 720 })),
   ref: createRef(),
 });
 
 const getPictures = (photos, backupPictures) => {
   if (!photos || !backupPictures) return null;
   const pictures =
-    photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })) || backupPictures;
+    photos.map((photo) => photo.getUrl({ maxWidth: 1280, maxHeight: 720 })) || backupPictures;
+  if (pictures && pictures.length > 1) pictures.shift();
+  return pictures;
+};
+
+const getLowResPictures = (photos, backupPictures) => {
+  if (!photos || !backupPictures) return null;
+  const pictures =
+    photos.map((photo) => photo.getUrl({ maxWidth: 20, maxHeight: 38 })) || backupPictures;
   if (pictures && pictures.length > 1) pictures.shift();
   return pictures;
 };
@@ -63,6 +71,7 @@ const restaurantAdapter = (
   phoneNumber: international_phone_number,
   pricing: price_level,
   pictures: getPictures(photos, backupPictures),
+  lowResPictures: getLowResPictures(photos, backupPictures),
 });
 
 const fields = [
