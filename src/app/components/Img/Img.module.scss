@@ -9,3 +9,12 @@
   object-fit: cover;
   object-position: center;
 }
+
+.Show {
+  opacity: 1;
+  transition: opacity 150ms ease-in-out;
+}
+
+.Hide{
+  opacity: 0;
+}

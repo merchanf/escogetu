@@ -8,20 +8,26 @@ const Img = ({ lowResSrc, src, alt, className }) => {
   const ref = useRef(null);
 
   useEffect(() => {
-    if (ref.current && ref.current.complete) {
+    if (!ref?.current?.complete) {
       setLoaded(true);
     }
   }, []);
 
+  const onLoad = () => {
+    if (!ref?.current?.complete) {
+      setLoaded(false);
+    }
+  };
+
   return (
     <div className={classnames(className, styles.Image)}>
-      {lowResSrc && !loaded && <img src={lowResSrc} alt={alt} aria-hidden="true" />}
+      <img src={lowResSrc} alt={alt} onLoad={onLoad} aria-hidden="true" />
       <img
         src={src}
         alt={alt}
         ref={ref}
         onLoad={() => setLoaded(true)}
-        className={classnames({ [styles.Loaded]: loaded })}
+        className={classnames({ [styles.Show]: loaded, [styles.Hide]: !loaded })}
       />
     </div>
   );
