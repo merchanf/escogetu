@@ -1,6 +1,6 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useStore, useDispatch } from 'react-redux';
-import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
+// import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
 import { getRestaurantsFromOptions } from '@services/firestore.service';
 import { like } from '@actions/user.actions';
 
