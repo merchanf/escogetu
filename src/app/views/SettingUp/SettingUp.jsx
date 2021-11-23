@@ -115,8 +115,8 @@ const SettingUpBase = (props) => {
   return (
     <section className={styles.SettingUp}>
       <h1> ¿Dónde vamos a comer hoy? </h1>
-      <h3>Puedes escoger la zona (recomendado)</h3>
-      <div className={styles.SettingUp__ZoneButtons}>
+      {/* <h3>Puedes escoger la zona (recomendado)</h3>
+       <div className={styles.SettingUp__ZoneButtons}>
         <button
           type="button"
           onClick={() => {
@@ -138,8 +138,8 @@ const SettingUpBase = (props) => {
         <button type="button" disabled>
           Zona T (Proximamente)
         </button>
-      </div>
-      <h3>También buscar un punto de encuentro</h3>
+        </div> */}
+      <h3>Puedes buscar un punto de encuentro</h3>
       <div className={styles.SettingUp__GooglePlacesAutocomplete}>
         <div className={styles.SettingUp__GooglePlacesAutocomplete__Component}>
           <GooglePlacesAutocomplete
