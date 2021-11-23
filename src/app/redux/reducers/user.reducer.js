@@ -1,12 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { USER_SECTION_NAME, UserStore } from '@stores/user.store';
+import { setSession, setUserUid } from '@actions/hydrate.action';
 import {
   setGeoLocation,
   setGeoLocationLoading,
-  setSession,
-  setUserUid,
-} from '@actions/hydrate.action';
-import { addLike, setMatch } from '@actions/user.actions';
+  setStateFlow as setFlow,
+} from '@actions/session.action';
+import { addLike, setMatch, setZone } from '@actions/user.actions';
 
 const userReducer = createReducer(UserStore, (builder) => {
   builder.addCase(setGeoLocationLoading, (state, { payload }) => ({
@@ -14,6 +14,17 @@ const userReducer = createReducer(UserStore, (builder) => {
     geoLocation: {
       ...state.geoLocation,
       loading: payload,
+    },
+  }));
+  builder.addCase(setFlow, (state, { payload }) => ({
+    ...state,
+    flow: payload,
+  }));
+  builder.addCase(setZone, (state, { payload }) => ({
+    ...state,
+    firestore: {
+      ...state.firestore,
+      zone: payload,
     },
   }));
   builder.addCase(setGeoLocation, (state, { payload }) => ({

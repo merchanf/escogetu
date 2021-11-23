@@ -3,12 +3,16 @@ export const UserStore = {
   sessionId: null,
   match: null,
   likes: {},
+  flow: null,
   geoLocation: {
     location: {
       latitude: null,
       longitude: null,
     },
-    loading: true,
+    loading: false,
+  },
+  firestore: {
+    zone: null,
   },
 };
 

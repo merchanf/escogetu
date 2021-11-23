@@ -1,51 +1,43 @@
 /* eslint-disable react/forbid-prop-types */
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import { doc, onSnapshot, getFirestore } from 'firebase/firestore';
 
 import { setMatch } from '@actions/user.actions';
 import { useMount } from '@hooks/use-mount.hook';
 import { hydrate } from '@actions/hydrate.action';
-import { LoadingIcon } from '@app/components';
 import { markAsShown } from '@services/firestore.service';
 
-const InitializationWrapperBase = ({
-  children,
-  userUid,
-  isMinimumAppDataLoaded,
-  sessionId,
-  database,
-  likes,
-}) => {
+const InitializationWrapperBase = ({ children, userUid, sessionId, isFirebaseLoading }) => {
   const dispatch = useDispatch();
 
   useMount(() => {
-    dispatch(hydrate(userUid));
+    dispatch(hydrate());
   });
 
   useEffect(() => {
     let unsubscribe;
-    if (database) {
-      unsubscribe = database.doc(`session/${sessionId}`).onSnapshot((snapshot) => {
+    if (!isFirebaseLoading && sessionId) {
+      const db = getFirestore();
+      const docRef = doc(db, 'session', sessionId);
+      unsubscribe = onSnapshot(docRef, (snapshot) => {
         if (snapshot.data()) {
           const { likedRestaurants, users } = snapshot.data();
           const usersAmount = users.length;
-          likedRestaurants.forEach(({ likes, poppedUp, id }) => {
-            const likesAmount = likes.length;
+          likedRestaurants.forEach(({ likes: likes_, poppedUp, id }) => {
+            const likesAmount = likes_?.length || 0;
             if (likesAmount === usersAmount && !poppedUp) {
               dispatch(setMatch(id));
-              markAsShown(sessionId, userUid, id, database);
+              markAsShown(sessionId, userUid, id);
             }
           });
         }
       });
     }
-    return () => unsubscribe && unsubscribe();
-  }, [database, dispatch, sessionId, userUid]);
 
-  if (!isMinimumAppDataLoaded) {
-    return <LoadingIcon />;
-  }
+    return () => unsubscribe && unsubscribe();
+  }, [dispatch, isFirebaseLoading, sessionId, userUid]);
 
   return children;
 };
@@ -58,14 +50,13 @@ const mapStateToProps = ({
     geoLocation: { loading: loadingLocation },
   },
   hydrate: {
-    firebase: { database },
+    firebase: { loading: isFirebaseLoading },
   },
 }) => ({
   userUid,
   sessionId,
   likes,
-  isMinimumAppDataLoaded: !loadingLocation,
-  database,
+  isFirebaseLoading,
 });
 
 InitializationWrapperBase.defaultProps = {
@@ -74,8 +65,7 @@ InitializationWrapperBase.defaultProps = {
 
 InitializationWrapperBase.propTypes = {
   userUid: PropTypes.string,
-  isMinimumAppDataLoaded: PropTypes.bool.isRequired,
-  database: PropTypes.object,
+  isFirebaseLoading: PropTypes.bool,
   likes: PropTypes.object,
 };
 

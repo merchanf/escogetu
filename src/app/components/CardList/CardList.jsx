@@ -9,19 +9,22 @@ const CardList = ({ list, onSwipe, onCardLeftScreen }) => {
 
   return (
     <div className={styles.Container} ref={ref}>
-      {list.map(({ placeId, name, details, pictures, distance, ref }, index) => (
-        <Card
-          id={placeId}
-          name={name}
-          pictures={details?.pictures || pictures}
-          distance={distance}
-          key={`${placeId}-${index}`}
-          onSwipe={onSwipe}
-          index={index}
-          onCardLeftScreen={onCardLeftScreen}
-          ref={ref}
-        />
-      ))}
+      {list.map(
+        ({ placeId, name, details, pictures, lowResPictures, distance, ref: innerRef }, index) => (
+          <Card
+            id={placeId}
+            name={name}
+            pictures={details?.pictures || pictures}
+            lowResPictures={lowResPictures}
+            distance={distance}
+            key={`${placeId}-${index}`}
+            onSwipe={onSwipe}
+            index={index}
+            onCardLeftScreen={onCardLeftScreen}
+            ref={innerRef}
+          />
+        ),
+      )}
     </div>
   );
 };

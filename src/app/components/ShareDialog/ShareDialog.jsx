@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import Snackbar from '@material-ui/core/Snackbar';
-import { LinkIcon, CopyIcon, WhatsappIcon, TelegramIcon, CrossIcon } from '../Icons/Icons';
+import { LinkIcon, CopyIcon, WhatsappIcon, CrossIcon } from '../Icons/Icons';
 import styles from './ShareDialog.module.scss';
 
 const ShareDialog = ({ onClose, open, url }) => {
@@ -52,13 +52,6 @@ const ShareDialog = ({ onClose, open, url }) => {
           <button onClick={() => (location.href = `whatsapp://send/?text=${text}`)} type="button">
             <WhatsappIcon size="small" />
             whatsapp
-          </button>
-          <button
-            onClick={() => (location.href = `https://telegram.me/share/url?text=${text}`)}
-            type="button"
-          >
-            <TelegramIcon size="small" />
-            Telegram
           </button>
           <button onClick={() => onClose(false)} type="button">
             <CrossIcon className={styles.ShareDialog__Button__Icon} size="small" />

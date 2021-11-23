@@ -1,10 +1,41 @@
-export const createSession = async (userUid, location, database) => {
+import {
+  doc,
+  addDoc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  getFirestore,
+  setDoc,
+} from 'firebase/firestore';
+import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
+
+export const getRestaurantsFromOptions = async (options, database) => {
   try {
-    const document = await database.collection('session').add({
-      users: [userUid],
-      location,
-      likedRestaurants: [],
+    const db = getFirestore();
+    const citiesRef = collection(db, 'restaurants');
+    const q = query(citiesRef, where('name', '==', 'chef burger'));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, ' => ', doc.data());
     });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
+  return null;
+};
+
+export const createSession = async (userUid) => {
+  try {
+    const db = getFirestore();
+    const userObject = {
+      users: [userUid],
+      likedRestaurants: [],
+    };
+    const document = await addDoc(collection(db, 'session'), userObject);
     return document.id;
   } catch (err) {
     // eslint-disable-next-line no-console
@@ -13,16 +44,37 @@ export const createSession = async (userUid, location, database) => {
   return null;
 };
 
-export const addUserToSession = async (sessionId, userUid, database) => {
+export const setLocation = async (sessionId, location) => {
+  const db = getFirestore();
+  const docRef = doc(db, `session/${sessionId}`);
+  const document = await getDoc(docRef);
+  if (document.exists()) {
+    const storedDoc = { ...document.data(), location };
+    await setDoc(docRef, storedDoc, { merge: true });
+  }
+};
+
+export const setFlow = async (sessionId, flow) => {
+  const db = getFirestore();
+  const docRef = doc(db, `session/${sessionId}`);
+  const document = await getDoc(docRef);
+  if (document.exists()) {
+    const storedDoc = { ...document.data(), flow };
+    await setDoc(docRef, storedDoc, { merge: true });
+  }
+};
+
+export const addUserToSession = async (sessionId, userUid) => {
   try {
-    const query = await database.doc(`session/${sessionId}`);
-    const document = await query.get();
-    if (document.exists) {
+    const db = getFirestore();
+    const docRef = doc(db, `session/${sessionId}`);
+    const document = await getDoc(docRef);
+    if (document.exists()) {
       const storedDoc = document.data();
       if (!storedDoc.users.includes(userUid)) {
         storedDoc.users = [...storedDoc.users, userUid];
       }
-      query.set(storedDoc, { merge: true });
+      await setDoc(docRef, storedDoc, { merge: true });
     }
   } catch (err) {
     // eslint-disable-next-line no-console
@@ -31,10 +83,12 @@ export const addUserToSession = async (sessionId, userUid, database) => {
   return null;
 };
 
-export const getSession = async (sessionId, database) => {
+export const getSession = async (sessionId) => {
   try {
-    const document = await database.doc(`session/${sessionId}`).get();
-    if (document.exists) return document.data();
+    const db = getFirestore();
+    const docRef = doc(db, `session/${sessionId}`);
+    const document = await getDoc(docRef);
+    if (document.exists()) return document.data();
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
@@ -42,11 +96,12 @@ export const getSession = async (sessionId, database) => {
   return null;
 };
 
-export const addLike = async (sessionId, userUid, restaurantId, database) => {
+export const addLike = async (sessionId, userUid, restaurantId) => {
   try {
-    const doc = database.doc(`session/${sessionId}`);
-    const document = await doc.get();
-    if (document.exists) {
+    const db = getFirestore();
+    const docRef = doc(db, 'session', sessionId);
+    const document = await getDoc(docRef);
+    if (document.exists()) {
       const storedDoc = document.data();
       if (
         storedDoc.likedRestaurants.length === 0 ||
@@ -66,7 +121,7 @@ export const addLike = async (sessionId, userUid, restaurantId, database) => {
           return rest;
         });
       }
-      doc.set(storedDoc, { merge: true });
+      await setDoc(docRef, storedDoc, { merge: true });
     }
   } catch (err) {
     // eslint-disable-next-line no-console
@@ -96,18 +151,28 @@ const shown = (array, id) => {
   return array;
 };
 
-export const markAsShown = async (sessionId, userUid, restaurantId, database) => {
+export const markAsShown = async (sessionId, userUid, restaurantId) => {
   try {
-    const doc = database.doc(`session/${sessionId}`);
-    const document = await doc.get();
-    if (document.exists) {
+    const db = getFirestore();
+    const docRef = doc(db, 'session', sessionId);
+    const document = await getDoc(docRef);
+
+    if (document.exists()) {
       const storedDoc = document.data();
       storedDoc.likedRestaurants = shown(storedDoc.likedRestaurants, restaurantId);
-      doc.set(storedDoc, { merge: true });
+      setDoc(docRef, storedDoc, { merge: true });
     }
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
   }
   return null;
+};
+
+export const getPicturesURL = async (restaurantId) => {
+  const storage = getStorage();
+  const listRef = ref(storage, `restaurants/${restaurantId}/pictures`);
+  const res = await listAll(listRef);
+  const urlsPromises = res.items.map(getDownloadURL);
+  return Promise.all(urlsPromises);
 };

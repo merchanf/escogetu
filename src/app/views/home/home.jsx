@@ -2,36 +2,45 @@ import React, { useMemo, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useModal, Modal } from 'react-morphing-modal';
+import { useHistory } from 'react-router-dom';
 import {
   CardList,
   ShareButton,
   FeedbackButton,
   Layout,
   RestaurantDetails,
-  Instructions,
+  LoadingIcon,
 } from '@app/components';
 import useWindowDimensions from '@hooks/useWindowDimensions';
 import { FEEDBACK_ID, DOMAIN } from '@constants/env.constants';
 import { CrossIconButton, LikeIconButton } from '@components/Icons/Icons';
-import 'react-morphing-modal/dist/ReactMorphingModal.css';
 
-import './home.view.scss';
+import 'react-morphing-modal/dist/ReactMorphingModal.css';
+import { Instructions } from '@app/views';
+import './home.scss';
+
 import { useRestaurants } from '@hooks/useRestaurants';
 
-const HomeViewBase = ({ sessionId, match, likes }) => {
+const HomeViewBase = (props) => {
+  const { sessionId, match, likes, flow } = props;
   const { width } = useWindowDimensions();
-  const { restaurants, swipe, onSwipe, onCardLeftScreen } = useRestaurants();
+  const { restaurants, loading, swipe, onSwipe, onCardLeftScreen } = useRestaurants(flow);
   const [showInstructions, setShowInstructions] = useState(
     !localStorage.getItem('closeAndNeverShowAgain'),
   );
   const [size, setSize] = useState('medium');
   const modalRef = useRef(null);
   const { open, modalProps } = useModal();
+  const history = useHistory();
 
   const restaurantsWithPhoto = useMemo(
     () => restaurants.filter((restaurant) => restaurant.pictures?.length),
     [restaurants],
   );
+
+  if (!flow) {
+    history.push('/');
+  }
 
   useEffect(() => {
     if (match) {
@@ -60,12 +69,11 @@ const HomeViewBase = ({ sessionId, match, likes }) => {
   };
 
   const render = () => {
-    if (showInstructions) {
+    if (loading) return <LoadingIcon />;
+    if (restaurantsWithPhoto.length === 0) return <h1>No hay más restaurantes en tu área :(</h1>;
+    if (showInstructions)
       return <Instructions onClose={onClose} onCloseAndNeverShowAgain={onCloseAndNeverShowAgain} />;
-    }
-    if (!restaurantsWithPhoto.length) {
-      return <h1>No hay más restaurantes en tu área :(</h1>;
-    }
+
     return (
       <div className="Home" ref={modalRef}>
         {match && (
@@ -91,11 +99,12 @@ const HomeViewBase = ({ sessionId, match, likes }) => {
   return render();
 };
 
-const mapStateToProps = ({ user: { userUid, sessionId, match, likes } }) => ({
+const mapStateToProps = ({ user: { userUid, sessionId, match, likes, flow } }) => ({
   userUid,
   sessionId,
   match,
   likes,
+  flow,
 });
 
 HomeViewBase.defaultProps = {
@@ -108,6 +117,8 @@ HomeViewBase.propTypes = {
   // Add base object.
   // eslint-disable-next-line react/forbid-prop-types
   likes: PropTypes.object.isRequired,
+  flow: PropTypes.string.isRequired,
 };
 
-export const HomeView = connect(mapStateToProps)(HomeViewBase);
+const HomeView = connect(mapStateToProps)(HomeViewBase);
+export default HomeView;

@@ -1,16 +1,16 @@
 export const HydrateStore = {
   googleMaps: {
-    loading: true,
+    loading: false,
     client: null,
     error: null,
     googleMaps: null,
   },
   firebase: {
     loading: true,
-    instance: null,
-    database: null,
     error: null,
+    storage: null,
   },
+  hydrating: true,
 };
 
 export const HYDRATE_SECTION_NAME = 'hydrate';
