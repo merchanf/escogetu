@@ -2,6 +2,7 @@ import React, { useMemo, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useModal, Modal } from 'react-morphing-modal';
+import { useHistory } from 'react-router-dom';
 import {
   CardList,
   ShareButton,
@@ -30,11 +31,16 @@ const HomeViewBase = (props) => {
   const [size, setSize] = useState('medium');
   const modalRef = useRef(null);
   const { open, modalProps } = useModal();
+  const history = useHistory();
 
   const restaurantsWithPhoto = useMemo(
     () => restaurants.filter((restaurant) => restaurant.pictures?.length),
     [restaurants],
   );
+
+  if (!flow) {
+    history.push('/');
+  }
 
   useEffect(() => {
     if (match) {
