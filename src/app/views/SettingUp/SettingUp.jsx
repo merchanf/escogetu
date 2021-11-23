@@ -13,7 +13,7 @@ import { GOOGLE_API_KEY } from '@constants/env.constants';
 import routes from '@constants/routes.constants';
 import colors from '@constants/colors.constants';
 import flows from '@constants/flows.constants';
-import zones from '@constants/zones.constants';
+// import zones from '@constants/zones.constants';
 import styles from './SettingUp.module.scss';
 
 const { blue } = colors;
@@ -64,11 +64,11 @@ const SettingUpBase = (props) => {
   const [currentLocationLoading, setCurrentLocationLoading] = useState(false);
   const [autoCompleteLoading, setAutoCompleteLoading] = useState(false);
 
-  const startFirebaseFlow = (sessionId, zone) => {
-    dispatch(setFlow(sessionId, flows.FIRESTORE));
-    dispatch(setZone(zone));
-    // history.push(`/${routes.SWIPE}`);
-  };
+  // const startFirebaseFlow = (sessionId, zone) => {
+  //   dispatch(setFlow(sessionId, flows.FIRESTORE));
+  //   dispatch(setZone(zone));
+  //   // history.push(`/${routes.SWIPE}`);
+  // };
 
   const getCurrentLocation = async () => {
     setCurrentLocationLoading(true);
