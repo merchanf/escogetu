@@ -6,6 +6,7 @@ import RestaurantDetails from './RestaurantDetails/RestaurantDetails';
 import ShareDialog from './ShareDialog/ShareDialog';
 import ShareButton from './ShareButton/ShareButton';
 import LoadingIcon from './LoadingIcon/LoadingIcon';
+import NoRestaurantsAvailable from './NoRestaurantsAvailable/NoRestaurantsAvailable';
 
 export {
   CardList,
@@ -13,6 +14,7 @@ export {
   FeedbackButton,
   Layout,
   LoadingIcon,
+  NoRestaurantsAvailable,
   RestaurantDetails,
   ShareDialog,
   ShareButton,
