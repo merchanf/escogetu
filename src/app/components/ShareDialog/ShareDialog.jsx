@@ -51,7 +51,7 @@ const ShareDialog = ({ onClose, open, url }) => {
           </button>
           <button onClick={() => (location.href = `whatsapp://send/?text=${text}`)} type="button">
             <WhatsappIcon size="small" />
-            whatsapp
+            Whatsapp
           </button>
           <button onClick={() => onClose(false)} type="button">
             <CrossIcon className={styles.ShareDialog__Button__Icon} size="small" />
