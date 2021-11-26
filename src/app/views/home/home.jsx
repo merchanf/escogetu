@@ -34,7 +34,7 @@ const HomeViewBase = (props) => {
   const history = useHistory();
 
   const restaurantsWithPhoto = useMemo(
-    () => restaurants.filter((restaurant) => restaurant.pictures?.length),
+    () => restaurants?.filter((restaurant) => restaurant.pictures?.length),
     [restaurants],
   );
 

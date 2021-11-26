@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import { createRef } from 'react';
 import { distance } from '@utils/utils';
+import { RADIUS } from '@constants/restaurants.constants';
 
 const isNotARestaurant = (types) => types.includes('lodging') || types.includes('spa');
 const excludeNotRestaurantsFromResults = (results) =>
@@ -32,7 +33,7 @@ const mapper = (
 const getPictures = (photos, backupPictures) => {
   if (!photos || !backupPictures) return null;
   const pictures =
-    photos.map((photo) => photo.getUrl({ maxWidth: 1080, maxHeight: 1920 })) || backupPictures;
+    photos.map((photo) => photo.getUrl({ maxWidth: 1280, maxHeight: 720 })) || backupPictures;
   if (pictures && pictures.length > 1) pictures.shift();
   return pictures;
 };
@@ -112,7 +113,7 @@ export const getRestaurantDetailsWithRestaurant = async (restaurant) =>
 
 let goNextPage;
 
-export const getNearRestaurants = async ({ client, location, radius = 2500 }, callback) => {
+export const getNearRestaurants = async ({ client, location, radius = RADIUS }, callback) => {
   if (goNextPage) {
     goNextPage();
   } else {

@@ -12,5 +12,5 @@ export const useRestaurants = (flow) => {
   if (flow === flows.NEARBY || flow === flows.SPECIFIC_POINT) {
     return googleMapsRestaurants;
   }
-  return { restaurants: [] };
+  return { restaurants: null };
 };

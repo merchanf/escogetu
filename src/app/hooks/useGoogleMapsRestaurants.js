@@ -3,7 +3,7 @@ import { useStore, useDispatch } from 'react-redux';
 import { getNearRestaurants } from '@services/googleMaps.service';
 import { getRestaurantDetails } from '@services/restaurants.service';
 import { like } from '@actions/user.actions';
-import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
+import { MIN_DETAILED_RESTAURANTS, RADIUS } from '@constants/restaurants.constants';
 
 const useGoogleMapsRestaurants = () => {
   const [loading, setLoading] = useState(true);
@@ -46,7 +46,7 @@ const useGoogleMapsRestaurants = () => {
   const refreshRestaurantPreviews = useCallback(() => {
     if (googleMaps && latitude && longitude) {
       const location = new googleMaps.LatLng(parseFloat(latitude), parseFloat(longitude));
-      getNearRestaurants({ client, location, radius: 2500 }, (results) =>
+      getNearRestaurants({ client, location, radius: RADIUS }, (results) =>
         setRestaurantPreviews((previews) => [...results.reverse(), ...previews]),
       );
     }
@@ -59,8 +59,16 @@ const useGoogleMapsRestaurants = () => {
   }, [refreshRestaurantPreviews, restaurantPreviews]);
 
   useEffect(() => {
-    if (restaurantPreviews.length > 0 && restaurants.length <= 3) {
+    if (!restaurants) {
+      setRestaurants([]);
       setLoading(true);
+    } else if (restaurants && restaurants.length > 0) {
+      setLoading(false);
+    }
+  }, [restaurants]);
+
+  useEffect(() => {
+    if (restaurantPreviews.length > 0 && restaurants.length <= 3) {
       const length = restaurantPreviews.length > 7 ? 7 : restaurantPreviews.length;
       Promise.all(
         restaurantPreviews
@@ -70,7 +78,6 @@ const useGoogleMapsRestaurants = () => {
         setRestaurants([...detailedRestaurants, ...restaurants]);
         setRestaurantPreviews((prevState) => prevState.slice(length));
       });
-      setLoading(false);
     }
   }, [restaurantPreviews, restaurants]);
 

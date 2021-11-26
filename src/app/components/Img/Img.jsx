@@ -35,10 +35,11 @@ const Img = ({ lowResSrc, src, alt, className }) => {
 
 Img.defaultProps = {
   className: '',
+  lowResSrc: 'https://via.placeholder.com/1280x720/E5E7E9/E5E7E9?Text=escogetu',
 };
 
 Img.propTypes = {
-  lowResSrc: PropTypes.string.isRequired,
+  lowResSrc: PropTypes.string,
   src: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
   className: PropTypes.string,
