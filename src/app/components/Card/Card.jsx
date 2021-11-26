@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useEffect } from 'react';
+import React, { useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import TinderCard from '../TinderCard/TinderCard';
 import Img from '../Img/Img';
@@ -10,29 +10,11 @@ const Card = forwardRef(
     { distance, id, index, name, onCardLeftScreen, onSwipe, pictures, lowResPictures, bio },
     ref,
   ) => {
-    const [imgs, setImgs] = useState(false);
     const [selectedPicture, setSelectedPicture] = useState(0);
     const [open, setOpen] = useState(false);
     const handleRightButton = () => {
       if (selectedPicture + 1 < pictures.length) setSelectedPicture((prevState) => prevState + 1);
     };
-
-    useEffect(() => {
-      const imgArray = [];
-      if (pictures.length) {
-        for (let i = 0; i < pictures.length; i++) {
-          imgArray.push(
-            <Img
-              className={styles.Card__Image}
-              src={pictures[selectedPicture]}
-              lowResSrc={lowResPictures[selectedPicture]}
-              alt={`${name} - ${selectedPicture}`}
-            />,
-          );
-        }
-      }
-      setImgs(imgArray);
-    }, [lowResPictures, name, pictures, selectedPicture]);
 
     const handleLeftButton = () => {
       if (selectedPicture - 1 >= 0) setSelectedPicture((prevState) => prevState - 1);
@@ -75,16 +57,15 @@ const Card = forwardRef(
             )}
 
             <RestaurantBio name={name} open={open} setOpen={setOpen} bio={bio} />
-            {imgs && imgs.length ? (
-              imgs[selectedPicture]
-            ) : (
-              <Img
-                className={styles.Card__Image}
-                src={pictures[selectedPicture]}
-                lowResSrc={lowResPictures[selectedPicture]}
-                alt={`${name} - ${selectedPicture}`}
-              />
-            )}
+
+            <Img
+              className={styles.Card__Image}
+              src={pictures[selectedPicture]}
+              lowResSrc={
+                lowResPictures ? lowResPictures[selectedPicture] : pictures[selectedPicture]
+              }
+              alt={`${name} - ${selectedPicture}`}
+            />
             <div className={styles.Card__Buttons}>
               {selectedPicture - 1 >= 0 ? (
                 <button
@@ -123,6 +104,7 @@ Card.defaultProps = {
   onCardLeftScreen: () => {},
   name: 'Restaurante',
   bio: '',
+  lowResPictures: null,
 };
 
 Card.propTypes = {
@@ -133,7 +115,7 @@ Card.propTypes = {
   onCardLeftScreen: PropTypes.func,
   onSwipe: PropTypes.func.isRequired,
   pictures: PropTypes.arrayOf(PropTypes.string).isRequired,
-  lowResPictures: PropTypes.arrayOf(PropTypes.string).isRequired,
+  lowResPictures: PropTypes.arrayOf(PropTypes.string),
   bio: PropTypes.string,
 };
 

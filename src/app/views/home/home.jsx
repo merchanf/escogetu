@@ -10,6 +10,7 @@ import {
   Layout,
   RestaurantDetails,
   LoadingIcon,
+  NoRestaurantsAvailable,
 } from '@app/components';
 import useWindowDimensions from '@hooks/useWindowDimensions';
 import { FEEDBACK_ID, DOMAIN } from '@constants/env.constants';
@@ -34,7 +35,7 @@ const HomeViewBase = (props) => {
   const history = useHistory();
 
   const restaurantsWithPhoto = useMemo(
-    () => restaurants.filter((restaurant) => restaurant.pictures?.length),
+    () => restaurants?.filter((restaurant) => restaurant.pictures?.length),
     [restaurants],
   );
 
@@ -70,7 +71,7 @@ const HomeViewBase = (props) => {
 
   const render = () => {
     if (loading) return <LoadingIcon />;
-    if (restaurantsWithPhoto.length === 0) return <h1>No hay más restaurantes en tu área :(</h1>;
+    if (restaurantsWithPhoto.length === 0) return <NoRestaurantsAvailable />;
     if (showInstructions)
       return <Instructions onClose={onClose} onCloseAndNeverShowAgain={onCloseAndNeverShowAgain} />;
 
