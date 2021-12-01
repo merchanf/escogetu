@@ -16,24 +16,24 @@ import flows from '@constants/flows.constants';
 // import zones from '@constants/zones.constants';
 import styles from './SettingUp.module.scss';
 
-const { blue } = colors;
+const { red } = colors;
 
 const autocompleteStyles = {
   control: (provided, state) => ({
     ...provided,
-    border: `1px solid ${blue.basic}`,
+    border: `1px solid ${red.basic}`,
     borderRadius: '19px',
     '&:hover': {
-      borderColor: blue.darker,
+      borderColor: red.darker,
     },
     '&:active': {
-      borderColor: blue.moreDarker,
+      borderColor: red.moreDarker,
     },
   }),
   input: (provided) => ({
     ...provided,
     paddingLeft: `12px`,
-    color: blue.darkest,
+    color: red.darkest,
   }),
   placeholder: (provided) => ({
     ...provided,
@@ -41,14 +41,14 @@ const autocompleteStyles = {
   }),
   option: (provided) => ({
     ...provided,
-    color: blue.darkest,
+    color: red.darkest,
     '&:hover': {
-      backgroundColor: blue.lightest,
+      backgroundColor: red.lightest,
     },
   }),
   singleValue: (provided) => ({
     ...provided,
-    color: blue.darkest,
+    color: red.darkest,
     paddingLeft: `12px`,
   }),
 };
@@ -120,7 +120,7 @@ const SettingUpBase = (props) => {
         <button
           type="button"
           onClick={() => {
-            startFirebaseFlow(sessionId, zones.ZONA_G);
+            // startFirebaseFlow(sessionId, zones.ZONA_G);
           }}
           disabled
         >
