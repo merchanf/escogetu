@@ -88,9 +88,9 @@ const HomeViewBase = (props) => {
           <CardList list={restaurants} onSwipe={onSwipe} onCardLeftScreen={onCardLeftScreen} />
         </div>
         <div className="Home__Buttons">
-          <CrossIconButton onClick={() => swipe('left')} size={size} color="red" />
+          <CrossIconButton onClick={() => swipe('left')} size={size} />
           <ShareButton sessionId={sessionId} domain={DOMAIN} />
-          <LikeIconButton onClick={() => swipe('right')} size={size} color="green" />
+          <LikeIconButton onClick={() => swipe('right')} size={size} />
         </div>
         <FeedbackButton projectId={FEEDBACK_ID} />
       </div>
