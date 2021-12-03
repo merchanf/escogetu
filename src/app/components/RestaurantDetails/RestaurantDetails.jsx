@@ -7,6 +7,7 @@ import PhoneIcon from '@material-ui/icons/Phone';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Rating from '@material-ui/lab/Rating';
 import { withStyles } from '@material-ui/core/styles';
+import { withTextIconButton, CallIcon } from '@components/Icons/Icons';
 
 import styles from './RestaurantDetails.module.scss';
 
@@ -26,7 +27,8 @@ const StyledRating = withStyles({
 })(Rating);
 
 const iconStyles = { fontSize: '32px' };
-const detailIcons = { ...iconStyles, marginRight: '12px' };
+
+const CallIconButton = withTextIconButton(CallIcon);
 
 const RestaurantDetails = ({
   name,
@@ -72,22 +74,18 @@ const RestaurantDetails = ({
             readOnly
           />
         </div>
-        <div className={styles.RestaurantDetails__Details__ContactInfo__Wrapper}>
-          <div className={styles.RestaurantDetails__Details__ContactInfo}>
-            {phoneNumber && (
-              <div className={styles.RestaurantDetails__Details__ContactInfo__Phone}>
-                <PhoneIcon style={detailIcons} />
-                {phoneNumber}
-              </div>
-            )}
-            <div className={styles.RestaurantDetails__Details__ContactInfo__Address}>
-              <LocationOnIcon style={detailIcons} />
-              <div className={styles.RestaurantDetails__Details__ContactInfo__Address__Text}>
-                <span>{address}</span>
-              </div>
-            </div>
-          </div>
+        <div className={styles.RestaurantDetails__Details__ContactInfo}>
+          <p className={styles.Title}>Teléfono</p>
+          <p className={styles.Text}>{phoneNumber}</p>
+          <p className={styles.Title}>Dirección</p>
+          <p className={styles.Text}>{address}</p>
         </div>
+      </div>
+      <div className={styles.RestaurantDetails__CTAButtons}>
+        <CallIconButton onClick={() => console.log('click 1')} caption="Llamar" />
+        <CallIconButton onClick={() => console.log('click 2')} caption="Reservar" />
+        <CallIconButton onClick={() => console.log('click 3')} caption="Direcciones" />
+        <CallIconButton onClick={() => console.log('click 4')} caption="Pagina web" />
       </div>
     </div>
   );

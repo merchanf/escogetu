@@ -1,15 +1,14 @@
-@import "../../../scss/colors";
+@import '../../../scss/colors';
 
 .RestaurantDetails {
   align-items: center;
-  justify-content: center;
-  background-color: $red_700;
-  background-image: url("./background_light_red.svg");
+  background-color: #feeecb;
+  background-image: url('./background_light_red.svg');
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
-  color: $white;
+  color: $brown;
   font-size: 24px;
 
   .RestaurantDetails__Name {
@@ -32,34 +31,31 @@
       width: 100%;
     }
 
-    .RestaurantDetails__Details__ContactInfo__Wrapper {
+    .RestaurantDetails__Details__ContactInfo {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
+      flex-direction: column;
 
-      .RestaurantDetails__Details__ContactInfo {
-        display: flex;
-        flex-direction: column;
+      .Title {
+        font-size: 1.6rem;
+        margin: 0;
+      }
 
-        .RestaurantDetails__Details__ContactInfo__Phone {
-          display: flex;
-          align-items: center;
-          font-size: 2rem;
-          margin-top: 3.2rem;
-        }
-
-        .RestaurantDetails__Details__ContactInfo__Address {
-          display: flex;
-          align-items: flex-start;
-          font-size: 2rem;
-          margin-top: 2rem;
-
-          .RestaurantDetails__Details__ContactInfo__Address__Text {
-            display: flex;
-            flex-direction: column;
-          }
-        }
+      .Text {
+        font-size: 2.4rem;
+        font-weight: bold;
+        padding: 0 0 1.6rem 0;
+        margin: 0;
       }
     }
   }
+
+  .RestaurantDetails__CTAButtons {
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    width: 576px;
+  }	
 }
