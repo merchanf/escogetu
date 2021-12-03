@@ -3,13 +3,15 @@ import GoogleMapReact from 'google-map-react';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import PropTypes from 'prop-types';
 import StarIcon from '@material-ui/icons/Star';
-import PhoneIcon from '@material-ui/icons/Phone';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Rating from '@material-ui/lab/Rating';
 import { withStyles } from '@material-ui/core/styles';
 import { withTextIconButton, CallIcon } from '@components/Icons/Icons';
+import colors from '@constants/colors.constants';
 
 import styles from './RestaurantDetails.module.scss';
+
+const { oldBurgundy } = colors;
 
 const IconWrapper = () => <LocationOnIcon style={{ color: '#8B0000', fontSize: '24px' }} />;
 
@@ -19,10 +21,10 @@ const defaultProps = {
 
 const StyledRating = withStyles({
   icon: {
-    color: '#F9EBEA',
+    color: oldBurgundy[100],
   },
   iconFilled: {
-    color: '#8B0000',
+    color: oldBurgundy[500],
   },
 })(Rating);
 
@@ -42,8 +44,9 @@ const RestaurantDetails = ({
   return (
     <div className={styles.RestaurantDetails}>
       <p>Hoy vamos a comer en...</p>
-      <p className={styles.RestaurantDetails__Name}>¡{name}!</p>
-      <div style={{ height: '250px', width: '80%' }}>
+      <h1 className={styles.RestaurantDetails__Name}>¡{name}!</h1>
+      <h2>A ti y a tus amigos les ha gustado este restaurante</h2>
+      <div style={{ height: '200px', width: '70%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: apiKey, libraries: ['places'], version: 'weekly' }}
           center={{ lat, lng }}
@@ -54,18 +57,9 @@ const RestaurantDetails = ({
       </div>
 
       <div className={styles.RestaurantDetails__Details}>
-        <div className={styles.RestaurantDetails__Details__Ratings}>
-          {pricing ? (
-            <StyledRating
-              name="price-rating"
-              value={pricing}
-              precision={0.5}
-              icon={<AttachMoneyIcon style={iconStyles} />}
-              readOnly
-            />
-          ) : (
-            <div />
-          )}
+        <div className={styles.RestaurantDetails__Details__Ratings} />
+        <div className={styles.RestaurantDetails__Details__ContactInfo}>
+          <h3>Puntuación del sitio</h3>
           <StyledRating
             name="score"
             value={rating}
@@ -73,11 +67,21 @@ const RestaurantDetails = ({
             icon={<StarIcon style={iconStyles} />}
             readOnly
           />
-        </div>
-        <div className={styles.RestaurantDetails__Details__ContactInfo}>
-          <p className={styles.Title}>Teléfono</p>
+          {pricing && (
+            <>
+              <h3>Rango de precios</h3>
+              <StyledRating
+                name="price-rating"
+                value={pricing}
+                precision={0.5}
+                icon={<AttachMoneyIcon style={iconStyles} />}
+                readOnly
+              />
+            </>
+          )}
+          <h3>Teléfono</h3>
           <p className={styles.Text}>{phoneNumber}</p>
-          <p className={styles.Title}>Dirección</p>
+          <h3>Dirección</h3>
           <p className={styles.Text}>{address}</p>
         </div>
       </div>

@@ -8,13 +8,24 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
-  color: $brown;
+  color: $oldBurgundy-500;
   font-size: 24px;
 
-  .RestaurantDetails__Name {
-    font-size: 32px;
+  & p {
+    margin: 3.2rem 0 1.6rem 0;
+  }
+  
+  & h1{
+    font-size: 3.6rem;
     font-weight: bold;
     margin-top: 0;
+  }
+
+  & h2{
+    font-family: 'Lora';
+    font-size: 2rem;
+    font-weight: 400;
+    margin: 0 0 1.6rem 0;
   }
 
   .RestaurantDetails__Pin {
@@ -37,15 +48,16 @@
       justify-content: center;
       flex-direction: column;
 
-      .Title {
-        font-size: 1.6rem;
+      & h3 {
+        font-size: 2rem;
         margin: 0;
+        padding: 1.6rem 0 0 0;
+        font-weight: 400;
       }
 
       .Text {
-        font-size: 2.4rem;
+        font-size: 2.8rem;
         font-weight: bold;
-        padding: 0 0 1.6rem 0;
         margin: 0;
       }
     }

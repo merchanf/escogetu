@@ -13,7 +13,7 @@ const props = {
   name: 'Hamburguesas el corral',
   neighbor: 'Usaquen',
   phoneNumber: '3125107300',
-  priceLevel: 3,
+  pricing: 3,
   rating: 3.5,
 };
 

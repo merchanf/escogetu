@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  color: $brown;
+  color: $oldBurgundy-500;
 
   .SettingUp__ZoneButtons{
     display: flex;
@@ -59,7 +59,7 @@
     &:disabled{
       background-color: $red_lightest;
       border: solid 1px $red_more_lighter;
-      color: brown;
+      color: $oldBurgundy-500;
     }
   }
 
