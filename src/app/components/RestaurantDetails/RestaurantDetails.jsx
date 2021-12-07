@@ -1,11 +1,14 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import PropTypes from 'prop-types';
-import StarIcon from '@material-ui/icons/Star';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Rating from '@material-ui/lab/Rating';
 import { withStyles } from '@material-ui/core/styles';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import StarIcon from '@mui/icons-material/Star';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import BookOnlineIcon from '@mui/icons-material/BookOnline';
+import LanguageIcon from '@mui/icons-material/Language';
 import { withTextIconButton, CallIcon } from '@components/Icons/Icons';
 import colors from '@constants/colors.constants';
 
@@ -13,7 +16,9 @@ import styles from './RestaurantDetails.module.scss';
 
 const { oldBurgundy } = colors;
 
-const IconWrapper = () => <LocationOnIcon style={{ color: '#8B0000', fontSize: '24px' }} />;
+const IconWrapper = () => (
+  <LocationOnIcon className={styles.IconStyle} style={{ color: '#8B0000' }} />
+);
 
 const defaultProps = {
   zoom: 15,
@@ -31,6 +36,9 @@ const StyledRating = withStyles({
 const iconStyles = { fontSize: '32px' };
 
 const CallIconButton = withTextIconButton(CallIcon);
+const DirectionsIconButton = withTextIconButton(DirectionsCarIcon);
+const BookOnlineIconButton = withTextIconButton(BookOnlineIcon);
+const WebsiteIconButton = withTextIconButton(LanguageIcon);
 
 const RestaurantDetails = ({
   name,
@@ -40,7 +48,17 @@ const RestaurantDetails = ({
   address,
   rating,
   pricing,
+  reservationLink,
+  website,
 }) => {
+  const call = () => {
+    window.location.href = `tel:${phoneNumber}`;
+  };
+
+  const directions = () => {
+    window.location.href = `geo:${lat},${lng}`;
+  };
+
   return (
     <div className={styles.RestaurantDetails}>
       <p>Hoy vamos a comer en...</p>
@@ -59,14 +77,18 @@ const RestaurantDetails = ({
       <div className={styles.RestaurantDetails__Details}>
         <div className={styles.RestaurantDetails__Details__Ratings} />
         <div className={styles.RestaurantDetails__Details__ContactInfo}>
-          <h3>Puntuación del sitio</h3>
-          <StyledRating
-            name="score"
-            value={rating}
-            precision={0.5}
-            icon={<StarIcon style={iconStyles} />}
-            readOnly
-          />
+          {rating && (
+            <>
+              <h3>Puntuación del sitio</h3>
+              <StyledRating
+                name="score"
+                value={rating}
+                precision={0.5}
+                icon={<StarIcon className={styles.RatingStyle} />}
+                readOnly
+              />
+            </>
+          )}
           {pricing && (
             <>
               <h3>Rango de precios</h3>
@@ -74,7 +96,7 @@ const RestaurantDetails = ({
                 name="price-rating"
                 value={pricing}
                 precision={0.5}
-                icon={<AttachMoneyIcon style={iconStyles} />}
+                icon={<AttachMoneyIcon className={styles.RatingStyle} />}
                 readOnly
               />
             </>
@@ -86,10 +108,28 @@ const RestaurantDetails = ({
         </div>
       </div>
       <div className={styles.RestaurantDetails__CTAButtons}>
-        <CallIconButton onClick={() => console.log('click 1')} caption="Llamar" />
-        <CallIconButton onClick={() => console.log('click 2')} caption="Reservar" />
-        <CallIconButton onClick={() => console.log('click 3')} caption="Direcciones" />
-        <CallIconButton onClick={() => console.log('click 4')} caption="Pagina web" />
+        <CallIconButton onClick={call} caption="Llamar" size="large" disabled={!phoneNumber} />
+        <DirectionsIconButton
+          onClick={directions}
+          caption="Direcciones"
+          size="large"
+          disabled={!(lat && lng)}
+          iconStyle={styles.IconStyle}
+        />
+        <BookOnlineIconButton
+          onClick={() => console.log('click 3')}
+          caption="Reservar"
+          size="large"
+          disabled={!reservationLink}
+          iconStyle={styles.IconStyle}
+        />
+        <WebsiteIconButton
+          onClick={() => console.log('click 4')}
+          caption="Pagina web"
+          size="large"
+          disabled={!website}
+          iconStyle={styles.IconStyle}
+        />
       </div>
     </div>
   );
@@ -99,6 +139,8 @@ RestaurantDetails.defaultProps = {
   rating: null,
   pricing: null,
   phoneNumber: null,
+  reservationLink: null,
+  website: null,
   apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
 };
 
@@ -110,6 +152,8 @@ RestaurantDetails.propTypes = {
   }).isRequired,
   apiKey: PropTypes.string,
   phoneNumber: PropTypes.string,
+  reservationLink: PropTypes.string,
+  website: PropTypes.string,
   address: PropTypes.string.isRequired,
   rating: PropTypes.number,
   pricing: PropTypes.number,

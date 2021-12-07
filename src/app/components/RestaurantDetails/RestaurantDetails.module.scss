@@ -14,14 +14,14 @@
   & p {
     margin: 3.2rem 0 1.6rem 0;
   }
-  
-  & h1{
+
+  & h1 {
     font-size: 3.6rem;
     font-weight: bold;
     margin-top: 0;
   }
 
-  & h2{
+  & h2 {
     font-family: 'Lora';
     font-size: 2rem;
     font-weight: 400;
@@ -67,7 +67,16 @@
     display: flex;
     justify-content: space-between;
     position: fixed;
-    bottom: 0;
+    bottom: 1.6rem;
     width: 576px;
-  }	
+  }
+
+  .IconStyle{
+    transform: scale(2.5);
+  }
+
+  .RatingStyle{
+    transform: scale(2.5);
+    margin: 1.2rem 1.6rem;
+  }
 }
