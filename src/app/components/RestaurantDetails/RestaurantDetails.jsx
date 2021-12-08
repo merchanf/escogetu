@@ -33,8 +33,6 @@ const StyledRating = withStyles({
   },
 })(Rating);
 
-const iconStyles = { fontSize: '32px' };
-
 const CallIconButton = withTextIconButton(CallIcon);
 const DirectionsIconButton = withTextIconButton(DirectionsCarIcon);
 const BookOnlineIconButton = withTextIconButton(BookOnlineIcon);
