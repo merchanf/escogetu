@@ -3,6 +3,7 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
+import colors from '@constants/colors.constants';
 import Layout from '../../components/Layout/Layout';
 import styles from './Instructions.module.scss';
 import Step1 from './png/1Step.webp';
@@ -10,6 +11,8 @@ import Step2 from './png/2Step.webp';
 import Step3 from './png/3Step.webp';
 import Step4 from './png/4Step.webp';
 import Step5 from './png/5Step.webp';
+
+const { red, deepChampagne } = colors;
 
 const useStyles = makeStyles({
   root: {
@@ -20,13 +23,13 @@ const useStyles = makeStyles({
     justifyContent: 'center',
   },
   dot: {
-    backgroundColor: '#ECEF50',
+    backgroundColor: deepChampagne[500],
     height: '12px',
     width: '12px',
     marginLeft: '12px',
   },
   dotActive: {
-    backgroundColor: '#50ECEF',
+    backgroundColor: red.basic,
   },
 });
 
