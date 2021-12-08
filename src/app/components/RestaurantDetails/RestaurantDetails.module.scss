@@ -2,7 +2,7 @@
 
 .RestaurantDetails {
   align-items: center;
-  background-color: #feeecb;
+  background-color: $linen-500;
   background-image: url('./background_light_red.svg');
   display: flex;
   flex-direction: column;
@@ -29,7 +29,7 @@
   }
 
   .RestaurantDetails__Pin {
-    color: $red_wine_hard;
+    color: $red-500;
     font-size: 36px;
   }
 

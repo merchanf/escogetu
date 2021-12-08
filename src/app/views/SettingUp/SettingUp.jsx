@@ -16,7 +16,7 @@ import flows from '@constants/flows.constants';
 // import zones from '@constants/zones.constants';
 import styles from './SettingUp.module.scss';
 
-const { red } = colors;
+const { red, oldBurgundy } = colors;
 
 const autocompleteStyles = {
   control: (provided, state) => ({
@@ -33,7 +33,7 @@ const autocompleteStyles = {
   input: (provided) => ({
     ...provided,
     paddingLeft: `12px`,
-    color: red[700],
+    color: oldBurgundy[500],
   }),
   placeholder: (provided) => ({
     ...provided,
@@ -41,14 +41,14 @@ const autocompleteStyles = {
   }),
   option: (provided) => ({
     ...provided,
-    color: red[700],
+    color: oldBurgundy[500],
     '&:hover': {
       backgroundColor: red[200],
     },
   }),
   singleValue: (provided) => ({
     ...provided,
-    color: red[700],
+    color: oldBurgundy[500],
     paddingLeft: `12px`,
   }),
 };
@@ -115,7 +115,7 @@ const SettingUpBase = (props) => {
   return (
     <section className={styles.SettingUp}>
       <h1> ¿Dónde vamos a comer hoy? </h1>
-      {/* <h3>Puedes escoger la zona (recomendado)</h3>
+      {/* <h2>Puedes escoger la zona (recomendado)</h2>
        <div className={styles.SettingUp__ZoneButtons}>
         <button
           type="button"
@@ -138,8 +138,8 @@ const SettingUpBase = (props) => {
         <button type="button" disabled>
           Zona T (Proximamente)
         </button>
-        </div> */}
-      <h3>Puedes buscar un punto de encuentro</h3>
+      </div> */}
+      <h2>Puedes buscar un punto de encuentro</h2>
       <div className={styles.SettingUp__GooglePlacesAutocomplete}>
         <div className={styles.SettingUp__GooglePlacesAutocomplete__Component}>
           <GooglePlacesAutocomplete
@@ -161,8 +161,8 @@ const SettingUpBase = (props) => {
         </div>
         {autoCompleteLoading && <CircularProgress />}
       </div>
-      <h3>O buscar restaurantes cerca a ti</h3>
-      <h4>(Deberás darnos acceso a tu ubicación)</h4>
+      <h2>O buscar restaurantes cerca a ti</h2>
+      <h3>(Deberás darnos acceso a tu ubicación)</h3>
       <div className={styles.SettingUp__CurrentLocation}>
         <button type="button" onClick={getCurrentLocation}>
           Usar mi ubicación actual
