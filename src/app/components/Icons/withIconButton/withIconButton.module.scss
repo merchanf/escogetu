@@ -1,22 +1,22 @@
 @import "../../../../scss/colors";
 
 .withIconButton {
-  background-color: $red;
+  background-color: $red-500;
   border: none;
   border-radius: 50%;
   box-shadow:  0 0 10px rgba(0,0,0,0.2);
 
   &:hover {
-    background-color: $red_more_darker;
+    background-color: $red-600;
   }
 
   &:active {
-    background-color: $red_darker;
+    background-color: $red-700;
   }
 
   &:disabled,
   &:disabled:hover {
-    background-color: $red_lightest;
+    background-color: $red-200;
   }
 
   &.withIconButton__small {

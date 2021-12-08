@@ -44,21 +44,21 @@
     height: 3.6rem;
     border-radius: 1.8rem;
     padding: 0 2.4rem;
-    background-color: $red;
+    background-color: $red-500;
     color: $white;
     vertical-align: center;
   
     &:hover{
-      background-color: $red_darker;
+      background-color: $red-600;
     }
   
     &:active{
-      background-color: $red_more_darker;
+      background-color: $red-700;
     }
   
     &:disabled{
-      background-color: $red_lightest;
-      border: solid 1px $red_more_lighter;
+      background-color: $red-200;
+      border: solid 1px $red-100;
       color: $oldBurgundy-500;
     }
   }

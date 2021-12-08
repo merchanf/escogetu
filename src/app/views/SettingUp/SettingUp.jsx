@@ -21,19 +21,19 @@ const { red } = colors;
 const autocompleteStyles = {
   control: (provided, state) => ({
     ...provided,
-    border: `1px solid ${red.basic}`,
+    border: `1px solid ${red[500]}`,
     borderRadius: '19px',
     '&:hover': {
-      borderColor: red.darker,
+      borderColor: red[600],
     },
     '&:active': {
-      borderColor: red.moreDarker,
+      borderColor: red[700],
     },
   }),
   input: (provided) => ({
     ...provided,
     paddingLeft: `12px`,
-    color: red.darkest,
+    color: red[700],
   }),
   placeholder: (provided) => ({
     ...provided,
@@ -41,14 +41,14 @@ const autocompleteStyles = {
   }),
   option: (provided) => ({
     ...provided,
-    color: red.darkest,
+    color: red[700],
     '&:hover': {
-      backgroundColor: red.lightest,
+      backgroundColor: red[200],
     },
   }),
   singleValue: (provided) => ({
     ...provided,
-    color: red.darkest,
+    color: red[700],
     paddingLeft: `12px`,
   }),
 };
@@ -173,15 +173,7 @@ const SettingUpBase = (props) => {
   );
 };
 
-const mapStateToProps = ({
-  hydrate: {
-    firebase: { loading: isFirebaseLoading },
-    hydrating,
-  },
-  user: { sessionId },
-}) => ({
-  isFirebaseLoading,
-  hydrating,
+const mapStateToProps = ({ user: { sessionId } }) => ({
   sessionId,
 });
 

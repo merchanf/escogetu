@@ -29,7 +29,7 @@ const useStyles = makeStyles({
     marginLeft: '12px',
   },
   dotActive: {
-    backgroundColor: red.basic,
+    backgroundColor: red[500],
   },
 });
 
