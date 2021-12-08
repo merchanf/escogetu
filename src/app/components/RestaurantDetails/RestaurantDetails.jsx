@@ -99,10 +99,18 @@ const RestaurantDetails = ({
               />
             </>
           )}
-          <h3>Teléfono</h3>
-          <p className={styles.Text}>{phoneNumber}</p>
-          <h3>Dirección</h3>
-          <p className={styles.Text}>{address}</p>
+          {phoneNumber && (
+            <>
+              <h3>Teléfono</h3>
+              <p className={styles.Text}>{phoneNumber}</p>
+            </>
+          )}
+          {address && (
+            <>
+              <h3>Dirección</h3>
+              <p className={styles.Text}>{address}</p>
+            </>
+          )}
         </div>
       </div>
       <div className={styles.RestaurantDetails__CTAButtons}>
@@ -115,14 +123,14 @@ const RestaurantDetails = ({
           iconStyle={styles.IconStyle}
         />
         <BookOnlineIconButton
-          onClick={() => console.log('click 3')}
+          onClick={() => {}}
           caption="Reservar"
           size="large"
           disabled={!reservationLink}
           iconStyle={styles.IconStyle}
         />
         <WebsiteIconButton
-          onClick={() => console.log('click 4')}
+          onClick={() => {}}
           caption="Pagina web"
           size="large"
           disabled={!website}
