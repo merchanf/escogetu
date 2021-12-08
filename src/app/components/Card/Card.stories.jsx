@@ -35,6 +35,7 @@ export const Default = () => (
       onSwipe={onSwipe}
       height={500}
       width={500}
+      bio="Esta es una bio de prueba"
     />
   </div>
 );

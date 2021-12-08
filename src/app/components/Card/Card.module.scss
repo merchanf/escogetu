@@ -1,4 +1,4 @@
-@import "../../../scss/colors";
+@import '../../../scss/colors';
 
 .TinderCard {
   position: absolute;
@@ -25,23 +25,44 @@
     padding: 0 1.2rem;
 
     .Card__Buttons__Button {
-      display: block;
-      height: 6rem;
-      width: 6rem;
-      border-radius: 50%;
-      border-style: solid;
-      border-color: $black_a05;
-      background-color: $white;
-      color: $black_a05;
-      font-weight: 700;
-      &:hover {
-        border-color: $white;
-        background-color: $gray_hover;
+      all: unset;
+      height: 100%;
+      width: 30%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      position: relative;
+
+      .Button_Chevron{
+        transform: scale(6.5);
+        position: absolute;
+        color: $oldBurgundy-500;
+        margin: 0 2.4rem;
       }
-      &:active{
-        border-color: $white;
-        background-color: $gray;
-    }
+
+      .Button_Chevron_White{
+        transform: scale(5);
+        color: $white;
+        position: absolute;
+      }
+
+      &:first-child {
+        justify-content: flex-start;
+
+        .Button_Chevron_White{
+          margin-left: 2.2rem;
+        }
+      }
+
+      &:last-child {
+        justify-content: flex-end;
+
+        .Button_Chevron_White{
+          margin-right: 2.2rem;
+        }
+      }
+
+      
     }
   }
 
@@ -52,7 +73,7 @@
     z-index: 2;
     color: $white;
     padding: 1.6rem 1.6rem 1.6rem 2.2rem;
-    background: linear-gradient(to bottom, transparent 0%, #3D3232 100%);
+    background: linear-gradient(to bottom, transparent 0%, #3d3232 100%);
     border-radius: 0 0 15px 15px;
     margin: 0;
     width: 100%;
@@ -65,12 +86,12 @@
     max-height: 100%;
     object-fit: cover;
 
-    & img{
+    & img {
       border-radius: 15px;
     }
   }
 
-  .Card__Counter{
+  .Card__Counter {
     position: absolute;
     top: 16px;
     right: 16px;
@@ -83,7 +104,7 @@
     padding: 0.8rem 1.2rem;
     z-index: 1;
   }
-  .Card__Info{
+  .Card__Info {
     position: absolute;
     display: flex;
     bottom: 16px;
@@ -91,7 +112,7 @@
     justify-content: space-between;
     padding: 1rem;
     z-index: 3;
-    .Card__Info__Button{
+    .Card__Info__Button {
       display: block;
       height: 5rem;
       width: 5rem;
@@ -112,5 +133,3 @@
     }
   }
 }
-
-
