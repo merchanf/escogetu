@@ -1,5 +1,7 @@
 import React, { useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import TinderCard from '../TinderCard/TinderCard';
 import Img from '../Img/Img';
 import RestaurantBio from '../RestaurantBio/RestaurantBio';
@@ -74,20 +76,24 @@ const Card = forwardRef(
                   onClick={handleLeftButton}
                   onTouchStart={handleLeftButton}
                 >
-                  {'<'}
+                  <ChevronLeftRoundedIcon className={styles.Button_Chevron} />
+                  <ChevronLeftRoundedIcon className={styles.Button_Chevron_White} />
                 </button>
               ) : (
                 <div />
               )}
-              {pictures && selectedPicture + 1 < pictures.length && (
+              {pictures && selectedPicture + 1 < pictures.length ? (
                 <button
                   type="button"
                   className={styles.Card__Buttons__Button}
                   onClick={handleRightButton}
                   onTouchStart={handleRightButton}
                 >
-                  {'>'}
+                  <ChevronRightRoundedIcon className={styles.Button_Chevron} />
+                  <ChevronRightRoundedIcon className={styles.Button_Chevron_White} />
                 </button>
+              ) : (
+                <div />
               )}
             </div>
             <p className={styles.Card__Name}>

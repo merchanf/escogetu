@@ -21,6 +21,9 @@ import { Instructions } from '@app/views';
 import './home.scss';
 
 import { useRestaurants } from '@hooks/useRestaurants';
+import colors from '@constants/colors.constants';
+
+const { linen } = colors;
 
 const HomeViewBase = (props) => {
   const { sessionId, match, likes, flow } = props;
@@ -47,7 +50,7 @@ const HomeViewBase = (props) => {
     if (match) {
       open(modalRef, {
         id: 'modalId',
-        background: '#f9ebea',
+        background: linen[50],
         // onClose: () => handleOnClose(match),
       });
     }
@@ -79,7 +82,7 @@ const HomeViewBase = (props) => {
       <div className="Home" ref={modalRef}>
         {match && (
           <Modal {...modalProps}>
-            <Layout background="Dark">
+            <Layout>
               <RestaurantDetails {...likes[match]} />
             </Layout>
           </Modal>
@@ -88,9 +91,9 @@ const HomeViewBase = (props) => {
           <CardList list={restaurants} onSwipe={onSwipe} onCardLeftScreen={onCardLeftScreen} />
         </div>
         <div className="Home__Buttons">
-          <CrossIconButton onClick={() => swipe('left')} size={size} color="red" />
+          <CrossIconButton onClick={() => swipe('left')} size={size} />
           <ShareButton sessionId={sessionId} domain={DOMAIN} />
-          <LikeIconButton onClick={() => swipe('right')} size={size} color="green" />
+          <LikeIconButton onClick={() => swipe('right')} size={size} />
         </div>
         <FeedbackButton projectId={FEEDBACK_ID} />
       </div>

@@ -1,4 +1,5 @@
 import withIconButton from './withIconButton/withIconButton';
+import withTextIconButton from './withTextIconButton/withTextIconButton';
 import LikeIcon from './LikeIcon';
 import ShareIcon from './ShareIcon';
 import CrossIcon from './CrossIcon';
@@ -31,4 +32,5 @@ export {
   TelegramIcon,
   WhatsappIcon,
   withIconButton,
+  withTextIconButton,
 };

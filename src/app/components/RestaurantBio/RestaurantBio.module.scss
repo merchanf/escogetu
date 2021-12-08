@@ -28,11 +28,11 @@
       color: $white;
       background-color: rgba(23, 32, 42, 0.78);
       &:hover {
-        border-color: $white_a05;
+        border-color: $white;
         background-color: $gray_hover;
       }
       &:active {
-        border-color: $white_a05;
+        border-color: $white;
         background-color: $gray;
       }
     }

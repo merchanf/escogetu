@@ -4,15 +4,8 @@ $gray: rgba(56, 56, 56, 0.5);
 $gray_hover: rgba(118, 118, 118, 0.5);
 $white: #fdfefe;
 $white_hover: #edeeee;
-$white_a05: rgba(253, 254, 254, 0.5);
 $green: #28b463;
 $blue: #3498db;
-
-$red_700: #c27574;
-$red_bg_soft: #fffdfd;
-$red_bg_hard: #f9ebea;
-$red_wine_soft: #C57F7F;
-$red_wine_hard: #8b0000;
 
 $extra-large-image-size: 4.8rem;
 $large-image-size: 4rem;
@@ -20,46 +13,57 @@ $medium-image-size: 3.2rem;
 $small-image-size: 2.4rem;
 $extra-small-image-size: 1.6rem;
 
-/* Reds */
-$red_lightest: #FDEEEE;
-$red_more_lighter: #F6A19F;
-$red_lighter: #F37A78;
-$red_light: #F16764;
-$red: #EF5350;
-$red_dark: #E5504D;
-$red_darker: #DA4C49;
-$red_more_darker: #C44442;
-$red_darkest: #983533;
+/* Red */
+$red-950: #180808;
+$red-900: #481918;
+$red-800: #782a28;
+$red-700: #a73a38;
+$red-600: #d74b48;
+$red-500: #ef5350;
+$red-400: #f16462;
+$red-300: #f48785;
+$red-200: #f7a9a8;
+$red-100: #facbcb;
+$red-50: #fdeeee;
 
-/* Purple */
-$purple_lightest: #F2E6FD;
-$purple_more_lighter: #DEC1FA;
-$purple_lighter: #CB9BF6;
-$purple_light: #B776F3;
-$purple: #A350EF;
-$purple_dark: #863EC8;
-$purple_darker: #692CA2;
-$purple_more_darker: #4C1A7B;
-$purple_darkest: #2F0854;
+/* Old Burgundy */
+$oldBurgundy-950: #070404;
+$oldBurgundy-900: #1c1210;
+$oldBurgundy-800: #2b1a19;
+$oldBurgundy-700: #392321;
+$oldBurgundy-600: #402825;
+$oldBurgundy-500: #472c29;
+$oldBurgundy-400: #59413e;
+$oldBurgundy-300: #7e6b69;
+$oldBurgundy-200: #a39694;
+$oldBurgundy-100: #c8c0bf;
+$oldBurgundy-50: #edeaea;
 
-/* blue */
-$blue_lightest: #ECFDFD;
-$blue_more_lighter: #C5F9FA;
-$blue_lighter: #9EF5F6;
-$blue_light: #77F1F3;
-$blue: #50ECEF;
-$blue_dark: #3DBBBD;
-$blue_darker: #2A898A;
-$blue_more_darker: #175758;
-$blue_darkest: #032525;
+/* Linen */
+$linen-950: #191716;
+$linen-900: #4a4642;
+$linen-800: #7b756f;
+$linen-700: #aca49b;
+$linen-600: #ddd3c7;
+$linen-500: #f6eadd;
+$linen-400: #f7ece0;
+$linen-300: #f9f0e7;
+$linen-200: #fbf5ee;
+$linen-100: #fcf9f5;
+$linen-50: #fefdfc;
 
-/* yellow */
-$yellow_lightest: #FDFDE9;
-$yellow_more_lighter: #F9FAC3;
-$yellow_lighter: #F5F69D;
-$yellow_light: #F1F377;
-$yellow: #ECEF50;
-$yellow_dark: #E7EA53;
-$yellow_darker: #E2E555;
-$yellow_more_darker: #D8DA59;
-$yellow_darkest: #C3C562;
+/* Deep Champagne */
+$deepChampagne-950: #191510;
+$deepChampagne-900: #4a402f;
+$deepChampagne-800: #7c6a4f;
+$deepChampagne-700: #ad946f;
+$deepChampagne-600: #debf8e;
+$deepChampagne-500: #f7d49e;
+$deepChampagne-400: #f8d8a8;
+$deepChampagne-300: #f9e1bb;
+$deepChampagne-200: #fbeacf;
+$deepChampagne-100: #fdf2e2;
+$deepChampagne-50: #fefbf5;
+
+$bananaMania: #fde6b6;
+$oasis: #feeecb;

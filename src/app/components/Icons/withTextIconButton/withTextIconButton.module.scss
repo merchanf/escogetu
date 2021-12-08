@@ -1,0 +1,11 @@
+@import '../../../../scss/colors';
+
+.withTextIconButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .withTextIconButton__Caption {
+    color: $red-500;
+  }
+}
