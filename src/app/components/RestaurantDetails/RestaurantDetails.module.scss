@@ -4,15 +4,17 @@
   align-items: center;
   background-color: $linen-500;
   background-image: url('./background_light_red.svg');
+  background-repeat: repeat;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
   height: 100%;
+  padding: 0 1.2rem;
   width: 100%;
-  color: $oldBurgundy-500;
-  font-size: 24px;
 
-  & p {
+  .RestaurantDetails__Title {
     margin: 3.2rem 0 1.6rem 0;
+    text-align: center;
   }
 
   & h1 {
@@ -27,6 +29,7 @@
     font-size: 2rem;
     font-weight: 400;
     margin: 0 0 1.6rem 0;
+    text-align: center;
   }
 
   .RestaurantDetails__Pin {
@@ -36,7 +39,9 @@
 
   .RestaurantDetails__Details {
     width: 80%;
-    padding: 1.2rem;
+    padding: 0;
+    margin-top: 1.8rem;
+
     .RestaurantDetails__Details__Ratings {
       display: flex;
       justify-content: space-between;
@@ -69,7 +74,9 @@
     justify-content: space-between;
     position: fixed;
     bottom: 1.6rem;
-    width: 576px;
+    max-width: 576px;
+    width: 100%;
+    padding: 0 1.2rem;
   }
 
   .IconStyle{
@@ -79,5 +86,11 @@
   .RatingStyle{
     transform: scale(2.5);
     margin: 1.2rem 1.6rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    .RestaurantDetails__Details {
+      width: 100%;
+    }
   }
 }

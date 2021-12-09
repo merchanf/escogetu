@@ -9,15 +9,17 @@ import StarIcon from '@mui/icons-material/Star';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import BookOnlineIcon from '@mui/icons-material/BookOnline';
 import LanguageIcon from '@mui/icons-material/Language';
-import { withTextIconButton, CallIcon } from '@components/Icons/Icons';
+import CallIcon from '@mui/icons-material/Call';
+import { withTextIconButton } from '@components/Icons/Icons';
 import colors from '@constants/colors.constants';
+import { isIos, isMobilePhone } from '@utils/utils';
 
 import styles from './RestaurantDetails.module.scss';
 
-const { oldBurgundy } = colors;
+const { oldBurgundy, red } = colors;
 
 const IconWrapper = () => (
-  <LocationOnIcon className={styles.IconStyle} style={{ color: '#8B0000' }} />
+  <LocationOnIcon className={styles.IconStyle} style={{ color: red[500] }} />
 );
 
 const defaultProps = {
@@ -54,12 +56,16 @@ const RestaurantDetails = ({
   };
 
   const directions = () => {
-    window.location.href = `geo:${lat},${lng}`;
+    if (isIos() || !isMobilePhone()) {
+      window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`);
+    } else {
+      window.location.href = `geo:${lat},${lng}`;
+    }
   };
 
   return (
     <div className={styles.RestaurantDetails}>
-      <p>Hoy vamos a comer en...</p>
+      <p className={styles.RestaurantDetails__Title}>Hoy vamos a comer en...</p>
       <h1 className={styles.RestaurantDetails__Name}>¡{name}!</h1>
       <h2>A ti y a tus amigos les ha gustado este restaurante</h2>
       <div style={{ height: '200px', width: '70%' }}>
@@ -114,7 +120,13 @@ const RestaurantDetails = ({
         </div>
       </div>
       <div className={styles.RestaurantDetails__CTAButtons}>
-        <CallIconButton onClick={call} caption="Llamar" size="large" disabled={!phoneNumber} />
+        <CallIconButton
+          onClick={call}
+          caption="Llamar"
+          size="large"
+          disabled={!phoneNumber}
+          iconStyle={styles.IconStyle}
+        />
         <DirectionsIconButton
           onClick={directions}
           caption="Direcciones"
