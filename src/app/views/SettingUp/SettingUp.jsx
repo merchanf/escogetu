@@ -20,7 +20,7 @@ import styles from './SettingUp.module.scss';
 const { red, oldBurgundy } = colors;
 
 const autocompleteStyles = {
-  control: (provided, state) => ({
+  control: (provided) => ({
     ...provided,
     border: `1px solid ${red[500]}`,
     borderRadius: '19px',
@@ -33,12 +33,13 @@ const autocompleteStyles = {
   }),
   input: (provided) => ({
     ...provided,
-    paddingLeft: `12px`,
+    paddingLeft: '12px',
     color: oldBurgundy[500],
   }),
   placeholder: (provided) => ({
     ...provided,
-    paddingLeft: `12px`,
+    paddingLeft: '12px',
+    fontSize: '12px',
   }),
   option: (provided) => ({
     ...provided,

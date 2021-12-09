@@ -7,6 +7,7 @@
   align-items: center;
   flex-wrap: wrap;
   color: $oldBurgundy-500;
+  padding: 2.4rem;
 
   .SettingUp__ZoneButtons{
     display: flex;
@@ -95,6 +96,22 @@
     transform: scale(2.5);
     color: $red-500;
     margin-left: 1.2rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    padding: 1.2rem;
+
+    h1{
+      font-size: 2.4rem;
+    }
+  
+    h2{
+      font-size: 1.8rem;
+    }
+  
+    h3{
+      font-size: 1.8rem;
+    }
   }
 }
 

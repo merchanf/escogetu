@@ -120,7 +120,13 @@ const RestaurantDetails = ({
         </div>
       </div>
       <div className={styles.RestaurantDetails__CTAButtons}>
-        <CallIconButton onClick={call} caption="Llamar" size="large" disabled={!phoneNumber} />
+        <CallIconButton
+          onClick={call}
+          caption="Llamar"
+          size="large"
+          disabled={!phoneNumber}
+          iconStyle={styles.IconStyle}
+        />
         <DirectionsIconButton
           onClick={directions}
           caption="Direcciones"
