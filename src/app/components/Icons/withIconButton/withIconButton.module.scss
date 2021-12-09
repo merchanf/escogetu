@@ -50,4 +50,19 @@
   .withIconButtonColor {
     color: $white;
   }
+
+  @media (max-width: 768px) {
+    &.withIconButton__large {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.6rem;
+      height: 5rem;
+      width: 5rem;
+
+      svg {
+        transform: scale(1.6);
+      }
+    }
+  }
 }

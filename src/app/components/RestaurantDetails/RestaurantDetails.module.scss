@@ -9,6 +9,7 @@
   flex-direction: column;
   overflow-y: auto;
   height: 100%;
+  padding: 0 1.2rem;
   width: 100%;
 
   .RestaurantDetails__Title {
@@ -37,8 +38,9 @@
   }
 
   .RestaurantDetails__Details {
-    width: 80%;
-    padding: 1.2rem;
+    width: 100%;
+    padding: 0;
+
     .RestaurantDetails__Details__Ratings {
       display: flex;
       justify-content: space-between;
@@ -73,6 +75,7 @@
     bottom: 1.6rem;
     max-width: 576px;
     width: 100%;
+    padding: 0 1.2rem;
   }
 
   .IconStyle{

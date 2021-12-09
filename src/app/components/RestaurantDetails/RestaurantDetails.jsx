@@ -9,7 +9,8 @@ import StarIcon from '@mui/icons-material/Star';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import BookOnlineIcon from '@mui/icons-material/BookOnline';
 import LanguageIcon from '@mui/icons-material/Language';
-import { withTextIconButton, CallIcon } from '@components/Icons/Icons';
+import CallIcon from '@mui/icons-material/Call';
+import { withTextIconButton } from '@components/Icons/Icons';
 import colors from '@constants/colors.constants';
 import { isIos, isMobilePhone } from '@utils/utils';
 
