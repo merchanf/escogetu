@@ -11,6 +11,7 @@ import BookOnlineIcon from '@mui/icons-material/BookOnline';
 import LanguageIcon from '@mui/icons-material/Language';
 import { withTextIconButton, CallIcon } from '@components/Icons/Icons';
 import colors from '@constants/colors.constants';
+import { isIos, isMobilePhone } from '@utils/utils';
 
 import styles from './RestaurantDetails.module.scss';
 
@@ -54,7 +55,11 @@ const RestaurantDetails = ({
   };
 
   const directions = () => {
-    window.location.href = `geo:${lat},${lng}`;
+    if (isIos() || !isMobilePhone()) {
+      window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`);
+    } else {
+      window.location.href = `geo:${lat},${lng}`;
+    }
   };
 
   return (

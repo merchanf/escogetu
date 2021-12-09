@@ -65,10 +65,13 @@
 
   h1{
     font-size: 3rem;
+    text-align: center;
   }
 
   h2{
     font-weight: 400;
+    text-align: center;
+
     &:last-of-type {
       margin-bottom: 0.8rem;
       margin-top: 2.8rem;
@@ -80,6 +83,7 @@
     margin-bottom: 1.8rem;
     font-weight: normal;
     font-family: 'lora';
+    text-align: center;
   }
 }
 
