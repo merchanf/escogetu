@@ -15,10 +15,10 @@ import { isIos, isMobilePhone } from '@utils/utils';
 
 import styles from './RestaurantDetails.module.scss';
 
-const { oldBurgundy } = colors;
+const { oldBurgundy, red } = colors;
 
 const IconWrapper = () => (
-  <LocationOnIcon className={styles.IconStyle} style={{ color: '#8B0000' }} />
+  <LocationOnIcon className={styles.IconStyle} style={{ color: red[500] }} />
 );
 
 const defaultProps = {
@@ -64,7 +64,7 @@ const RestaurantDetails = ({
 
   return (
     <div className={styles.RestaurantDetails}>
-      <p>Hoy vamos a comer en...</p>
+      <p className={styles.RestaurantDetails__Title}>Hoy vamos a comer en...</p>
       <h1 className={styles.RestaurantDetails__Name}>¡{name}!</h1>
       <h2>A ti y a tus amigos les ha gustado este restaurante</h2>
       <div style={{ height: '200px', width: '70%' }}>

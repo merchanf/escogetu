@@ -4,14 +4,14 @@
   align-items: center;
   background-color: $linen-500;
   background-image: url('./background_light_red.svg');
+  background-repeat: repeat;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
   height: 100%;
   width: 100%;
-  color: $oldBurgundy-500;
-  font-size: 24px;
 
-  & p {
+  .RestaurantDetails__Title {
     margin: 3.2rem 0 1.6rem 0;
     text-align: center;
   }
