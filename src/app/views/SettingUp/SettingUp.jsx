@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect, useDispatch } from 'react-redux';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
+import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { useHistory } from 'react-router-dom';
 import { setLocation, setFlow } from '@actions/session.action';
 // import { setZone } from '@actions/user.actions';
@@ -63,6 +64,7 @@ const SettingUpBase = (props) => {
   const [value, setValue] = useState(null);
   const [currentLocationLoading, setCurrentLocationLoading] = useState(false);
   const [autoCompleteLoading, setAutoCompleteLoading] = useState(false);
+  const [geoLocationLoaded, setGeoLocationLoaded] = useState();
 
   // const startFirebaseFlow = (sessionId, zone) => {
   //   dispatch(setFlow(sessionId, flows.FIRESTORE));
@@ -72,10 +74,16 @@ const SettingUpBase = (props) => {
 
   const getCurrentLocation = async () => {
     setCurrentLocationLoading(true);
-    const {
-      coords: { longitude, latitude },
-    } = await getGeoLocation();
-    setStateLocation({ latitude, longitude });
+
+    try {
+      const {
+        coords: { longitude, latitude },
+      } = await getGeoLocation();
+      setStateLocation({ latitude, longitude });
+      setGeoLocationLoaded(true);
+    } catch (error) {
+      setGeoLocationLoaded(false);
+    }
     setStateFlow(flows.NEARBY);
   };
 
@@ -167,8 +175,18 @@ const SettingUpBase = (props) => {
         <button type="button" onClick={getCurrentLocation}>
           Usar mi ubicación actual
         </button>
-        {currentLocationLoading && <CircularProgress />}
+        {(currentLocationLoading && geoLocationLoaded == null) ||
+          (geoLocationLoaded && <CircularProgress />)}
+        {geoLocationLoaded != null && !geoLocationLoaded && (
+          <ClearRoundedIcon className={styles.CrossIcon} />
+        )}
       </div>
+      {geoLocationLoaded != null && !geoLocationLoaded && (
+        <p>
+          No podemos acceder a tu ubicación. Revisa los permisos de tu teléfono o usa otra de las
+          opciones listadas
+        </p>
+      )}
     </section>
   );
 };

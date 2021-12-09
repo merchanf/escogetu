@@ -85,5 +85,16 @@
     font-family: 'lora';
     text-align: center;
   }
+
+  p {
+    color: $red-500;
+    text-align: center;
+  }
+
+  .CrossIcon {
+    transform: scale(2.5);
+    color: $red-500;
+    margin-left: 1.2rem;
+  }
 }
 
