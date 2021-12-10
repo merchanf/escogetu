@@ -31,19 +31,10 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      position: relative;
 
       .Button_Chevron{
-        transform: scale(6.5);
-        position: absolute;
         color: $oldBurgundy-500;
         margin: 0 2.4rem;
-      }
-
-      .Button_Chevron_White{
-        transform: scale(5);
-        color: $white;
-        position: absolute;
       }
 
       &:first-child {

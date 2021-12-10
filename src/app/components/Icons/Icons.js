@@ -11,6 +11,8 @@ import CopyIcon from './CopyIcon';
 import LinkIcon from './LinkIcon';
 import CrossCutterlyIcon from './CrossCutterlyIcon';
 import BittedHeartIcon from './BittedHeartIcon';
+import ChevronRightIcon from './ChevronRightIcon';
+import ChevronLeftIcon from './ChevronLeftIcon';
 
 const LikeIconButton = withIconButton(BittedHeartIcon);
 const ShareIconButton = withIconButton(ShareIcon);
@@ -22,6 +24,8 @@ export {
   CrossIconButton,
   BittedHeartIcon,
   CallIcon,
+  ChevronRightIcon,
+  ChevronLeftIcon,
   CopyIcon,
   CrossCutterlyIcon,
   CrossIcon,
