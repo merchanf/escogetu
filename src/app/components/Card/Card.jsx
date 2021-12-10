@@ -1,5 +1,6 @@
 import React, { useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
+import DirectionsWalkRoundedIcon from '@mui/icons-material/DirectionsWalkRounded';
 import { ChevronRightIcon, ChevronLeftIcon } from '@components/Icons/Icons';
 import TinderCard from '../TinderCard/TinderCard';
 import Img from '../Img/Img';
@@ -94,7 +95,9 @@ const Card = forwardRef(
               )}
             </div>
             <p className={styles.Card__Name}>
-              <b>{name}</b>, {distance}
+              <b>{name}</b>,
+              <DirectionsWalkRoundedIcon className={styles.Card__Name__Icon} />
+              {distance}
             </p>
           </div>
         </TinderCard>

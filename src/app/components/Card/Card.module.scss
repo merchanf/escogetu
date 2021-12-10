@@ -56,16 +56,23 @@
   }
 
   .Card__Name {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-    color: $white;
-    padding: 1.6rem 1.6rem 1.6rem 2.2rem;
     background: linear-gradient(to bottom, transparent 0%, #3d3232 100%);
     border-radius: 0 0 15px 15px;
+    bottom: 0;
+    color: $white;
+    font-size: 2.8rem;
+    left: 0;
     margin: 0;
+    padding: 1.6rem 1.6rem 1.6rem 2.2rem;
+    position: absolute;
     width: 100%;
+    z-index: 2;
+
+    .Card__Name__Icon{
+      transform: scale(2);
+      margin-left: 1.6rem;
+      margin-right: 0.8rem;
+    }
   }
 
   .Card__Image {
