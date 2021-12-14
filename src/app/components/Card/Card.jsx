@@ -1,7 +1,7 @@
 import React, { useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
-import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import DirectionsWalkRoundedIcon from '@mui/icons-material/DirectionsWalkRounded';
+import { ChevronRightIcon, ChevronLeftIcon } from '@components/Icons/Icons';
 import TinderCard from '../TinderCard/TinderCard';
 import Img from '../Img/Img';
 import RestaurantBio from '../RestaurantBio/RestaurantBio';
@@ -76,8 +76,7 @@ const Card = forwardRef(
                   onClick={handleLeftButton}
                   onTouchStart={handleLeftButton}
                 >
-                  <ChevronLeftRoundedIcon className={styles.Button_Chevron} />
-                  <ChevronLeftRoundedIcon className={styles.Button_Chevron_White} />
+                  <ChevronLeftIcon className={styles.Button_Chevron} />
                 </button>
               ) : (
                 <div />
@@ -89,15 +88,16 @@ const Card = forwardRef(
                   onClick={handleRightButton}
                   onTouchStart={handleRightButton}
                 >
-                  <ChevronRightRoundedIcon className={styles.Button_Chevron} />
-                  <ChevronRightRoundedIcon className={styles.Button_Chevron_White} />
+                  <ChevronRightIcon className={styles.Button_Chevron} />
                 </button>
               ) : (
                 <div />
               )}
             </div>
             <p className={styles.Card__Name}>
-              <b>{name}</b>, {distance}
+              <b>{name}</b>,
+              <DirectionsWalkRoundedIcon className={styles.Card__Name__Icon} />
+              {distance}
             </p>
           </div>
         </TinderCard>
