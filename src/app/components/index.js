@@ -1,6 +1,7 @@
 import Card from './Card/Card';
 import CardList from './CardList/CardList';
 import FeedbackButton from './FeedbackButton/FeedbackButton';
+import GooglePlacesAutocomplete from './GooglePlacesAutocomplete/GooglePlacesAutocomplete';
 import Layout from './Layout/Layout';
 import RestaurantDetails from './RestaurantDetails/RestaurantDetails';
 import ShareDialog from './ShareDialog/ShareDialog';
@@ -12,6 +13,7 @@ export {
   CardList,
   Card,
   FeedbackButton,
+  GooglePlacesAutocomplete,
   Layout,
   LoadingIcon,
   NoRestaurantsAvailable,
