@@ -18,7 +18,7 @@ import styles from './Location.module.scss';
 const { GOOGLE_API_KEY } = env;
 const { NEARBY, SPECIFIC_POINT } = flows;
 
-const Location = ({ sessionId }) => {
+const Location = ({ sessionId, nextStep }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -34,7 +34,6 @@ const Location = ({ sessionId }) => {
     dispatch(setZone(zone));
   };
   */
-
   const getCurrentLocation = async () => {
     setCurrentLocationLoading(true);
 
@@ -59,10 +58,11 @@ const Location = ({ sessionId }) => {
       setAutoCompleteLoading(false);
       setCurrentLocationLoading(false);
 
+      nextStep();
       // history.push(`/${SWIPE}`);
     };
     if (location && flow) initGoogleMaps();
-  }, [dispatch, flow, history, location, sessionId]);
+  }, [dispatch, flow, history, location, nextStep, sessionId]);
 
   useEffect(() => {
     const getLocation = async (placeId) => {
@@ -85,10 +85,10 @@ const Location = ({ sessionId }) => {
   }, [value]);
 
   return (
-    <section className={styles.SettingUp}>
+    <section className={styles.Location}>
       <h1> ¿Dónde vamos a comer hoy? </h1>
       <h2>Puedes escoger la zona (recomendado)</h2>
-      <div className={styles.SettingUp__ZoneButtons}>
+      <div className={styles.Location__ZoneButtons}>
         <button
           type="button"
           onClick={() => {
@@ -112,15 +112,15 @@ const Location = ({ sessionId }) => {
         </button>
       </div>
       <h2>Puedes buscar un punto de encuentro</h2>
-      <div className={styles.SettingUp__GooglePlacesAutocomplete}>
-        <div className={styles.SettingUp__GooglePlacesAutocomplete__Component}>
+      <div className={styles.Location__GooglePlacesAutocomplete}>
+        <div className={styles.Location__GooglePlacesAutocomplete__Component}>
           <GooglePlacesAutocomplete apiKey={GOOGLE_API_KEY} value={value} onChange={setValue} />
         </div>
         {autoCompleteLoading && <CircularProgress />}
       </div>
       <h2>O buscar restaurantes cerca a ti</h2>
       <h3>(Deberás darnos acceso a tu ubicación)</h3>
-      <div className={styles.SettingUp__CurrentLocation}>
+      <div className={styles.Location__CurrentLocation}>
         <button type="button" onClick={getCurrentLocation}>
           Usar mi ubicación actual
         </button>
@@ -142,10 +142,12 @@ const Location = ({ sessionId }) => {
 
 Location.defaultProps = {
   sessionId: '',
+  nextStep: () => {},
 };
 
 Location.propTypes = {
   sessionId: PropTypes.string,
+  nextStep: PropTypes.func,
 };
 
 export default Location;

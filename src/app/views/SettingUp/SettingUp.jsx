@@ -1,21 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 // import { useHistory } from 'react-router-dom';
 
 import Location from './Location/Location';
+import { ReactComponent as Logo } from './Logo.svg';
 
 import styles from './SettingUp.module.scss';
 
 const SettingUpBase = (props) => {
-  // const history = useHistory();
   const { sessionId } = props;
+
+  const [step, setStep] = useState(1);
+  // const history = useHistory();
 
   // const dispatch = useDispatch();
 
+  const goToNextStep = () => {
+    setStep(step + 1);
+  };
+
   return (
     <section className={styles.SettingUp}>
-      <Location sessionId={sessionId} />
+      <Logo className={styles.SettingUp__Logo} />
+      {step === 1 && <Location sessionId={sessionId} nextStep={goToNextStep} />}
     </section>
   );
 };

@@ -1,46 +1,45 @@
-@import "../../../../scss/colors";
+@import '../../../../scss/colors';
 
-.SettingUp {
+.Location {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   color: $oldBurgundy-500;
-  padding: 2.4rem;
 
-  .SettingUp__ZoneButtons{
+  .Location__ZoneButtons {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
   }
 
-  .SettingUp__GooglePlacesAutocomplete{
+  .Location__GooglePlacesAutocomplete {
     display: flex;
     width: 100%;
     flex-direction: row;
     align-items: center;
 
-    .SettingUp__GooglePlacesAutocomplete__Component{
+    .Location__GooglePlacesAutocomplete__Component {
       width: 90%;
       margin-right: 1.2rem;
     }
 
-    button{
+    button {
       margin-left: 1.2rem;
     }
   }
 
-  .SettingUp__CurrentLocation{
+  .Location__CurrentLocation {
     display: flex;
     flex-direction: row;
     align-items: center;
   }
 
-  button{
+  button {
     all: unset;
-    margin: 0.6rem; 
+    margin: 0.6rem;
     font-size: 1.4rem;
     height: 3.6rem;
     border-radius: 1.8rem;
@@ -48,28 +47,28 @@
     background-color: $red-500;
     color: $white;
     vertical-align: center;
-  
-    &:hover{
+
+    &:hover {
       background-color: $red-600;
     }
-  
-    &:active{
+
+    &:active {
       background-color: $red-700;
     }
-  
-    &:disabled{
+
+    &:disabled {
       background-color: $red-50;
       border: solid 1px $red-50;
       color: $oldBurgundy-500;
     }
   }
 
-  h1{
+  h1 {
     font-size: 3rem;
     text-align: center;
   }
 
-  h2{
+  h2 {
     font-weight: 400;
     text-align: center;
 
@@ -79,7 +78,7 @@
     }
   }
 
-  h3{
+  h3 {
     margin: 0;
     margin-bottom: 1.8rem;
     font-weight: normal;
@@ -101,17 +100,16 @@
   @media screen and (max-width: 768px) {
     padding: 1.2rem;
 
-    h1{
+    h1 {
       font-size: 2.4rem;
     }
-  
-    h2{
+
+    h2 {
       font-size: 1.8rem;
     }
-  
-    h3{
+
+    h3 {
       font-size: 1.8rem;
     }
   }
 }
-
