@@ -3,7 +3,9 @@ import { useStore, useDispatch } from 'react-redux';
 import { getNearRestaurants } from '@services/googleMaps.service';
 import { getRestaurantDetails } from '@services/restaurants.service';
 import { like } from '@actions/user.actions';
-import { MIN_DETAILED_RESTAURANTS, RADIUS } from '@constants/restaurants.constants';
+import { config } from '@constants/constants';
+
+const { MIN_DETAILED_RESTAURANTS, RADIUS } = config;
 
 const useGoogleMapsRestaurants = () => {
   const [loading, setLoading] = useState(true);

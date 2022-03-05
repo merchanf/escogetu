@@ -13,15 +13,14 @@ import {
   NoRestaurantsAvailable,
 } from '@app/components';
 import useWindowDimensions from '@hooks/useWindowDimensions';
-import { FEEDBACK_ID, DOMAIN } from '@constants/env.constants';
+import { env, colors } from '@constants/constants';
 import { CrossIconButton, LikeIconButton } from '@components/Icons/Icons';
 
 import 'react-morphing-modal/dist/ReactMorphingModal.css';
 import { Instructions } from '@app/views';
-import './home.scss';
-
 import { useRestaurants } from '@hooks/useRestaurants';
-import colors from '@constants/colors.constants';
+
+import './home.scss';
 
 const { linen } = colors;
 
@@ -92,10 +91,10 @@ const HomeViewBase = (props) => {
         </div>
         <div className="Home__Buttons">
           <CrossIconButton onClick={() => swipe('left')} size={size} />
-          <ShareButton sessionId={sessionId} domain={DOMAIN} />
+          <ShareButton sessionId={sessionId} />
           <LikeIconButton onClick={() => swipe('right')} size={size} />
         </div>
-        <FeedbackButton projectId={FEEDBACK_ID} />
+        <FeedbackButton projectId={env.FEEDBACK_ID} />
       </div>
     );
   };

@@ -1,7 +1,9 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Loader } from '@googlemaps/js-api-loader';
 import { HYDRATE_SECTION_NAME } from '@stores/hydrate.store';
-import { GOOGLE_API_KEY } from '@constants/env.constants';
+import { env } from '@constants/constants';
+
+const { GOOGLE_API_KEY } = env;
 
 // Maps
 export const setGoogleMapsLoading = createAction(`${HYDRATE_SECTION_NAME}/setGoogleMapsLoading`);

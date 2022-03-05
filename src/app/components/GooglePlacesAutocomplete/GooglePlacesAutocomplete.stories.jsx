@@ -11,13 +11,5 @@ const onChange = (data) => {
 };
 
 export const Default = () => (
-  <GooglePlacesAutocomplete
-    name="El corral"
-    distance="3 Km"
-    pictures={pictures}
-    onSwipe={onSwipe}
-    height={500}
-    width={500}
-    bio="Esta es una bio de prueba"
-  />
+  <GooglePlacesAutocomplete onChange={onChange} value="" apiKey="ApiKey" />
 );

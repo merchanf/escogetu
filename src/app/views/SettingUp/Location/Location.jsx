@@ -11,12 +11,12 @@ import { getRestaurantDetailsWithoutRestaurant } from '@services/googleMaps.serv
 import { initializeGoogleMaps } from '@actions/hydrate.action';
 import { getGeoLocation } from '@services/geoLocation.service';
 import { setLocation, setFlow } from '@actions/session.action';
-
-import flows from '@constants/flows.constants';
-import routes from '@constants/routes.constants';
-import { GOOGLE_API_KEY } from '@constants/env.constants';
+import { flows, env } from '@constants/constants';
 
 import styles from './Location.module.scss';
+
+const { GOOGLE_API_KEY } = env;
+const { NEARBY, SPECIFIC_POINT } = flows;
 
 const Location = ({ sessionId }) => {
   const history = useHistory();
@@ -30,7 +30,7 @@ const Location = ({ sessionId }) => {
   const [geoLocationLoaded, setGeoLocationLoaded] = useState();
 
   /* const startFirebaseFlow = (sessionId, zone) => {
-    dispatch(setFlow(sessionId, flows.FIRESTORE));
+    dispatch(setFlow(sessionId, FIRESTORE));
     dispatch(setZone(zone));
   };
   */
@@ -47,7 +47,7 @@ const Location = ({ sessionId }) => {
     } catch (error) {
       setGeoLocationLoaded(false);
     }
-    setStateFlow(flows.NEARBY);
+    setStateFlow(NEARBY);
   };
 
   // start google maps flow if location provided
@@ -59,7 +59,7 @@ const Location = ({ sessionId }) => {
       setAutoCompleteLoading(false);
       setCurrentLocationLoading(false);
 
-      // history.push(`/${routes.SWIPE}`);
+      // history.push(`/${SWIPE}`);
     };
     if (location && flow) initGoogleMaps();
   }, [dispatch, flow, history, location, sessionId]);
@@ -70,7 +70,7 @@ const Location = ({ sessionId }) => {
         location: { latitude, longitude },
       } = await getRestaurantDetailsWithoutRestaurant(placeId);
       setStateLocation({ latitude, longitude });
-      setStateFlow(flows.SPECIFIC_POINT);
+      setStateFlow(SPECIFIC_POINT);
     };
 
     if (value) {

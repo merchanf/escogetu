@@ -1,7 +1,9 @@
 /* eslint-disable camelcase */
 import { createRef } from 'react';
 import { distance } from '@utils/utils';
-import { RADIUS } from '@constants/restaurants.constants';
+import { config } from '@constants/constants';
+
+const { RADIUS } = config;
 
 const isNotARestaurant = (types) => types.includes('lodging') || types.includes('spa');
 const excludeNotRestaurantsFromResults = (results) =>

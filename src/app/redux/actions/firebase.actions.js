@@ -3,7 +3,11 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { HYDRATE_SECTION_NAME } from '@stores/hydrate.store';
-import {
+import { env } from '@constants/constants';
+
+import 'firebase/analytics';
+
+const {
   FIREBASE_API_KEY,
   FIREBASE_AUTH_DOMAIN,
   FIREBASE_PROJECT_ID,
@@ -11,9 +15,7 @@ import {
   FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_APP_ID,
   FIREBASE_MEASUREMENT_ID,
-} from '@constants/env.constants';
-
-import 'firebase/analytics';
+} = env;
 
 // Firebase
 export const setFirebaseLoading = createAction(`${HYDRATE_SECTION_NAME}/setFirebaseLoading`);

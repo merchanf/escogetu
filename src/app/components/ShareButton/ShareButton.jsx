@@ -4,12 +4,14 @@ import ShareDialog from '@components/ShareDialog/ShareDialog';
 import { isMobilePhone } from '@utils/utils';
 import { ShareIconButton } from '@components/Icons/Icons';
 
-const ShareButton = ({ domain, sessionId }) => {
+const ShareButton = ({ sessionId }) => {
   const [open, setOpen] = useState(false);
+  const { protocol, host } = window.location;
+
   const shareData = {
     title: 'Escoge tu!',
     text: 'No se que comer 🤔 haz click en el link y busquemos juntos!',
-    url: `${domain}?session=${sessionId}`,
+    url: `${protocol}//${host}/?session=${sessionId}`,
   };
 
   const openShareModal = async () => {
@@ -25,13 +27,8 @@ const ShareButton = ({ domain, sessionId }) => {
   );
 };
 
-ShareButton.defaultProps = {
-  domain: 'https://escogetu.com/',
-};
-
 ShareButton.propTypes = {
   sessionId: PropTypes.string.isRequired,
-  domain: PropTypes.string,
 };
 
 export default ShareButton;
