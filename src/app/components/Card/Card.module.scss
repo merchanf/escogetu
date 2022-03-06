@@ -32,7 +32,7 @@
       justify-content: flex-end;
       align-items: center;
 
-      .Button_Chevron{
+      .Button_Chevron {
         color: $oldBurgundy-500;
         margin: 0 2.4rem;
       }
@@ -40,7 +40,7 @@
       &:first-child {
         justify-content: flex-start;
 
-        .Button_Chevron_White{
+        .Button_Chevron_White {
           margin-left: 2.2rem;
         }
       }
@@ -48,10 +48,10 @@
       &:last-child {
         justify-content: flex-end;
 
-        .Button_Chevron_White{
+        .Button_Chevron_White {
           margin-right: 2.2rem;
         }
-      } 
+      }
     }
   }
 
@@ -68,7 +68,7 @@
     width: 100%;
     z-index: 2;
 
-    .Card__Name__Icon{
+    .Card__Name__Icon {
       transform: scale(2);
       margin-left: 1.6rem;
       margin-right: 0.8rem;

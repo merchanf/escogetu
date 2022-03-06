@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import {
   doc,
   addDoc,
@@ -19,10 +21,10 @@ export const getRestaurantsFromOptions = async (options, database) => {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
+
       console.log(doc.id, ' => ', doc.data());
     });
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.log(err);
   }
   return null;
@@ -38,7 +40,6 @@ export const createSession = async (userUid) => {
     const document = await addDoc(collection(db, 'session'), userObject);
     return document.id;
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.log(err);
   }
   return null;
@@ -77,7 +78,6 @@ export const addUserToSession = async (sessionId, userUid) => {
       await setDoc(docRef, storedDoc, { merge: true });
     }
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.log(err);
   }
   return null;
@@ -90,7 +90,6 @@ export const getSession = async (sessionId) => {
     const document = await getDoc(docRef);
     if (document.exists()) return document.data();
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.log(err);
   }
   return null;
@@ -124,7 +123,6 @@ export const addLike = async (sessionId, userUid, restaurantId) => {
       await setDoc(docRef, storedDoc, { merge: true });
     }
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.log(err);
   }
   return null;
@@ -163,7 +161,6 @@ export const markAsShown = async (sessionId, userUid, restaurantId) => {
       setDoc(docRef, storedDoc, { merge: true });
     }
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.log(err);
   }
   return null;
@@ -206,7 +203,6 @@ export const addZoneToSession = async (sessionId, zone) => {
       await setDoc(docRef, storedDoc, { merge: true });
     }
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.log(err);
   }
   return null;

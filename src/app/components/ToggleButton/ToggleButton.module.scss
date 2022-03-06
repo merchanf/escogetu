@@ -1,0 +1,16 @@
+@import '../../../scss/colors';
+
+.ToggleButton {
+  all: unset;
+  background: $white;
+  color: $oldBurgundy-500;
+  height: 2.8rem;
+  padding: 0.4rem 1.6rem;
+  border-radius: 2.8rem;
+  border: 0.1rem solid $red-500;
+}
+
+.isActive {
+  background: $red-500;
+  color: $white;
+}

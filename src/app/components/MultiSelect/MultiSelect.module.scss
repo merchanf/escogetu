@@ -1,0 +1,9 @@
+.MultiSelect {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .MultiSelect__Button {
+    margin: 0.4rem 0.8rem;
+  }
+}
