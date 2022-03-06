@@ -69,7 +69,13 @@ const Instructions = (props) => {
               classes={classes}
             />
           </div>
-          <div className={styles.Instructions__Body__Instruction}>{steps[step]}</div>
+          <button
+            type="button"
+            className={styles.Instructions__Body__Instruction}
+            onClick={nextStep}
+          >
+            {steps[step]}
+          </button>
           <div className={styles.Instructions__Buttons}>
             <div className={styles.Instructions__Buttons__Close}>
               <button type="button" onClick={onClose}>

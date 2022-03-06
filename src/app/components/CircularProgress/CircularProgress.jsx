@@ -3,8 +3,6 @@ import CP from '@mui/material/CircularProgress';
 
 import { colors } from '@constants/constants';
 
-import './CircularProgress.css';
-
 const { oldBurgundy } = colors;
 
 const CircularProgress = () => {
