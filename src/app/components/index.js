@@ -1,5 +1,6 @@
 import Card from './Card/Card';
 import CardList from './CardList/CardList';
+import CircularProgress from './CircularProgress/CircularProgress';
 import FeedbackButton from './FeedbackButton/FeedbackButton';
 import GooglePlacesAutocomplete from './GooglePlacesAutocomplete/GooglePlacesAutocomplete';
 import Layout from './Layout/Layout';
@@ -12,6 +13,7 @@ import NoRestaurantsAvailable from './NoRestaurantsAvailable/NoRestaurantsAvaila
 export {
   CardList,
   Card,
+  CircularProgress,
   FeedbackButton,
   GooglePlacesAutocomplete,
   Layout,

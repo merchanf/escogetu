@@ -176,3 +176,21 @@ export const getPicturesURL = async (restaurantId) => {
   const urlsPromises = res.items.map(getDownloadURL);
   return Promise.all(urlsPromises);
 };
+
+export const fetchZonesList = async (setZones, setZonesLoading) => {
+  try {
+    const db = getFirestore();
+    const zonesRef = collection(db, 'zones');
+    const q = query(zonesRef);
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setZones((prev) => [...prev, doc.data()]);
+    });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  } finally {
+    setZonesLoading(false);
+  }
+  return null;
+};

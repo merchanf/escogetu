@@ -2,21 +2,22 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
-import CircularProgress from '@mui/material/CircularProgress';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { useHistory } from 'react-router-dom';
 
-import { GooglePlacesAutocomplete } from '@components/index';
+import { GooglePlacesAutocomplete, CircularProgress } from '@components/index';
 import { getRestaurantDetailsWithoutRestaurant } from '@services/googleMaps.service';
+import { fetchZonesList } from '@services/firestore.service';
 import { initializeGoogleMaps } from '@actions/hydrate.action';
 import { getGeoLocation } from '@services/geoLocation.service';
 import { setLocation, setFlow } from '@actions/session.action';
-import { flows, env } from '@constants/constants';
+import { flows, env, routes } from '@constants/constants';
 
 import styles from './Location.module.scss';
 
 const { GOOGLE_API_KEY } = env;
-const { NEARBY, SPECIFIC_POINT } = flows;
+const { NEARBY, SPECIFIC_POINT, FIRESTORE } = flows;
+const { SWIPE } = routes;
 
 const Location = ({ sessionId, nextStep }) => {
   const history = useHistory();
@@ -28,12 +29,9 @@ const Location = ({ sessionId, nextStep }) => {
   const [currentLocationLoading, setCurrentLocationLoading] = useState(false);
   const [autoCompleteLoading, setAutoCompleteLoading] = useState(false);
   const [geoLocationLoaded, setGeoLocationLoaded] = useState();
+  const [zones, setZones] = useState([]);
+  const [zonesLoading, setZonesLoading] = useState(false);
 
-  /* const startFirebaseFlow = (sessionId, zone) => {
-    dispatch(setFlow(sessionId, FIRESTORE));
-    dispatch(setZone(zone));
-  };
-  */
   const getCurrentLocation = async () => {
     setCurrentLocationLoading(true);
 
@@ -58,11 +56,10 @@ const Location = ({ sessionId, nextStep }) => {
       setAutoCompleteLoading(false);
       setCurrentLocationLoading(false);
 
-      nextStep();
-      // history.push(`/${SWIPE}`);
+      history.push(`/${SWIPE}`);
     };
     if (location && flow) initGoogleMaps();
-  }, [dispatch, flow, history, location, nextStep, sessionId]);
+  }, [dispatch, flow, history, location, sessionId]);
 
   useEffect(() => {
     const getLocation = async (placeId) => {
@@ -84,33 +81,41 @@ const Location = ({ sessionId, nextStep }) => {
     }
   }, [value]);
 
+  useEffect(() => {
+    setZonesLoading(true);
+    fetchZonesList(setZones, setZonesLoading);
+  }, []);
+
+  const startFirebaseFlow = (zone) => {
+    dispatch(setFlow(sessionId, FIRESTORE));
+    //dispatch(setZone(zone));
+    nextStep();
+  };
+
   return (
     <section className={styles.Location}>
       <h1> ¿Dónde vamos a comer hoy? </h1>
       <h2>Puedes escoger la zona (recomendado)</h2>
       <div className={styles.Location__ZoneButtons}>
-        <button
-          type="button"
-          onClick={() => {
-            // startFirebaseFlow(sessionId, zones.ZONA_G);
-          }}
-          disabled
-        >
-          Zona G (Proximamente)
-        </button>
-        <button type="button" disabled>
-          Quinta de camacho (Proximamente)
-        </button>
-        <button type="button" disabled>
-          Macarena (Proximamente)
-        </button>
-        <button type="button" disabled>
-          Usaquén (Proximamente)
-        </button>
-        <button type="button" disabled>
-          Zona T (Proximamente)
-        </button>
+        {zonesLoading ? (
+          <CircularProgress />
+        ) : (
+          zones.map(({ label, available }) => (
+            <button
+              key={label}
+              type="button"
+              onClick={() => {
+                startFirebaseFlow(label);
+              }}
+              disabled={!available}
+            >
+              {label}
+              {!available && <p>*</p>}
+            </button>
+          ))
+        )}
       </div>
+      <p>* No disponible temporalmente</p>
       <h2>Puedes buscar un punto de encuentro</h2>
       <div className={styles.Location__GooglePlacesAutocomplete}>
         <div className={styles.Location__GooglePlacesAutocomplete__Component}>
