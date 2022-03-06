@@ -194,3 +194,20 @@ export const fetchZonesList = async (setZones, setZonesLoading) => {
   }
   return null;
 };
+
+export const addZoneToSession = async (sessionId, zone) => {
+  try {
+    const db = getFirestore();
+    const docRef = doc(db, `session/${sessionId}`);
+    const document = await getDoc(docRef);
+    if (document.exists()) {
+      const storedDoc = document.data();
+      storedDoc.zone = zone;
+      await setDoc(docRef, storedDoc, { merge: true });
+    }
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
+  return null;
+};

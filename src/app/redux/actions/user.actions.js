@@ -5,7 +5,6 @@ import { addLike as addLikeToDatabase } from '@services/firestore.service';
 // Likes management
 export const addLike = createAction(`${USER_SECTION_NAME}/addLikedElement`);
 export const setMatch = createAction(`${USER_SECTION_NAME}/setMatch`);
-export const setZone = createAction(`${USER_SECTION_NAME}/setZone`);
 
 export const like = (restaurant) => async (dispatch, store) => {
   const {

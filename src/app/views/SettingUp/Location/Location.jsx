@@ -10,7 +10,7 @@ import { getRestaurantDetailsWithoutRestaurant } from '@services/googleMaps.serv
 import { fetchZonesList } from '@services/firestore.service';
 import { initializeGoogleMaps } from '@actions/hydrate.action';
 import { getGeoLocation } from '@services/geoLocation.service';
-import { setLocation, setFlow } from '@actions/session.action';
+import { setLocation, setFlow, setZone } from '@actions/session.action';
 import { flows, env, routes } from '@constants/constants';
 
 import styles from './Location.module.scss';
@@ -88,7 +88,7 @@ const Location = ({ sessionId, nextStep }) => {
 
   const startFirebaseFlow = (zone) => {
     dispatch(setFlow(sessionId, FIRESTORE));
-    //dispatch(setZone(zone));
+    dispatch(setZone(sessionId, zone));
     nextStep();
   };
 

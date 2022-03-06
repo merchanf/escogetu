@@ -5,8 +5,9 @@ import {
   setGeoLocation,
   setGeoLocationLoading,
   setStateFlow as setFlow,
+  setStateZone as setZone,
 } from '@actions/session.action';
-import { addLike, setMatch, setZone } from '@actions/user.actions';
+import { addLike, setMatch } from '@actions/user.actions';
 
 const userReducer = createReducer(UserStore, (builder) => {
   builder.addCase(setGeoLocationLoading, (state, { payload }) => ({
@@ -22,10 +23,7 @@ const userReducer = createReducer(UserStore, (builder) => {
   }));
   builder.addCase(setZone, (state, { payload }) => ({
     ...state,
-    firestore: {
-      ...state.firestore,
-      zone: payload,
-    },
+    zone: payload,
   }));
   builder.addCase(setGeoLocation, (state, { payload }) => ({
     ...state,
