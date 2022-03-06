@@ -65,10 +65,9 @@ const RestaurantDetails = ({
 
   return (
     <div className={styles.RestaurantDetails}>
-      <p className={styles.RestaurantDetails__Title}>Hoy vamos a comer en...</p>
       <h1 className={styles.RestaurantDetails__Name}>¡{name}!</h1>
-      <h2>A ti y a tus amigos les ha gustado este restaurante</h2>
-      <div style={{ height: '200px', width: '70%' }}>
+      <h2>Tu y a tus amigos han escogido este restaurante</h2>
+      <div className={styles.RestaurantDetails__Map}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: apiKey, libraries: ['places'], version: 'weekly' }}
           center={{ lat, lng }}
@@ -119,35 +118,37 @@ const RestaurantDetails = ({
           )}
         </div>
       </div>
-      <div className={styles.RestaurantDetails__CTAButtons}>
-        <CallIconButton
-          onClick={call}
-          caption="Llamar"
-          size="large"
-          disabled={!phoneNumber}
-          iconStyle={styles.IconStyle}
-        />
-        <DirectionsIconButton
-          onClick={directions}
-          caption="Direcciones"
-          size="large"
-          disabled={!(lat && lng)}
-          iconStyle={styles.IconStyle}
-        />
-        <BookOnlineIconButton
-          onClick={() => {}}
-          caption="Reservar"
-          size="large"
-          disabled={!reservationLink}
-          iconStyle={styles.IconStyle}
-        />
-        <WebsiteIconButton
-          onClick={() => {}}
-          caption="Pagina web"
-          size="large"
-          disabled={!website}
-          iconStyle={styles.IconStyle}
-        />
+      <div className={styles.RestaurantDetails__Wrapper}>
+        <div className={styles.RestaurantDetails__Wrapper__CTAButtons}>
+          <CallIconButton
+            onClick={call}
+            caption="Llamar"
+            size="large"
+            disabled={!phoneNumber}
+            iconStyle={styles.IconStyle}
+          />
+          <DirectionsIconButton
+            onClick={directions}
+            caption="Direcciones"
+            size="large"
+            disabled={!(lat && lng)}
+            iconStyle={styles.IconStyle}
+          />
+          <BookOnlineIconButton
+            onClick={() => {}}
+            caption="Reservar"
+            size="large"
+            disabled={!reservationLink}
+            iconStyle={styles.IconStyle}
+          />
+          <WebsiteIconButton
+            onClick={() => {}}
+            caption="Pagina web"
+            size="large"
+            disabled={!website}
+            iconStyle={styles.IconStyle}
+          />
+        </div>
       </div>
     </div>
   );

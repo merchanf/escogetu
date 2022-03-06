@@ -1,0 +1,13 @@
+.Match {
+  position: relative;
+
+  &__CloseButton {
+    position: absolute;
+    top: 2.4rem;
+    right: 2.4rem;
+  }
+
+  &__CloseButtonIcon {
+    transform: scale(2);
+  }
+}

@@ -3,25 +3,17 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import styles from './Layout.module.scss';
 
-const Layout = ({ children, background }) => {
-  return (
-    <div
-      className={classnames(styles.Layout, {
-        [styles[`Layout__${background}`]]: background,
-      })}
-    >
-      {children}
-    </div>
-  );
+const Layout = ({ className, children }) => {
+  return <div className={classnames(styles.Layout, className)}>{children}</div>;
 };
 
 Layout.defaultProps = {
-  background: 'Light',
+  className: '',
 };
 
 Layout.propTypes = {
-  background: PropTypes.string,
   children: PropTypes.node.isRequired,
+  className: PropTypes.string,
 };
 
 export default Layout;

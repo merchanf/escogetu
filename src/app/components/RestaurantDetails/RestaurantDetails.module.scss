@@ -1,7 +1,6 @@
 @import '../../../scss/colors';
 
 .RestaurantDetails {
-  align-items: center;
   background-color: $linen-500;
   background-image: url('./background_light_red.svg');
   background-repeat: repeat;
@@ -9,8 +8,36 @@
   flex-direction: column;
   overflow-y: auto;
   height: 100%;
-  padding: 0 1.2rem;
+  padding: 6rem 10% 13rem 6%;
   width: 100%;
+
+  /* total width */
+  &::-webkit-scrollbar {
+    background-color: $linen-500;
+    width: 8px;
+  }
+
+  /* background of the scrollbar except button or resizer */
+  &::-webkit-scrollbar-track {
+    background-color: $linen-500;
+    &:hover {
+      background-color: $linen-600;
+    }
+  }
+
+  /* scrollbar itself */
+  &::-webkit-scrollbar-thumb {
+    background-color: $oldBurgundy-500;
+    border-radius: 8px;
+    &:hover {
+      background-color: $oldBurgundy-600;
+    }
+  }
+
+  /* set button(top and bottom of the scrollbar) */
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
 
   .RestaurantDetails__Title {
     margin: 3.2rem 0 1.6rem 0;
@@ -32,13 +59,18 @@
     text-align: center;
   }
 
-  .RestaurantDetails__Pin {
+  &__Map {
+    height: 20rem;
+    width: 70%;
+    margin: 0 auto;
+  }
+
+  &__Pin {
     color: $red-500;
     font-size: 36px;
   }
 
-  .RestaurantDetails__Details {
-    width: 80%;
+  &__Details {
     padding: 0;
     margin-top: 1.8rem;
 
@@ -69,21 +101,30 @@
     }
   }
 
-  .RestaurantDetails__CTAButtons {
+  &__Wrapper {
+    background: linear-gradient(to bottom, transparent 0%, $linen-500 75%);
+    bottom: 0;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    left: 0;
     position: fixed;
-    bottom: 1.6rem;
-    max-width: 576px;
     width: 100%;
-    padding: 0 1.2rem;
+    padding-bottom: 1.6rem;
+
+    &__CTAButtons {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      width: 70%;
+      max-width: 640px;
+    }
   }
 
-  .IconStyle{
+  .IconStyle {
     transform: scale(2.5);
   }
 
-  .RatingStyle{
+  .RatingStyle {
     transform: scale(2.5);
     margin: 1.2rem 1.6rem;
   }
@@ -91,6 +132,12 @@
   @media screen and (max-width: 768px) {
     .RestaurantDetails__Details {
       width: 100%;
+    }
+
+    &__Wrapper {
+      &__CTAButtons {
+        width: 96%;
+      }
     }
   }
 }
