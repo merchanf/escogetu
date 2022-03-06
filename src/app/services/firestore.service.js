@@ -201,6 +201,62 @@ export const addZoneToSession = async (sessionId, zone) => {
       const storedDoc = document.data();
       storedDoc.zone = zone;
       await setDoc(docRef, storedDoc, { merge: true });
+    } else {
+      await setDoc(docRef, { zone });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  return null;
+};
+
+export const fetchDietsList = async (setDiets, setDietsLoading) => {
+  try {
+    const db = getFirestore();
+    const dietsRef = collection(db, 'diets');
+    const q = query(dietsRef);
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setDiets((prev) => [...prev, doc.data().label]);
+    });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  } finally {
+    setDietsLoading(false);
+  }
+  return null;
+};
+
+export const addDietsToSession = async (sessionId, diets) => {
+  try {
+    const db = getFirestore();
+    const docRef = doc(db, `session/${sessionId}`);
+    const document = await getDoc(docRef);
+    if (document.exists()) {
+      const storedDoc = document.data();
+      storedDoc.diets = diets;
+      await setDoc(docRef, storedDoc, { merge: true });
+    } else {
+      await setDoc(docRef, { diets });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  return null;
+};
+
+export const addDietsToUser = async (userUid, diets) => {
+  try {
+    const db = getFirestore();
+    const docRef = doc(db, `users/${userUid}`);
+    const document = await getDoc(docRef);
+    if (document.exists()) {
+      const storedDoc = document.data();
+      storedDoc.diets = diets;
+      await setDoc(docRef, storedDoc, { merge: true });
+    } else {
+      await setDoc(docRef, { diets });
     }
   } catch (err) {
     console.log(err);

@@ -1,3 +1,4 @@
+import Button from './Button/Button';
 import Card from './Card/Card';
 import CardList from './CardList/CardList';
 import CircularProgress from './CircularProgress/CircularProgress';
@@ -13,6 +14,7 @@ import LoadingIcon from './LoadingIcon/LoadingIcon';
 import NoRestaurantsAvailable from './NoRestaurantsAvailable/NoRestaurantsAvailable';
 
 export {
+  Button,
   CardList,
   Card,
   CircularProgress,

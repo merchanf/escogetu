@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { useHistory } from 'react-router-dom';
 
-import { GooglePlacesAutocomplete, CircularProgress } from '@components/index';
+import { GooglePlacesAutocomplete, CircularProgress, Button } from '@components/index';
 import { getRestaurantDetailsWithoutRestaurant } from '@services/googleMaps.service';
 import { fetchZonesList } from '@services/firestore.service';
 import { initializeGoogleMaps } from '@actions/hydrate.action';
@@ -101,17 +101,18 @@ const Location = ({ sessionId, nextStep }) => {
           <CircularProgress />
         ) : (
           zones.map(({ label, available }) => (
-            <button
+            <Button
               key={label}
               type="button"
+              className={styles.Location__ZoneButtons__Button}
               onClick={() => {
                 startFirebaseFlow(label);
               }}
               disabled={!available}
             >
               {label}
-              {!available && <p>*</p>}
-            </button>
+              {!available && ' *'}
+            </Button>
           ))
         )}
       </div>
@@ -126,9 +127,7 @@ const Location = ({ sessionId, nextStep }) => {
       <h2>O buscar restaurantes cerca a ti</h2>
       <h3>(Deberás darnos acceso a tu ubicación)</h3>
       <div className={styles.Location__CurrentLocation}>
-        <button type="button" onClick={getCurrentLocation}>
-          Usar mi ubicación actual
-        </button>
+        <Button onClick={getCurrentLocation}>Usar mi ubicación actual</Button>
         {(currentLocationLoading && geoLocationLoaded == null) ||
           (geoLocationLoaded && <CircularProgress />)}
         {geoLocationLoaded != null && !geoLocationLoaded && (

@@ -7,7 +7,7 @@ import {
   setStateFlow as setFlow,
   setStateZone as setZone,
 } from '@actions/session.action';
-import { addLike, setMatch } from '@actions/user.actions';
+import { addLike, setMatch, setStateDiets as setDiets } from '@actions/user.actions';
 
 const userReducer = createReducer(UserStore, (builder) => {
   builder.addCase(setGeoLocationLoading, (state, { payload }) => ({
@@ -24,6 +24,10 @@ const userReducer = createReducer(UserStore, (builder) => {
   builder.addCase(setZone, (state, { payload }) => ({
     ...state,
     zone: payload,
+  }));
+  builder.addCase(setDiets, (state, { payload }) => ({
+    ...state,
+    diets: payload,
   }));
   builder.addCase(setGeoLocation, (state, { payload }) => ({
     ...state,
