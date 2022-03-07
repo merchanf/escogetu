@@ -74,7 +74,7 @@ const HomeViewBase = (props) => {
 
     if (restaurants) {
       return match ? (
-        <Match restaurant={likes[match]} onClose={onCloseMatch} />
+        <Match restaurant={likes[match]} onClose={onCloseMatch} showMap />
       ) : (
         <div className="Home" ref={modalRef}>
           <div className="Home__Body">

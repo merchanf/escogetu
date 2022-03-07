@@ -6,6 +6,14 @@ export default {
   title: 'RestaurantDetails',
 };
 
+const pictures = [
+  'https://via.placeholder.com/600x930/9B59B6?text=El%20Corral',
+  'https://via.placeholder.com/600x930/2E86C1?text=El%20Corral',
+  'https://via.placeholder.com/600x930/1ABC9C?text=El%20Corral',
+  'https://via.placeholder.com/600x930/F1C40F?text=El%20Corral',
+  'https://via.placeholder.com/600x930/7F8C8D?text=El%20Corral',
+];
+
 const props = {
   apiKey: 'AIzaSyB6UMb2CgplkVuv980ICp1Acc-C5czk-Oc',
   address: 'Cra 28 # 34 - 20',
@@ -15,6 +23,13 @@ const props = {
   phoneNumber: '3125107300',
   pricing: 3,
   rating: 3.5,
+  pictures,
 };
 
 export const Default = () => <RestaurantDetails {...props} />;
+
+export const WithMaps = () => <RestaurantDetails {...props} showMap />;
+
+export const WithPictures = () => <RestaurantDetails {...props} showPictures />;
+
+export const WithMapAndPictures = () => <RestaurantDetails {...props} showPictures showMap />;

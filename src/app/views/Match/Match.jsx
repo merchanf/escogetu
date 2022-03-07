@@ -13,9 +13,10 @@ import styles from './Match.module.scss';
 const CloseIconButton = withIconButton(CloseIcon);
 
 const Match = (props) => {
-  const { onClose, restaurant } = props;
+  const { onClose, restaurant, showMap } = props;
   const [restaurantDetails, setRestaurantDetails] = useState();
   const [loading, setLoading] = useState(false);
+  const [external, setExternal] = useState(false);
   const history = useHistory();
 
   const onError = useCallback(() => {
@@ -26,7 +27,6 @@ const Match = (props) => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const restaurantId = urlParams.get('restaurant');
-
     const fetchRestaurant = async () => {
       await fetchRestaurantFromFirebase(restaurantId, setRestaurantDetails, setLoading, onError);
     };
@@ -35,6 +35,7 @@ const Match = (props) => {
       setRestaurantDetails(restaurant);
     } else if (!restaurantDetails && restaurantId) {
       fetchRestaurant();
+      setExternal(true);
     }
   }, [restaurantDetails, history, onError, restaurant]);
 
@@ -51,7 +52,7 @@ const Match = (props) => {
       {loading || !restaurantDetails ? (
         <LoadingIcon />
       ) : (
-        <RestaurantDetails {...restaurantDetails} />
+        <RestaurantDetails {...restaurantDetails} showPictures={external} showMap={showMap} />
       )}
     </Layout>
   );
@@ -61,11 +62,13 @@ Match.propTypes = {
   onClose: PropTypes.func,
   // eslint-disable-next-line react/forbid-prop-types
   restaurant: PropTypes.object,
+  showMap: PropTypes.bool,
 };
 
 Match.defaultProps = {
   onClose: null,
   restaurant: null,
+  showMap: true,
 };
 
 export default Match;

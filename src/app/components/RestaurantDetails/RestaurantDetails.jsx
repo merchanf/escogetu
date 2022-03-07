@@ -1,6 +1,9 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
 import PropTypes from 'prop-types';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+
 import Rating from '@material-ui/lab/Rating';
 import { withStyles } from '@material-ui/core/styles';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
@@ -10,6 +13,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import BookOnlineIcon from '@mui/icons-material/BookOnline';
 import LanguageIcon from '@mui/icons-material/Language';
 import CallIcon from '@mui/icons-material/Call';
+
 import { withTextIconButton } from '@components/Icons/Icons';
 import colors from '@constants/colors.constants';
 import { isIos, isMobilePhone } from '@utils/utils';
@@ -24,6 +28,28 @@ const IconWrapper = () => (
 
 const defaultProps = {
   zoom: 15,
+};
+
+const carouselProps = {
+  showArrows: true,
+  showStatus: false,
+  showIndicators: false,
+  centerMode: true,
+  centerSlidePercentage: 80,
+  infiniteLoop: true,
+  showThumbs: false,
+  useKeyboardArrows: true,
+  autoPlay: true,
+  stopOnHover: true,
+  swipeable: true,
+  dynamicHeight: true,
+  emulateTouch: true,
+  autoFocus: false,
+  thumbWidth: 100,
+  selectedItem: 0,
+  interval: 3500,
+  transitionTime: 1000,
+  swipeScrollTolerance: 5,
 };
 
 const StyledRating = withStyles({
@@ -48,8 +74,11 @@ const RestaurantDetails = ({
   address,
   rating,
   pricing,
+  pictures,
   reservationLink,
   website,
+  showMap,
+  showPictures,
 }) => {
   const call = () => {
     window.location.href = `tel:${phoneNumber}`;
@@ -67,15 +96,30 @@ const RestaurantDetails = ({
     <div className={styles.RestaurantDetails}>
       <h1 className={styles.RestaurantDetails__Name}>¡{name}!</h1>
       <h2>Tu y tus amigos han escogido este restaurante</h2>
-      <div className={styles.RestaurantDetails__Map}>
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: apiKey, libraries: ['places'], version: 'weekly' }}
-          center={{ lat, lng }}
-          defaultZoom={defaultProps.zoom}
-        >
-          <IconWrapper lat={lat} lng={lng} />
-        </GoogleMapReact>
-      </div>
+
+      {showPictures && pictures && pictures.length > 0 && (
+        <div className={styles.RestaurantDetails__Carousel}>
+          <Carousel {...carouselProps}>
+            {pictures.map((src, index) => (
+              <div key={index} className={styles.RestaurantDetails__Carousel__Picture}>
+                <img src={src} alt={src} />
+              </div>
+            ))}
+          </Carousel>
+        </div>
+      )}
+
+      {showMap && (
+        <div className={styles.RestaurantDetails__Map}>
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: apiKey, libraries: ['places'], version: 'weekly' }}
+            center={{ lat, lng }}
+            defaultZoom={defaultProps.zoom}
+          >
+            <IconWrapper lat={lat} lng={lng} />
+          </GoogleMapReact>
+        </div>
+      )}
 
       <div className={styles.RestaurantDetails__Details}>
         <div className={styles.RestaurantDetails__Details__Ratings} />
@@ -161,6 +205,9 @@ RestaurantDetails.defaultProps = {
   reservationLink: null,
   website: null,
   apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+  pictures: [],
+  showMap: true,
+  showPictures: false,
 };
 
 RestaurantDetails.propTypes = {
@@ -176,6 +223,9 @@ RestaurantDetails.propTypes = {
   address: PropTypes.string.isRequired,
   rating: PropTypes.number,
   pricing: PropTypes.number,
+  pictures: PropTypes.arrayOf(PropTypes.string),
+  showMap: PropTypes.bool,
+  showPictures: PropTypes.bool,
 };
 
 export default RestaurantDetails;

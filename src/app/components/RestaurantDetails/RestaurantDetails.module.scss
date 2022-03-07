@@ -59,9 +59,23 @@
     text-align: center;
   }
 
+  &__Carousel {
+    &__Picture {
+      background-color: $oldBurgundy-500;
+      height: 30rem;
+      border: 2px solid $linen-500;
+
+      img {
+        object-fit: contain;
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+
   &__Map {
     height: 20rem;
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
   }
 
