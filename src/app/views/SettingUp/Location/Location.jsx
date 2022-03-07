@@ -56,7 +56,7 @@ const Location = ({ sessionId, nextStep }) => {
       setAutoCompleteLoading(false);
       setCurrentLocationLoading(false);
 
-      history.push(`/${SWIPE}`);
+      history.push(SWIPE);
     };
     if (location && flow) initGoogleMaps();
   }, [dispatch, flow, history, location, sessionId]);
