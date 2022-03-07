@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import routesConst from '@constants/routes.constants';
-import { HomeView, Instructions, SettingUp, Launcher } from '@app/views/index';
+import { HomeView, Instructions, SettingUp, Launcher, Match } from '@app/views/index';
 import { InitializationWrapper } from '@components/initializationWrapper/initialization-wrapper';
 
 export const routes = (
@@ -18,6 +18,9 @@ export const routes = (
       </Route>
       <Route path={routesConst.INSTRUCTIONS}>
         <Instructions />
+      </Route>
+      <Route path={routesConst.PROFILE}>
+        <Match />
       </Route>
     </Switch>
   </InitializationWrapper>

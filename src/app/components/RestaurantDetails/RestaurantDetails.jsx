@@ -66,7 +66,7 @@ const RestaurantDetails = ({
   return (
     <div className={styles.RestaurantDetails}>
       <h1 className={styles.RestaurantDetails__Name}>¡{name}!</h1>
-      <h2>Tu y a tus amigos han escogido este restaurante</h2>
+      <h2>Tu y tus amigos han escogido este restaurante</h2>
       <div className={styles.RestaurantDetails__Map}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: apiKey, libraries: ['places'], version: 'weekly' }}

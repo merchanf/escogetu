@@ -30,4 +30,8 @@
   animation-fill-mode: forwards;
   animation-play-state: running;
   transform-origin: 50% 50%;
+
+  svg {
+    transform: scale(1.5);
+  }
 }

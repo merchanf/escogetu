@@ -43,12 +43,7 @@ const InitializationWrapperBase = ({ children, userUid, sessionId, isFirebaseLoa
 };
 
 const mapStateToProps = ({
-  user: {
-    userUid,
-    sessionId,
-    likes,
-    geoLocation: { loading: loadingLocation },
-  },
+  user: { userUid, sessionId, likes },
   hydrate: {
     firebase: { loading: isFirebaseLoading },
   },

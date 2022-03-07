@@ -13,9 +13,11 @@ const LauncherBase = ({ isFirebaseLoading, hydrating, isGoogleMapsLoading, geoLo
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session');
+    const restaurantId = urlParams.get('restaurant');
     if (!hydrating && !isFirebaseLoading && !isGoogleMapsLoading) {
       let route = routes.SETTING_UP;
       if (sessionId) route = `${routes.SWIPE}?session=${sessionId}`;
+      if (restaurantId) route = `${routes.PROFILE}?restaurant=${restaurantId}`;
       history.push(route);
     }
   }, [geoLocation, history, hydrating, isFirebaseLoading, isGoogleMapsLoading]);
