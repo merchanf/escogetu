@@ -27,7 +27,7 @@ export const getPicturesURL = async (restaurantId) => {
   const picturesURL = await Promise.all(picturesPromises);
 
   return {
-    lowRespictures: lowResPicturesURL,
+    lowResPictures: lowResPicturesURL,
     pictures: picturesURL,
   };
 };
@@ -56,7 +56,7 @@ const restaurantAdapter = async (
     website,
   },
 ) => {
-  const { pictures, lowRespictures } = await getPicturesURL(restaurantId);
+  const { pictures, lowResPictures } = await getPicturesURL(restaurantId);
   return {
     restaurantId,
     address,
@@ -74,7 +74,7 @@ const restaurantAdapter = async (
       latitude,
       longitude,
     },
-    lowRespictures,
+    lowResPictures,
     menu,
     name,
     rating,
