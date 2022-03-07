@@ -44,6 +44,10 @@ const HomeViewBase = (props) => {
     else setSize('medium');
   }, [width]);
 
+  useEffect(() => {
+    console.log('restaurants', restaurants);
+  }, [restaurants]);
+
   const onCloseInstructions = () => {
     setShowInstructions(false);
   };

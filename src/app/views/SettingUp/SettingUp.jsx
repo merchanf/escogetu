@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
+import { routes } from '@constants/constants';
 import Location from './Location/Location';
 import Diets from './Diets/Diets';
 import { ReactComponent as Logo } from './Logo.svg';
 
 import styles from './SettingUp.module.scss';
 
+const STEPS = 2;
+
 const SettingUpBase = (props) => {
   const { sessionId, userUid } = props;
 
   const [step, setStep] = useState(1);
-  // const history = useHistory();
+  const history = useHistory();
 
   // const dispatch = useDispatch();
 
   const goToNextStep = () => {
-    setStep(step + 1);
+    if (step < STEPS) setStep(step + 1);
+    else history.push(routes.SWIPE);
   };
 
   return (

@@ -13,20 +13,109 @@ import {
 } from 'firebase/firestore';
 import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
 
-export const getRestaurantsFromOptions = async (options, database) => {
+export const getPicturesURL = async (restaurantId) => {
+  const storage = getStorage();
+  const listRef = ref(storage, `restaurants/${restaurantId}/pictures`);
+  const res = await listAll(listRef);
+  const lowResPictures = res.items.filter(({ _location }) => _location.path.includes('25x25'));
+  const pictures = res.items.filter(({ _location }) => !_location.path.includes('25x25'));
+
+  const lowResPicturesPromises = lowResPictures.map(getDownloadURL);
+  const picturesPromises = pictures.map(getDownloadURL);
+
+  const lowResPicturesURL = await Promise.all(lowResPicturesPromises);
+  const picturesURL = await Promise.all(picturesPromises);
+
+  return {
+    lowRespictures: lowResPicturesURL,
+    pictures: picturesURL,
+  };
+};
+
+const restaurantAdapter = async (
+  restaurantId,
+  {
+    address,
+    bio,
+    booking,
+    bookingType,
+    cuisines,
+    delivery,
+    deliveryType,
+    diets,
+    dishes,
+    facebook,
+    instagram,
+    latitude,
+    longitude,
+    menu,
+    name,
+    phone,
+    pricing,
+    rating,
+    website,
+  },
+) => {
+  const { pictures, lowRespictures } = await getPicturesURL(restaurantId);
+  return {
+    restaurantId,
+    address,
+    bio,
+    booking,
+    bookingType,
+    cuisines,
+    delivery,
+    deliveryType,
+    diets,
+    dishes,
+    facebook,
+    instagram,
+    location: {
+      latitude,
+      longitude,
+    },
+    lowRespictures,
+    menu,
+    name,
+    rating,
+    phoneNumber: phone,
+    pricing,
+    pictures,
+    website,
+  };
+};
+
+export const fetchRestaurantsFromOptions = async (
+  options,
+  setRestaurants,
+  setRestaurantsLoading,
+) => {
+  setRestaurantsLoading(true);
+  const queries = [];
+
+  if (options?.zone) {
+    queries.push(where('zone', '==', options.zone));
+  }
+
+  if (options?.diets && options.diets.length > 0) {
+    queries.push(where('diets', 'array-contains-any', options.diets));
+  }
+
   try {
     const db = getFirestore();
     const citiesRef = collection(db, 'restaurants');
-    const q = query(citiesRef, where('name', '==', 'chef burger'));
+    const q = query(citiesRef, ...queries);
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-
-      console.log(doc.id, ' => ', doc.data());
+    querySnapshot.forEach(async (doc) => {
+      const restaurant = await restaurantAdapter(doc.id, doc.data());
+      setRestaurants((oldRestaurants) => [...oldRestaurants, restaurant]);
     });
   } catch (err) {
     console.log(err);
+  } finally {
+    setRestaurantsLoading(false);
   }
+
   return null;
 };
 
@@ -164,14 +253,6 @@ export const markAsShown = async (sessionId, userUid, restaurantId) => {
     console.log(err);
   }
   return null;
-};
-
-export const getPicturesURL = async (restaurantId) => {
-  const storage = getStorage();
-  const listRef = ref(storage, `restaurants/${restaurantId}/pictures`);
-  const res = await listAll(listRef);
-  const urlsPromises = res.items.map(getDownloadURL);
-  return Promise.all(urlsPromises);
 };
 
 export const fetchZonesList = async (setZones, setZonesLoading) => {

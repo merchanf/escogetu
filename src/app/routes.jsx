@@ -10,13 +10,13 @@ export const routes = (
       <Route exact path="/">
         <Launcher />
       </Route>
-      <Route path={`/${routesConst.SETTING_UP}`}>
+      <Route path={routesConst.SETTING_UP}>
         <SettingUp />
       </Route>
-      <Route path={`/${routesConst.SWIPE}`}>
+      <Route path={routesConst.SWIPE}>
         <HomeView />
       </Route>
-      <Route path={`/${routesConst.INSTRUCTIONS}`}>
+      <Route path={routesConst.INSTRUCTIONS}>
         <Instructions />
       </Route>
     </Switch>
