@@ -11,7 +11,7 @@ const distance = (lat1, lon1, lat2, lon2) => {
   let d = haversine(lat1, lon1, lat2, lon2);
   if (d < 1) {
     d *= 1000;
-    return `${d.toFixed(0)} m`;
+    return `${d.toFixed(0)} mts`;
   }
   return `${d.toFixed(1)} Km`;
 };

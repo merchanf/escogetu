@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-
+import { createRef } from 'react';
 import {
   doc,
   addDoc,
@@ -58,7 +58,7 @@ const restaurantAdapter = async (
 ) => {
   const { pictures, lowResPictures } = await getPicturesURL(restaurantId);
   return {
-    restaurantId,
+    placeId: restaurantId,
     address,
     bio,
     booking,
@@ -77,11 +77,12 @@ const restaurantAdapter = async (
     lowResPictures,
     menu,
     name,
-    rating,
+    rating: Number.parseFloat(rating),
     phoneNumber: phone,
-    pricing,
+    pricing: Number.parseFloat(pricing),
     pictures,
     website,
+    ref: createRef(),
   };
 };
 
@@ -109,7 +110,10 @@ export const fetchRestaurantsFromOptions = async (
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach(async (doc) => {
       const restaurant = await restaurantAdapter(doc.id, doc.data());
-      setRestaurants((oldRestaurants) => [...oldRestaurants, restaurant]);
+      setRestaurants((oldRestaurants) => {
+        if (oldRestaurants) return [...oldRestaurants, restaurant];
+        return [restaurant];
+      });
     });
   } catch (err) {
     onError();

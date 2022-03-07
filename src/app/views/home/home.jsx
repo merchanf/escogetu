@@ -63,7 +63,7 @@ const HomeViewBase = (props) => {
     }
 
     if (restaurants == null || loading) return <LoadingIcon />;
-    if (restaurantsWithPhoto?.length === 0) return <NoRestaurantsAvailable />;
+    if (!match && restaurantsWithPhoto?.length === 0) return <NoRestaurantsAvailable />;
     if (showInstructions)
       return (
         <Instructions

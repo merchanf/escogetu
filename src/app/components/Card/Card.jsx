@@ -95,9 +95,12 @@ const Card = forwardRef(
               )}
             </div>
             <p className={styles.Card__Name}>
-              <b>{name}</b>,
-              <DirectionsWalkRoundedIcon className={styles.Card__Name__Icon} />
-              {distance}
+              <b>{name}</b>
+              {distance && (
+                <>
+                  ,<DirectionsWalkRoundedIcon className={styles.Card__Name__Icon} /> {distance}
+                </>
+              )}
             </p>
           </div>
         </TinderCard>
@@ -111,10 +114,11 @@ Card.defaultProps = {
   name: 'Restaurante',
   bio: '',
   lowResPictures: null,
+  distance: null,
 };
 
 Card.propTypes = {
-  distance: PropTypes.string.isRequired,
+  distance: PropTypes.string,
   id: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   name: PropTypes.string,
