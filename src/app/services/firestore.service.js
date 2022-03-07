@@ -89,6 +89,7 @@ export const fetchRestaurantsFromOptions = async (
   options,
   setRestaurants,
   setRestaurantsLoading,
+  onError,
 ) => {
   setRestaurantsLoading(true);
   const queries = [];
@@ -111,7 +112,7 @@ export const fetchRestaurantsFromOptions = async (
       setRestaurants((oldRestaurants) => [...oldRestaurants, restaurant]);
     });
   } catch (err) {
-    console.log(err);
+    onError();
   } finally {
     setRestaurantsLoading(false);
   }
@@ -255,7 +256,7 @@ export const markAsShown = async (sessionId, userUid, restaurantId) => {
   return null;
 };
 
-export const fetchZonesList = async (setZones, setZonesLoading) => {
+export const fetchZonesList = async (setZones, setZonesLoading, onError) => {
   try {
     const db = getFirestore();
     const zonesRef = collection(db, 'zones');
@@ -265,8 +266,7 @@ export const fetchZonesList = async (setZones, setZonesLoading) => {
       setZones((prev) => [...prev, doc.data()]);
     });
   } catch (err) {
-    // eslint-disable-next-line no-console
-    console.log(err);
+    onError();
   } finally {
     setZonesLoading(false);
   }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
@@ -81,10 +81,14 @@ const Location = ({ sessionId, nextStep }) => {
     }
   }, [value]);
 
+  const onError = useCallback(() => {
+    history.push(routes.LAUNCHER);
+  }, [history]);
+
   useEffect(() => {
     setZonesLoading(true);
-    fetchZonesList(setZones, setZonesLoading);
-  }, []);
+    fetchZonesList(setZones, setZonesLoading, onError);
+  }, [onError]);
 
   const startFirebaseFlow = (zone) => {
     dispatch(setFlow(sessionId, FIRESTORE));

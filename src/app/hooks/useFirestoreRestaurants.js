@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useStore, useDispatch } from 'react-redux';
-// import { MIN_DETAILED_RESTAURANTS } from '@constants/restaurants.constants';
+import { useHistory } from 'react-router-dom';
+import { routes } from '@constants/constants';
 import { fetchRestaurantsFromOptions } from '@services/firestore.service';
 import { like } from '@actions/user.actions';
 
 const useFirestoreRestaurants = () => {
   const [swiping, setSwiping] = useState(false);
-  const [restaurants, setRestaurants] = useState([]);
+  const [restaurants, setRestaurants] = useState(null);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const {
     user: { diets, zone },
@@ -26,6 +28,10 @@ const useFirestoreRestaurants = () => {
     }
   };
 
+  const onError = useCallback(() => {
+    history.push(routes.LAUNCHER);
+  }, [history]);
+
   const swipe = (direction) => {
     if (!swiping) {
       const restaurant = restaurants[restaurants.length - 1];
@@ -40,8 +46,8 @@ const useFirestoreRestaurants = () => {
       diets,
     };
 
-    fetchRestaurantsFromOptions(options, setRestaurants, setLoading);
-  }, [diets, zone]);
+    fetchRestaurantsFromOptions(options, setRestaurants, setLoading, onError);
+  }, [diets, onError, zone]);
 
   return { restaurants, loading, swipe, onSwipe, onCardLeftScreen };
 };
