@@ -16,11 +16,11 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import ShareIcon from '@mui/icons-material/Share';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import FacebookIcon from '@mui/icons-material/Facebook';
-// import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-// import CallIcon from '@mui/icons-material/Call';
+import CallIcon from '@mui/icons-material/Call';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
 import { ShareDialog } from '@components/index';
-import { withTextIconButton } from '@components/Icons/Icons';
+import { withTextIconButton, withIconButton } from '@components/Icons/Icons';
 import colors from '@constants/colors.constants';
 import { ctas, getCTA, isMobilePhone } from '@utils/utils';
 
@@ -67,8 +67,8 @@ const StyledRating = withStyles({
   },
 })(Rating);
 
-// const CallIconButton = withTextIconButton(CallIcon);
-// const DirectionsIconButton = withTextIconButton(DirectionsCarIcon);
+const CallIconButton = withIconButton(CallIcon);
+const DirectionsIconButton = withIconButton(DirectionsCarIcon);
 const BookOnlineIconButton = withTextIconButton(BookOnlineIcon);
 const DeliveryDiningIconButton = withTextIconButton(DeliveryDiningIcon);
 const InstagramIconButton = withTextIconButton(InstagramIcon);
@@ -223,6 +223,9 @@ const RestaurantDetails = ({
     return ctaComponents;
   };
 
+  const handlePhoneCall = getCTA(ctas.PHONE_NUMBER);
+  const handleDirections = getCTA(ctas.DIRECTIONS);
+
   return (
     <div className={styles.RestaurantDetails}>
       <h1 className={styles.RestaurantDetails__Name}>¡{name}!</h1>
@@ -267,6 +270,40 @@ const RestaurantDetails = ({
               />
             </>
           )}
+          {phoneNumber && (
+            <div className={styles.RestaurantDetails__Details__ContactInfo__CTA}>
+              <div>
+                <h3>Teléfono</h3>
+                <p className={styles.Text}>{phoneNumber}</p>
+              </div>
+              <div>
+                <CallIconButton
+                  onClick={() => handlePhoneCall(phoneNumber)}
+                  caption="Llamar"
+                  size="medium"
+                  iconStyle={styles.IconStyle}
+                />
+              </div>
+            </div>
+          )}
+
+          {address && (
+            <div className={styles.RestaurantDetails__Details__ContactInfo__CTA}>
+              <div>
+                <h3>Dirección</h3>
+                <p className={styles.Text}>{address}</p>
+              </div>
+              <div>
+                <DirectionsIconButton
+                  onClick={() => handleDirections(lat, lng)}
+                  caption="Direcciones"
+                  size="medium"
+                  iconStyle={styles.IconStyle}
+                />
+              </div>
+            </div>
+          )}
+
           {pricing && (
             <>
               <h3>Rango de precios</h3>
@@ -279,18 +316,7 @@ const RestaurantDetails = ({
               />
             </>
           )}
-          {phoneNumber && (
-            <>
-              <h3>Teléfono</h3>
-              <p className={styles.Text}>{phoneNumber}</p>
-            </>
-          )}
-          {address && (
-            <>
-              <h3>Dirección</h3>
-              <p className={styles.Text}>{address}</p>
-            </>
-          )}
+
           {cuisines && (
             <>
               <h3>Tipo de Cocina</h3>

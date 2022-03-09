@@ -88,13 +88,13 @@
     padding: 0;
     margin-top: 1.8rem;
 
-    .RestaurantDetails__Details__Ratings {
+    &__Ratings {
       display: flex;
       justify-content: space-between;
       width: 100%;
     }
 
-    .RestaurantDetails__Details__ContactInfo {
+    &__ContactInfo {
       display: flex;
       align-items: flex-start;
       justify-content: center;
@@ -111,6 +111,28 @@
         font-size: 2.8rem;
         font-weight: bold;
         margin: 0;
+      }
+
+      &__CTA {
+        display: grid;
+        grid-template-columns: 80% 20%;
+        grid-gap: 1.6rem;
+        width: 100%;
+        margin-top: 1.6rem;
+
+        div {
+          display: flex;
+          flex-flow: column;
+          justify-content: center;
+
+          h3 {
+            padding: 0;
+          }
+
+          &:last-child {
+            align-items: flex-end;
+          }
+        }
       }
     }
   }
