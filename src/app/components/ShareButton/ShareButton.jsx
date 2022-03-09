@@ -7,11 +7,11 @@ import { ShareIconButton } from '@components/Icons/Icons';
 const ShareButton = ({ sessionId }) => {
   const [open, setOpen] = useState(false);
   const { protocol, host } = window.location;
-
+  const url = `${protocol}//${host}/?session=${sessionId}`;
   const shareData = {
     title: 'Escoge tu!',
     text: 'No se que comer 🤔 haz click en el link y busquemos juntos!',
-    url: `${protocol}//${host}/?session=${sessionId}`,
+    url,
   };
 
   const openShareModal = async () => {
@@ -19,9 +19,11 @@ const ShareButton = ({ sessionId }) => {
     else setOpen(true);
   };
 
+  const text = encodeURIComponent(`No se que comer 🤔 entra a ${url} y busquemos juntos!`);
+
   return (
     <>
-      <ShareDialog onClose={() => setOpen(false)} url={shareData.url} open={open} />
+      <ShareDialog onClose={() => setOpen(false)} url={shareData.url} open={open} text={text} />
       <ShareIconButton onClick={openShareModal} size="small" color="blue" />
     </>
   );

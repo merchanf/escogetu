@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 import PropTypes from 'prop-types';
 import { Carousel } from 'react-responsive-carousel';
@@ -6,17 +6,23 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 import Rating from '@material-ui/lab/Rating';
 import { withStyles } from '@material-ui/core/styles';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import StarIcon from '@mui/icons-material/Star';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import BookOnlineIcon from '@mui/icons-material/BookOnline';
 import LanguageIcon from '@mui/icons-material/Language';
-import CallIcon from '@mui/icons-material/Call';
+import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import ShareIcon from '@mui/icons-material/Share';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import FacebookIcon from '@mui/icons-material/Facebook';
+// import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+// import CallIcon from '@mui/icons-material/Call';
 
+import { ShareDialog } from '@components/index';
 import { withTextIconButton } from '@components/Icons/Icons';
 import colors from '@constants/colors.constants';
-import { isIos, isMobilePhone } from '@utils/utils';
+import { ctas, getCTA, isMobilePhone } from '@utils/utils';
 
 import styles from './RestaurantDetails.module.scss';
 
@@ -61,35 +67,160 @@ const StyledRating = withStyles({
   },
 })(Rating);
 
-const CallIconButton = withTextIconButton(CallIcon);
-const DirectionsIconButton = withTextIconButton(DirectionsCarIcon);
+// const CallIconButton = withTextIconButton(CallIcon);
+// const DirectionsIconButton = withTextIconButton(DirectionsCarIcon);
 const BookOnlineIconButton = withTextIconButton(BookOnlineIcon);
-const WebsiteIconButton = withTextIconButton(LanguageIcon);
+const DeliveryDiningIconButton = withTextIconButton(DeliveryDiningIcon);
+const InstagramIconButton = withTextIconButton(InstagramIcon);
+const ShareIconButton = withTextIconButton(ShareIcon);
+const LanguageIconButton = withTextIconButton(LanguageIcon);
+const MenuBookIconButton = withTextIconButton(MenuBookIcon);
+const FacebookIconButton = withTextIconButton(FacebookIcon);
 
 const RestaurantDetails = ({
+  address,
+  apiKey,
+  booking,
+  bookingType,
+  cuisines,
+  delivery,
+  deliveryType,
+  dishes,
+  facebook,
+  instagram,
+  placeId,
+  menu,
   name,
   location: { latitude: lat, longitude: lng },
-  apiKey,
-  phoneNumber,
-  address,
-  rating,
   pricing,
+  phoneNumber,
   pictures,
-  reservationLink,
-  website,
+  rating,
   showMap,
   showPictures,
+  website,
 }) => {
-  const call = () => {
-    window.location.href = `tel:${phoneNumber}`;
-  };
+  const [open, setOpen] = useState(false);
+  const commaSeparated = (previousValue, currentValue) => `${previousValue}, ${currentValue}`;
 
-  const directions = () => {
-    if (isIos() || !isMobilePhone()) {
-      window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`);
-    } else {
-      window.location.href = `geo:${lat},${lng}`;
+  const getCTAs = () => {
+    const ctaComponents = [];
+
+    if (booking && bookingType) {
+      const handleBooking = getCTA(bookingType);
+      ctaComponents.push(
+        <BookOnlineIconButton
+          onClick={() => handleBooking(booking)}
+          caption="Reservar"
+          key="Reservar"
+          size="large"
+          disabled={!booking || !bookingType}
+          iconStyle={styles.IconStyle}
+        />,
+      );
     }
+
+    if (placeId) {
+      const { protocol, host } = window.location;
+      const url = `${protocol}//${host}/?restaurant=${placeId}`;
+
+      const shareData = {
+        title: '¿Hacemos parche?',
+        text: `Mira este restaurante que encontre, ¿vamos o miedo?`,
+        url,
+      };
+
+      const text = encodeURIComponent(
+        `Mira este restaurante que encontre: ${url}, ¿vamos o miedo?`,
+      );
+
+      const openShareModal = async () => {
+        if (isMobilePhone() && navigator?.share) await navigator.share(shareData);
+        else setOpen(true);
+      };
+
+      ctaComponents.push(
+        <div key="Compartir">
+          <ShareDialog onClose={() => setOpen(false)} url={url} open={open} text={text} />
+          <ShareIconButton
+            onClick={openShareModal}
+            caption="Compartir"
+            size="large"
+            disabled={!placeId}
+            iconStyle={styles.IconStyle}
+          />
+        </div>,
+      );
+    }
+
+    if (delivery && deliveryType) {
+      const handleDelivery = getCTA(deliveryType);
+      ctaComponents.push(
+        <DeliveryDiningIconButton
+          onClick={() => handleDelivery(delivery)}
+          caption="Domicilio"
+          key="Domicilio"
+          size="large"
+          iconStyle={styles.IconStyle}
+        />,
+      );
+    }
+
+    if (menu && ctas.length < 4) {
+      const handleMenu = getCTA(ctas.WEBSITE);
+      ctaComponents.push(
+        <MenuBookIconButton
+          onClick={() => handleMenu(menu)}
+          caption="Menú"
+          key="Menu"
+          size="large"
+          iconStyle={styles.IconStyle}
+        />,
+      );
+    }
+
+    if (instagram && ctaComponents.length < 4) {
+      const handleInstagram = getCTA(ctas.INSTAGRAM);
+      ctaComponents.push(
+        <InstagramIconButton
+          onClick={() => handleInstagram(instagram)}
+          caption="Instagram"
+          key="Instagram"
+          size="large"
+          iconStyle={styles.IconStyle}
+        />,
+      );
+    }
+
+    if (website && ctaComponents.length < 4) {
+      const handleWebsite = getCTA(ctas.WEBSITE);
+      ctaComponents.push(
+        <LanguageIconButton
+          onClick={() => handleWebsite(website)}
+          caption="Sitio web"
+          key="Website"
+          size="large"
+          disabled={!website}
+          iconStyle={styles.IconStyle}
+        />,
+      );
+    }
+
+    if (facebook && ctaComponents.length < 4) {
+      const handleFacebook = getCTA(ctas.FACEBOOK);
+      ctaComponents.push(
+        <FacebookIconButton
+          onClick={() => handleFacebook(facebook)}
+          caption="Facebook"
+          key="Facebook"
+          size="large"
+          disabled={!website}
+          iconStyle={styles.IconStyle}
+        />,
+      );
+    }
+
+    return ctaComponents;
   };
 
   return (
@@ -160,45 +291,38 @@ const RestaurantDetails = ({
               <p className={styles.Text}>{address}</p>
             </>
           )}
+          {cuisines && (
+            <>
+              <h3>Tipo de Cocina</h3>
+              <p className={styles.Text}>{cuisines.reduce(commaSeparated)}</p>
+            </>
+          )}
+          {dishes && (
+            <>
+              <h3>Platos que sirven</h3>
+              <p className={styles.Text}>{dishes.reduce(commaSeparated)}</p>
+            </>
+          )}
         </div>
       </div>
       <div className={styles.RestaurantDetails__Wrapper}>
-        <div className={styles.RestaurantDetails__Wrapper__CTAButtons}>
-          <CallIconButton
-            onClick={call}
-            caption="Llamar"
-            size="large"
-            disabled={!phoneNumber}
-            iconStyle={styles.IconStyle}
-          />
-          <DirectionsIconButton
-            onClick={directions}
-            caption="Direcciones"
-            size="large"
-            disabled={!(lat && lng)}
-            iconStyle={styles.IconStyle}
-          />
-          <BookOnlineIconButton
-            onClick={() => {}}
-            caption="Reservar"
-            size="large"
-            disabled={!reservationLink}
-            iconStyle={styles.IconStyle}
-          />
-          <WebsiteIconButton
-            onClick={() => {}}
-            caption="Pagina web"
-            size="large"
-            disabled={!website}
-            iconStyle={styles.IconStyle}
-          />
-        </div>
+        <div className={styles.RestaurantDetails__Wrapper__CTAButtons}>{getCTAs()}</div>
       </div>
     </div>
   );
 };
 
 RestaurantDetails.defaultProps = {
+  booking: null,
+  bookingType: null,
+  cuisines: null,
+  delivery: null,
+  deliveryType: null,
+  diets: null,
+  dishes: null,
+  facebook: null,
+  instagram: null,
+  menu: null,
   rating: null,
   pricing: null,
   phoneNumber: null,
@@ -208,9 +332,20 @@ RestaurantDetails.defaultProps = {
   pictures: [],
   showMap: true,
   showPictures: false,
+  placeId: null,
 };
 
 RestaurantDetails.propTypes = {
+  booking: PropTypes.string,
+  bookingType: PropTypes.string,
+  cuisines: PropTypes.arrayOf(PropTypes.string),
+  delivery: PropTypes.string,
+  deliveryType: PropTypes.string,
+  diets: PropTypes.arrayOf(PropTypes.string),
+  dishes: PropTypes.arrayOf(PropTypes.string),
+  facebook: PropTypes.string,
+  instagram: PropTypes.string,
+  menu: PropTypes.string,
   name: PropTypes.string.isRequired,
   location: PropTypes.shape({
     latitude: PropTypes.number,
@@ -226,6 +361,7 @@ RestaurantDetails.propTypes = {
   pictures: PropTypes.arrayOf(PropTypes.string),
   showMap: PropTypes.bool,
   showPictures: PropTypes.bool,
+  placeId: PropTypes.string,
 };
 
 export default RestaurantDetails;

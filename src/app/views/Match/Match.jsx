@@ -28,7 +28,13 @@ const Match = (props) => {
     const urlParams = new URLSearchParams(window.location.search);
     const restaurantId = urlParams.get('restaurant');
     const fetchRestaurant = async () => {
-      await fetchRestaurantFromFirebase(restaurantId, setRestaurantDetails, setLoading, onError);
+      await fetchRestaurantFromFirebase(
+        restaurantId,
+        setRestaurantDetails,
+        setLoading,
+        onError,
+        true,
+      );
     };
 
     if (restaurant) {

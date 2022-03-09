@@ -120,17 +120,19 @@
     bottom: 0;
     display: flex;
     justify-content: center;
-    left: 0;
+    left: 50%;
     position: fixed;
     width: 100%;
+    max-width: 640px;
+    transform: translateX(-50%);
+
     padding-bottom: 1.6rem;
 
     &__CTAButtons {
       display: flex;
       justify-content: space-between;
       flex-direction: row;
-      width: 70%;
-      max-width: 640px;
+      width: 80%;
     }
   }
 

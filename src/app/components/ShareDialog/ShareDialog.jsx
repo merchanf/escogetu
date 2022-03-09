@@ -7,7 +7,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { LinkIcon, CopyIcon, WhatsappIcon, CrossIcon } from '../Icons/Icons';
 import styles from './ShareDialog.module.scss';
 
-const ShareDialog = ({ onClose, open, url }) => {
+const ShareDialog = ({ onClose, open, url, text }) => {
   const [openAlert, setOpenAlert] = useState(false);
 
   const handleClose = (_, reason) => {
@@ -22,8 +22,6 @@ const ShareDialog = ({ onClose, open, url }) => {
     setOpenAlert(true);
     navigator.clipboard.writeText(url);
   };
-
-  const text = encodeURIComponent(`No se que comer 🤔 entra a ${url} y busquemos juntos!`);
 
   const handleFocus = (event) => event.target.select();
 
@@ -51,7 +49,7 @@ const ShareDialog = ({ onClose, open, url }) => {
           </button>
           <button onClick={() => (location.href = `whatsapp://send/?text=${text}`)} type="button">
             <WhatsappIcon size="small" />
-            Whatsapp
+            WhatsApp
           </button>
           <button onClick={() => onClose(false)} type="button">
             <CrossIcon className={styles.ShareDialog__Button__Icon} size="small" />
@@ -67,6 +65,7 @@ ShareDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   url: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
 };
 
 export default ShareDialog;
