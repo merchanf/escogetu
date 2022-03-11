@@ -14,16 +14,12 @@ const useGoogleMapsRestaurants = () => {
   const [swiping, setSwiping] = useState(false);
   const dispatch = useDispatch();
 
-  const {
-    hydrate: {
-      googleMaps: { client, googleMaps },
-    },
-    user: {
-      geoLocation: {
-        location: { latitude, longitude },
-      },
-    },
-  } = useStore().getState();
+  const state = useStore().getState();
+
+  const client = state?.hydrate?.googleMaps?.client;
+  const googleMaps = state?.hydrate?.googleMaps?.googleMaps;
+  const latitude = state?.user?.geoLocation?.location?.latitude;
+  const longitude = state?.user?.geoLocation?.location?.longitude;
 
   const onCardLeftScreen = () => {
     setRestaurants((oldRestaurants) => oldRestaurants.slice(0, oldRestaurants.length - 1));

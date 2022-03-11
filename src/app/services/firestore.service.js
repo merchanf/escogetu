@@ -243,7 +243,7 @@ const shown = (array, id) => {
   return array;
 };
 
-export const markAsShown = async (sessionId, userUid, restaurantId) => {
+export const markAsShown = async (sessionId, restaurantId) => {
   try {
     const db = getFirestore();
     const docRef = doc(db, 'session', sessionId);

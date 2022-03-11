@@ -29,7 +29,7 @@ const InitializationWrapperBase = ({ children, userUid, sessionId, isFirebaseLoa
             const likesAmount = likes_?.length || 0;
             if (likesAmount === usersAmount && !poppedUp) {
               dispatch(setMatch(id));
-              markAsShown(sessionId, userUid, id);
+              markAsShown(sessionId, id);
             }
           });
         }
