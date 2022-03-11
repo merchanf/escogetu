@@ -108,13 +108,17 @@ export const fetchRestaurantsFromOptions = async (
     const citiesRef = collection(db, 'restaurants');
     const q = query(citiesRef, ...queries);
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (doc) => {
-      const restaurant = await restaurantAdapter(doc.id, doc.data());
-      setRestaurants((oldRestaurants) => {
-        if (oldRestaurants) return [...oldRestaurants, restaurant];
-        return [restaurant];
+    if (querySnapshot.empty) {
+      setRestaurants([]);
+    } else {
+      querySnapshot.forEach(async (doc) => {
+        const restaurant = await restaurantAdapter(doc.id, doc.data());
+        setRestaurants((oldRestaurants) => {
+          if (oldRestaurants) return [...oldRestaurants, restaurant];
+          return [restaurant];
+        });
       });
-    });
+    }
   } catch (err) {
     onError();
   } finally {
@@ -130,6 +134,7 @@ export const createSession = async (userUid) => {
     const userObject = {
       users: [userUid],
       likedRestaurants: [],
+      timestamp: new Date(),
     };
     const document = await addDoc(collection(db, 'session'), userObject);
     return document.id;
