@@ -64,7 +64,7 @@ const Match = (props) => {
       {loading || !restaurantDetails ? (
         <LoadingIcon />
       ) : (
-        <RestaurantDetails {...restaurantDetails} showPictures={external} showMap={showMap} />
+        <RestaurantDetails {...restaurantDetails} showPictures={external} showMap={!external} />
       )}
     </Layout>
   );
