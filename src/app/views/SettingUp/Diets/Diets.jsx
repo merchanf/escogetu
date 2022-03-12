@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
+import { logScreenView, setUserProperties } from '@services/googleAnalytics.service';
 import { setDiets } from '@actions/user.actions';
 import { Button, MultiSelect, CircularProgress } from '@components/index';
 import { fetchDietsList } from '@app/services/firestore.service';
+import { routes } from '@constants/constants';
 
 import styles from './Diets.module.scss';
 
 const Diets = (props) => {
   const { sessionId, userUid, nextStep } = props;
 
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const [text, setText] = useState('No, niguna');
@@ -36,9 +40,20 @@ const Diets = (props) => {
   };
 
   const handleOnClick = () => {
+    setUserProperties({ diets: selectedDiets }, { diets: selectedDiets });
     dispatch(setDiets(sessionId, userUid, selectedDiets));
     nextStep();
   };
+
+  const onError = useCallback(() => {
+    const { search } = window.location;
+    const path = search ? `${routes.LAUNCHER}${search}` : routes.LAUNCHER;
+    history.push(path);
+  }, [history]);
+
+  useEffect(() => {
+    logScreenView('location', onError);
+  }, [onError]);
 
   return (
     <section className={styles.Diets}>

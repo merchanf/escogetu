@@ -3,6 +3,7 @@ import { useStore, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@constants/constants';
 import { fetchRestaurantsFromOptions } from '@services/firestore.service';
+import { logSelectContent } from '@services/googleAnalytics.service';
 import { like } from '@actions/user.actions';
 
 const useFirestoreRestaurants = () => {
@@ -23,6 +24,7 @@ const useFirestoreRestaurants = () => {
 
   const onSwipe = async (direction, likedItem) => {
     if (direction === 'right') {
+      logSelectContent('restaurant', likedItem);
       const restaurant = restaurants.find(({ placeId }) => placeId === likedItem);
       dispatch(like(restaurant));
     }

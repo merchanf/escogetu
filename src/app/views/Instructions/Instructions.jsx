@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import colors from '@constants/colors.constants';
+import { logTutorialBegin, logTutorialComplete } from '@services/googleAnalytics.service';
 import Layout from '../../components/Layout/Layout';
 import styles from './Instructions.module.scss';
 import Step1 from './png/1Step.webp';
@@ -39,8 +40,15 @@ const Instructions = (props) => {
   const [step, setStep] = useState(0);
 
   useEffect(() => {
-    if (step > 4) onClose();
+    if (step > 4) {
+      logTutorialComplete();
+      onClose();
+    }
   }, [onClose, step]);
+
+  useEffect(() => {
+    logTutorialBegin();
+  }, []);
 
   const nextStep = () => {
     setStep((prevState) => prevState + 1);

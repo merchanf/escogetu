@@ -3,13 +3,13 @@ import { isIos, isMobilePhone } from '../utils';
 export const ctas = {
   PHONE_NUMBER: 'Phone number',
   WHATSAPP: 'WhatsApp',
-  EMAIL: 'email',
+  EMAIL: 'Email',
   FACEBOOK: 'facebook',
-  INSTAGRAM: 'instagram',
+  INSTAGRAM: 'Instagram',
   TWITTER: 'twitter',
   LINKEDIN: 'linkedin',
   YOUTUBE: 'youtube',
-  WEBSITE: 'website',
+  WEBSITE: 'Website',
   DIRECTIONS: 'directions',
   DISTANCE: 'distance',
 };

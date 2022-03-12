@@ -4,6 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useHistory } from 'react-router-dom';
 
 import { fetchRestaurant as fetchRestaurantFromFirebase } from '@services/firestore.service';
+import { logScreenView } from '@services/googleAnalytics.service';
 import { RestaurantDetails, Layout, LoadingIcon } from '@components/index';
 import { withIconButton } from '@components/Icons/Icons';
 import { routes } from '@constants/constants';
@@ -21,8 +22,13 @@ const Match = (props) => {
 
   const onError = useCallback(() => {
     const { search } = window.location;
-    history.push(`${routes.LAUNCHER}${search}`);
+    const path = search ? `${routes.LAUNCHER}${search}` : routes.LAUNCHER;
+    history.push(path);
   }, [history]);
+
+  useEffect(() => {
+    logScreenView('match', onError);
+  }, [onError]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);

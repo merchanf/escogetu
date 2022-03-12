@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useRef, useState } from 'react';
+import React, { useMemo, useEffect, useRef, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -16,6 +16,7 @@ import { env, routes } from '@constants/constants';
 import { CrossIconButton, LikeIconButton } from '@components/Icons/Icons';
 import { Instructions, Match } from '@app/views';
 import { useRestaurants } from '@hooks/useRestaurants';
+import { logScreenView } from '@services/googleAnalytics.service';
 
 import './home.scss';
 import { setMatch } from '@app/redux/actions/user.actions';
@@ -54,6 +55,16 @@ const HomeViewBase = (props) => {
     setShowInstructions(false);
     localStorage.setItem('closeAndNeverShowAgain', true);
   };
+
+  const onError = useCallback(() => {
+    const { search } = window.location;
+    const path = search ? `${routes.LAUNCHER}${search}` : routes.LAUNCHER;
+    history.push(path);
+  }, [history]);
+
+  useEffect(() => {
+    logScreenView('swipe', onError);
+  }, [onError]);
 
   const render = () => {
     try {

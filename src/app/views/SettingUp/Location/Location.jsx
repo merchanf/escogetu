@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 
 import { GooglePlacesAutocomplete, CircularProgress, Button } from '@components/index';
 import { getRestaurantDetailsWithoutRestaurant } from '@services/googleMaps.service';
+import { logScreenView } from '@services/googleAnalytics.service';
 import { fetchZonesList } from '@services/firestore.service';
 import { initializeGoogleMaps } from '@actions/hydrate.action';
 import { getGeoLocation } from '@services/geoLocation.service';
@@ -82,12 +83,18 @@ const Location = ({ sessionId, nextStep }) => {
   }, [value]);
 
   const onError = useCallback(() => {
-    history.push(routes.LAUNCHER);
+    const { search } = window.location;
+    const path = search ? `${routes.LAUNCHER}${search}` : routes.LAUNCHER;
+    history.push(path);
   }, [history]);
 
   useEffect(() => {
     setZonesLoading(true);
     fetchZonesList(setZones, setZonesLoading, onError);
+  }, [onError]);
+
+  useEffect(() => {
+    logScreenView('location', onError);
   }, [onError]);
 
   const startFirebaseFlow = (zone) => {

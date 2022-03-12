@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ShareDialog from '@components/ShareDialog/ShareDialog';
 import { isMobilePhone } from '@utils/utils';
 import { ShareIconButton } from '@components/Icons/Icons';
+import { logShareEvent } from '@services/googleAnalytics.service';
 
 const ShareButton = ({ sessionId }) => {
   const [open, setOpen] = useState(false);
@@ -15,6 +16,7 @@ const ShareButton = ({ sessionId }) => {
   };
 
   const openShareModal = async () => {
+    logShareEvent('session', sessionId, 'link');
     if (isMobilePhone() && navigator?.share) await navigator.share(shareData);
     else setOpen(true);
   };

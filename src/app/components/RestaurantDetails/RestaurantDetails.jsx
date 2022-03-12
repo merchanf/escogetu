@@ -23,6 +23,7 @@ import { ShareDialog } from '@components/index';
 import { withTextIconButton, withIconButton } from '@components/Icons/Icons';
 import colors from '@constants/colors.constants';
 import { ctas, getCTA, isMobilePhone } from '@utils/utils';
+import { logDelivery, logBooking, logShareEvent } from '@services/googleAnalytics.service';
 
 import styles from './RestaurantDetails.module.scss';
 
@@ -107,7 +108,11 @@ const RestaurantDetails = ({
     const ctaComponents = [];
 
     if (booking && bookingType) {
-      const handleBooking = getCTA(bookingType);
+      const handleBooking = () => {
+        const getBookingCTA = getCTA(bookingType);
+        getBookingCTA(delivery);
+        logBooking(placeId);
+      };
       ctaComponents.push(
         <BookOnlineIconButton
           onClick={() => handleBooking(booking)}
@@ -135,6 +140,7 @@ const RestaurantDetails = ({
       );
 
       const openShareModal = async () => {
+        logShareEvent('restaurant', placeId, 'link');
         if (isMobilePhone() && navigator?.share) await navigator.share(shareData);
         else setOpen(true);
       };
@@ -154,7 +160,11 @@ const RestaurantDetails = ({
     }
 
     if (delivery && deliveryType) {
-      const handleDelivery = getCTA(deliveryType);
+      const handleDelivery = () => {
+        const getDeliveryCTA = getCTA(deliveryType);
+        getDeliveryCTA(delivery);
+        logDelivery(placeId);
+      };
       ctaComponents.push(
         <DeliveryDiningIconButton
           onClick={() => handleDelivery(delivery)}
