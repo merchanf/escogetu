@@ -110,7 +110,7 @@ const RestaurantDetails = ({
     if (booking && bookingType) {
       const handleBooking = () => {
         const getBookingCTA = getCTA(bookingType);
-        getBookingCTA(delivery);
+        getBookingCTA(booking);
         logBooking(placeId);
       };
       ctaComponents.push(
