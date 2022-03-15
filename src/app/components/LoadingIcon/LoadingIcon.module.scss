@@ -34,4 +34,10 @@
   svg {
     transform: scale(1.5);
   }
+
+  @media screen and (max-width: 768px) {
+    svg {
+      transform: scale(1);
+    }
+  }
 }
