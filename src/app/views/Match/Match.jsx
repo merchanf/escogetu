@@ -14,7 +14,7 @@ import styles from './Match.module.scss';
 const CloseIconButton = withIconButton(CloseIcon);
 
 const Match = (props) => {
-  const { onClose, restaurant, showMap } = props;
+  const { onClose, restaurant } = props;
   const [restaurantDetails, setRestaurantDetails] = useState();
   const [loading, setLoading] = useState(false);
   const [external, setExternal] = useState(false);

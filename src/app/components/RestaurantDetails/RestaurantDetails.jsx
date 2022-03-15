@@ -254,7 +254,7 @@ const RestaurantDetails = ({
       )}
 
       {showMap && (
-        <div className={styles.RestaurantDetails__Map}>
+        <div className={styles.RestaurantDetails__Map} style={{ height: '25rem', width: '80%' }}>
           <GoogleMapReact
             bootstrapURLKeys={{ key: apiKey, libraries: ['places'], version: 'weekly' }}
             center={{ lat, lng }}

@@ -28,4 +28,9 @@
     color: $white;
     cursor: not-allowed;
   }
+
+  @media screen and (max-width: 768px) {
+    height: 2.4rem;
+    padding: 0.4rem 1.2rem;
+  }
 }
