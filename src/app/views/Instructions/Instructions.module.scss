@@ -6,16 +6,16 @@
   justify-items: center;
 
   &__Body {
-    height: 100%;
+    height: 90%;
     justify-items: center;
     display: grid;
     grid-template-rows: 2fr 1fr 2fr 15fr 5fr;
 
     &__Title {
       color: $oldBurgundy-900;
-      font-size: 2.8rem;
+      font-size: 3.2rem;
       margin: 0;
-      margin-top: 1.2rem;
+      margin-top: 3.2rem;
       text-align: center;
     }
 
@@ -113,6 +113,14 @@
           color: $oldBurgundy-500;
           background-color: $deepChampagne-700;
         }
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    &__Body {
+      &__Title {
+        font-size: 2.4rem;
       }
     }
   }
