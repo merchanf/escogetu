@@ -236,16 +236,13 @@ const RestaurantDetails = ({
     <div className={styles.RestaurantDetails}>
       <h1 className={styles.RestaurantDetails__Name}>¡{name}!</h1>
       <h2>
-        ¿Nos ayudas con 5 pregunticas en{' '}
+        Queremos mejorar para ti, ¿Nos ayudas con esta
         <a href={surveyLink} target="_blank" rel="noopener noreferrer">
-          esta encuesta
+          breve encuesta
           <OpenInNewIcon style={{ marginLeft: '8px', transform: 'scale(1.2)' }} />
         </a>
-        <span role="img" aria-label="pleading face">
-          🥺
-        </span>
-        <span role="img" aria-label="pray hands">
-          🙏
+        <span role="img" aria-label="Cool Face emoji">
+          😎
         </span>
         ?
       </h2>
