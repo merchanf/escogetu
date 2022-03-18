@@ -18,6 +18,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import CallIcon from '@mui/icons-material/Call';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 import { ShareDialog } from '@components/index';
 import { withTextIconButton, withIconButton } from '@components/Icons/Icons';
@@ -236,10 +237,26 @@ const RestaurantDetails = ({
   const handlePhoneCall = getCTA(ctas.PHONE_NUMBER);
   const handleDirections = getCTA(ctas.DIRECTIONS);
 
+  const surveyLink =
+    'https://docs.google.com/forms/d/e/1FAIpQLSfEdefHBjdg53Tz66j8MyRrJRAKqM35unY6g_tkCHId9TudEw/viewform?usp=sf_link';
+
   return (
     <div className={styles.RestaurantDetails}>
       <h1 className={styles.RestaurantDetails__Name}>¡{name}!</h1>
-      <h2>Tu y tus amigos han escogido este restaurante</h2>
+      <h2>
+        ¿Nos ayudas con 5 pregunticas en{' '}
+        <a href={surveyLink} target="_blank" rel="noopener noreferrer">
+          esta encuesta
+          <OpenInNewIcon style={{ marginLeft: '8px', transform: 'scale(1.2)' }} />
+        </a>
+        <span role="img" aria-label="pleading face">
+          🥺
+        </span>
+        <span role="img" aria-label="pray hands">
+          🙏
+        </span>
+        ?
+      </h2>
 
       {showPictures && pictures && pictures.length > 0 && (
         <div className={styles.RestaurantDetails__Carousel}>
