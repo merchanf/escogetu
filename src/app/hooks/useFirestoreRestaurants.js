@@ -48,7 +48,7 @@ const useFirestoreRestaurants = () => {
     const options = {
       zone,
       diets,
-      paginationLimit: PAGINATION_LIMIT,
+      limit: PAGINATION_LIMIT,
     };
 
     fetchRestaurantsFromOptions(options, setRestaurants, setLoading, onError);

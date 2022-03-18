@@ -258,7 +258,7 @@ const RestaurantDetails = ({
         ?
       </h2>
 
-      {showPictures && pictures && pictures.length > 0 && (
+      {pictures && pictures.length > 0 && (
         <div className={styles.RestaurantDetails__Carousel}>
           <Carousel {...carouselProps}>
             {pictures.map((src, index) => (
@@ -267,18 +267,6 @@ const RestaurantDetails = ({
               </div>
             ))}
           </Carousel>
-        </div>
-      )}
-
-      {showMap && (
-        <div className={styles.RestaurantDetails__Map} style={{ height: '25rem', width: '80%' }}>
-          <GoogleMapReact
-            bootstrapURLKeys={{ key: apiKey, libraries: ['places'], version: 'weekly' }}
-            center={{ lat, lng }}
-            defaultZoom={defaultProps.zoom}
-          >
-            <IconWrapper lat={lat} lng={lng} />
-          </GoogleMapReact>
         </div>
       )}
 
