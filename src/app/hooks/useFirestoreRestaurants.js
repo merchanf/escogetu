@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useStore, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { routes } from '@constants/constants';
+import { routes, config } from '@constants/constants';
 import { fetchRestaurantsFromOptions } from '@services/firestore.service';
 import { logSelectContent } from '@services/googleAnalytics.service';
 import { like } from '@actions/user.actions';
+
+const { FIRESTORE_PAGINATION_LIMIT: PAGINATION_LIMIT } = config;
 
 const useFirestoreRestaurants = () => {
   const [swiping, setSwiping] = useState(false);
@@ -46,6 +48,7 @@ const useFirestoreRestaurants = () => {
     const options = {
       zone,
       diets,
+      paginationLimit: PAGINATION_LIMIT,
     };
 
     fetchRestaurantsFromOptions(options, setRestaurants, setLoading, onError);

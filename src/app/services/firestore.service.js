@@ -10,6 +10,8 @@ import {
   getDocs,
   getFirestore,
   setDoc,
+  limit,
+  orderBy,
 } from 'firebase/firestore';
 import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
 
@@ -95,6 +97,8 @@ export const fetchRestaurantsFromOptions = async (
   setRestaurantsLoading(true);
   const queries = [];
 
+  queries.push(orderBy('rating', 'desc'));
+
   if (options?.zone) {
     queries.push(where('zone', '==', options.zone));
   }
@@ -102,6 +106,8 @@ export const fetchRestaurantsFromOptions = async (
   if (options?.diets && options.diets.length > 0) {
     queries.push(where('diets', 'array-contains-any', options.diets));
   }
+
+  queries.push(limit(options.limit));
 
   try {
     const db = getFirestore();
@@ -120,6 +126,7 @@ export const fetchRestaurantsFromOptions = async (
       });
     }
   } catch (err) {
+    console.log(err);
     onError();
   } finally {
     setRestaurantsLoading(false);

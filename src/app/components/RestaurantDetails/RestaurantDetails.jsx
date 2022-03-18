@@ -349,6 +349,7 @@ const RestaurantDetails = ({
 };
 
 RestaurantDetails.defaultProps = {
+  bio: '',
   booking: null,
   bookingType: null,
   cuisines: null,
@@ -372,6 +373,7 @@ RestaurantDetails.defaultProps = {
 };
 
 RestaurantDetails.propTypes = {
+  bio: PropTypes.string,
   booking: PropTypes.string,
   bookingType: PropTypes.string,
   cuisines: PropTypes.arrayOf(PropTypes.string),
