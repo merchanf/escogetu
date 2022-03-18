@@ -26,7 +26,7 @@ const Diets = (props) => {
     if (selectedDiets.length > 0) {
       setText('Siguiente');
     } else {
-      setText('No, niguna');
+      setText('No, ninguna');
     }
   }, [selectedDiets]);
 
