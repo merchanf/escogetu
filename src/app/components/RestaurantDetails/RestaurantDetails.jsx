@@ -28,15 +28,7 @@ import { logDelivery, logBooking, logShareEvent } from '@services/googleAnalytic
 
 import styles from './RestaurantDetails.module.scss';
 
-const { oldBurgundy, red } = colors;
-
-const IconWrapper = () => (
-  <LocationOnIcon className={styles.IconStyle} style={{ color: red[500] }} />
-);
-
-const defaultProps = {
-  zoom: 15,
-};
+const { oldBurgundy } = colors;
 
 const carouselProps = {
   showArrows: true,
