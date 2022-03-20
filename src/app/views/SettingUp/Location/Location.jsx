@@ -102,7 +102,6 @@ const Location = ({ sessionId, nextStep }) => {
           ))
         )}
       </div>
-      <p>* No disponible temporalmente</p>
       <h2>O buscar restaurantes cerca a ti</h2>
       <h3>(Deberás darnos acceso a tu ubicación)</h3>
       <div className={styles.Location__CurrentLocation}>
