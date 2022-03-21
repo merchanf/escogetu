@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import GoogleMapReact from 'google-map-react';
 import PropTypes from 'prop-types';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 import Rating from '@material-ui/lab/Rating';
 import { withStyles } from '@material-ui/core/styles';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import StarIcon from '@mui/icons-material/Star';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import BookOnlineIcon from '@mui/icons-material/BookOnline';
