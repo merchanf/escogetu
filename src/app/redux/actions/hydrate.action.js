@@ -4,6 +4,7 @@ import {
   createSession as createSessionInFirestore,
   getSession,
   addUserToSession,
+  addSessionToUser,
 } from '@services/firestore.service';
 import { USER_SECTION_NAME } from '@stores/user.store';
 import { initGoogleMaps } from '@actions/googleMaps.action';
@@ -67,6 +68,7 @@ export const initSession = (location) => async (dispatch) => {
   }
 
   await dispatch(setSession(sessionId));
+  addSessionToUser(userUid, sessionId);
   addUserToSession(sessionId, userUid);
   mySessionStorage.setItem('sessionId', sessionId);
   dispatch(setHydrating(false));

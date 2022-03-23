@@ -151,6 +151,36 @@ export const createSession = async (userUid) => {
   return null;
 };
 
+export const addSessionToUser = async (userUid, sessionId) => {
+  try {
+    const db = getFirestore();
+    const docRef = doc(db, `users/${userUid}`);
+    const document = await getDoc(docRef);
+    if (!document.empty) {
+      const doc = document.data();
+      let visits = 0;
+      let sessions = [];
+      if (doc?.sessions) {
+        visits = doc.visits + 1;
+      }
+
+      if (doc?.sessions) {
+        sessions = [...doc.sessions, sessionId];
+      } else {
+        sessions = [sessionId];
+      }
+
+      console.log('sessions', { ...doc, visits, sessions });
+      const storedDoc = { ...doc, visits, sessions };
+      await setDoc(docRef, storedDoc, { merge: true });
+    }
+    return document.id;
+  } catch (err) {
+    console.log(err);
+  }
+  return null;
+};
+
 export const setLocation = async (sessionId, location) => {
   const db = getFirestore();
   const docRef = doc(db, `session/${sessionId}`);
