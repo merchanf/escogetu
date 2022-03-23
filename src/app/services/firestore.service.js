@@ -97,7 +97,7 @@ export const fetchRestaurantsFromOptions = async (
   setRestaurantsLoading(true);
   const queries = [];
 
-  queries.push(orderBy('rating', 'desc'));
+  queries.push(orderBy('rating', 'asc'));
 
   if (options?.zone) {
     queries.push(where('zone', '==', options.zone));
@@ -117,9 +117,11 @@ export const fetchRestaurantsFromOptions = async (
     if (querySnapshot.empty) {
       setRestaurants([]);
     } else {
+      let index = 0;
       querySnapshot.forEach(async (doc) => {
         const restaurant = await restaurantAdapter(doc.id, doc.data());
         setRestaurants((oldRestaurants) => {
+          if (index++ === querySnapshot.size - 1) setRestaurantsLoading(false);
           if (oldRestaurants) return [...oldRestaurants, restaurant];
           return [restaurant];
         });
@@ -128,8 +130,6 @@ export const fetchRestaurantsFromOptions = async (
   } catch (err) {
     console.log(err);
     onError();
-  } finally {
-    setRestaurantsLoading(false);
   }
 
   return null;
