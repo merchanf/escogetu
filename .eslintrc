@@ -19,9 +19,6 @@
     "browser": true,
     "es6": true
   },
-  "globals": {
-    "__adroll__": true
-  },
   "rules": {
     "prettier/prettier": ["error", { "endOfLine": "auto" }],   
     "import/no-default-export": 0,

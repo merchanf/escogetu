@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -32,11 +32,6 @@ const HomeViewBase = (props) => {
   const [size, setSize] = useState('medium');
   const modalRef = useRef(null);
   const history = useHistory();
-
-  const restaurantsWithPhoto = useMemo(
-    () => restaurants?.filter((restaurant) => restaurant?.pictures?.length),
-    [restaurants],
-  );
 
   useEffect(() => {
     if (width > 768) setSize('large');
@@ -74,7 +69,7 @@ const HomeViewBase = (props) => {
     }
 
     if (restaurants == null || loading) return <LoadingIcon />;
-    if (!match && restaurantsWithPhoto?.length === 0) return <NoRestaurantsAvailable />;
+    if (!match && restaurants?.length === 0) return <NoRestaurantsAvailable />;
     if (showInstructions)
       return (
         <Instructions

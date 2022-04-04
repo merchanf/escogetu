@@ -34,7 +34,7 @@ export const getPicturesURL = async (restaurantId) => {
   };
 };
 
-const restaurantAdapter = async (
+const restaurantAdapter = (
   restaurantId,
   {
     address,
@@ -58,7 +58,6 @@ const restaurantAdapter = async (
     website,
   },
 ) => {
-  const { pictures, lowResPictures } = await getPicturesURL(restaurantId);
   return {
     placeId: restaurantId,
     address,
@@ -76,13 +75,11 @@ const restaurantAdapter = async (
       latitude,
       longitude,
     },
-    lowResPictures,
     menu,
     name,
     rating: Number.parseFloat(rating),
     phoneNumber: phone,
     pricing: Number.parseFloat(pricing),
-    pictures,
     website,
     ref: createRef(),
   };
@@ -114,19 +111,14 @@ export const fetchRestaurantsFromOptions = async (
     const citiesRef = collection(db, 'restaurants');
     const q = query(citiesRef, ...queries);
     const querySnapshot = await getDocs(q);
+    let restaurants = [];
     if (querySnapshot.empty) {
       setRestaurants([]);
     } else {
-      let index = 0;
-      querySnapshot.forEach(async (doc) => {
-        const restaurant = await restaurantAdapter(doc.id, doc.data());
-        setRestaurants((oldRestaurants) => {
-          if (index++ === querySnapshot.size - 1) setRestaurantsLoading(false);
-          if (oldRestaurants) return [...oldRestaurants, restaurant];
-          return [restaurant];
-        });
-      });
+      restaurants = querySnapshot.docs.map((doc) => restaurantAdapter(doc.id, doc.data()));
     }
+    setRestaurants(restaurants);
+    setRestaurantsLoading(false);
   } catch (err) {
     console.log(err);
     onError();
@@ -170,7 +162,6 @@ export const addSessionToUser = async (userUid, sessionId) => {
         sessions = [sessionId];
       }
 
-      console.log('sessions', { ...doc, visits, sessions });
       const storedDoc = { ...doc, visits, sessions };
       await setDoc(docRef, storedDoc, { merge: true });
     }
