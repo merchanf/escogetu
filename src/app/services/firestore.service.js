@@ -12,6 +12,7 @@ import {
   setDoc,
   limit,
   orderBy,
+  startAfter,
 } from 'firebase/firestore';
 import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
 
@@ -85,16 +86,11 @@ const restaurantAdapter = (
   };
 };
 
-export const fetchRestaurantsFromOptions = async (
-  options,
-  setRestaurants,
-  setRestaurantsLoading,
-  onError,
-) => {
-  setRestaurantsLoading(true);
+export const fetchRestaurantsFromOptions = async (options, onError) => {
   const queries = [];
+  const returnObj = {};
 
-  queries.push(orderBy('rating', 'asc'));
+  queries.push(orderBy('rating', 'desc'));
 
   if (options?.zone) {
     queries.push(where('zone', '==', options.zone));
@@ -104,27 +100,38 @@ export const fetchRestaurantsFromOptions = async (
     queries.push(where('diets', 'array-contains-any', options.diets));
   }
 
+  if (options?.startAt) {
+    queries.push(startAfter(options.startAt));
+  }
+
   queries.push(limit(options.limit));
 
+  let querySnapshot;
+  let restaurants = [];
   try {
     const db = getFirestore();
-    const citiesRef = collection(db, 'restaurants');
-    const q = query(citiesRef, ...queries);
-    const querySnapshot = await getDocs(q);
-    let restaurants = [];
-    if (querySnapshot.empty) {
-      setRestaurants([]);
-    } else {
-      restaurants = querySnapshot.docs.map((doc) => restaurantAdapter(doc.id, doc.data()));
+    const restaurantsRef = collection(db, 'restaurants');
+    const q = query(restaurantsRef, ...queries);
+    querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      restaurants = querySnapshot.docs
+        .reverse()
+        .map((doc) => restaurantAdapter(doc.id, doc.data()));
     }
-    setRestaurants(restaurants);
-    setRestaurantsLoading(false);
   } catch (err) {
     console.log(err);
     onError();
   }
 
-  return null;
+  if (querySnapshot && querySnapshot.size > 0) {
+    returnObj.lastSnapshot = querySnapshot.docs[querySnapshot.size - 1];
+  }
+
+  if (restaurants) {
+    returnObj.restaurants = restaurants;
+  }
+
+  return returnObj;
 };
 
 export const createSession = async (userUid) => {

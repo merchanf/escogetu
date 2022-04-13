@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useStore, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { routes, config } from '@constants/constants';
@@ -6,11 +6,15 @@ import { fetchRestaurantsFromOptions } from '@services/firestore.service';
 import { logSelectContent } from '@services/googleAnalytics.service';
 import { like } from '@actions/user.actions';
 
-const { FIRESTORE_PAGINATION_LIMIT: PAGINATION_LIMIT } = config;
+const {
+  FIRESTORE_PAGINATION_LIMIT: PAGINATION_LIMIT,
+  FIRESTORE_MINIMUM_RESTAURANTS: MINIMUM_RESTAURANTS,
+} = config;
 
 const useFirestoreRestaurants = () => {
   const [swiping, setSwiping] = useState(false);
   const [restaurants, setRestaurants] = useState(null);
+  const [startAt, setStartAt] = useState(null);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -44,15 +48,36 @@ const useFirestoreRestaurants = () => {
     }
   };
 
-  useEffect(() => {
-    const options = {
+  const options = useMemo(
+    () => ({
       zone,
       diets,
       limit: PAGINATION_LIMIT,
+      startAt,
+    }),
+    [diets, startAt, zone],
+  );
+
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      if (restaurants === null || restaurants.length < MINIMUM_RESTAURANTS) {
+        setLoading(true);
+
+        const { lastSnapshot, restaurants } = await fetchRestaurantsFromOptions(options, onError);
+
+        setRestaurants((prevRestaurants) =>
+          prevRestaurants && Array.isArray(prevRestaurants)
+            ? [...restaurants, ...prevRestaurants]
+            : restaurants,
+        );
+
+        setStartAt(lastSnapshot);
+        setLoading(false);
+      }
     };
 
-    fetchRestaurantsFromOptions(options, setRestaurants, setLoading, onError);
-  }, [diets, onError, zone]);
+    fetchRestaurants();
+  }, [diets, onError, options, restaurants, zone]);
 
   return { restaurants, loading, swipe, onSwipe, onCardLeftScreen };
 };
