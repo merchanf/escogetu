@@ -88,8 +88,6 @@ const RestaurantDetails = ({
   phoneNumber,
   pictures,
   rating,
-  showMap,
-  showPictures,
   website,
 }) => {
   const [open, setOpen] = useState(false);
@@ -359,8 +357,6 @@ RestaurantDetails.defaultProps = {
   website: null,
   apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   pictures: [],
-  showMap: true,
-  showPictures: false,
   placeId: null,
 };
 
@@ -389,8 +385,6 @@ RestaurantDetails.propTypes = {
   rating: PropTypes.number,
   pricing: PropTypes.number,
   pictures: PropTypes.arrayOf(PropTypes.string),
-  showMap: PropTypes.bool,
-  showPictures: PropTypes.bool,
   placeId: PropTypes.string,
 };
 
