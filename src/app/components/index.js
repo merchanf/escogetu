@@ -1,5 +1,6 @@
 import Button from './Button/Button';
 import Card from './Card/Card';
+import CardWrapper from './CardWrapper/CardWrapper';
 import CardList from './CardList/CardList';
 import CircularProgress from './CircularProgress/CircularProgress';
 import FeedbackButton from './FeedbackButton/FeedbackButton';
@@ -17,6 +18,7 @@ export {
   Button,
   CardList,
   Card,
+  CardWrapper,
   CircularProgress,
   FeedbackButton,
   GooglePlacesAutocomplete,

@@ -84,7 +84,12 @@ const HomeViewBase = (props) => {
       ) : (
         <div className="Home" ref={modalRef}>
           <div className="Home__Body">
-            <CardList list={restaurants} onSwipe={onSwipe} onCardLeftScreen={onCardLeftScreen} />
+            <CardList
+              list={restaurants}
+              onSwipe={onSwipe}
+              onCardLeftScreen={onCardLeftScreen}
+              flow={flow}
+            />
           </div>
           <div className="Home__Buttons">
             <CrossIconButton onClick={() => swipe('left')} size={size} />
