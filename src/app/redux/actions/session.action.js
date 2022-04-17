@@ -12,6 +12,10 @@ export const setGeoLocationLoading = createAction(`${USER_SECTION_NAME}/setGeoLo
 export const setGeoLocationError = createAction(`${USER_SECTION_NAME}/setGeoLocationError`);
 export const setStateFlow = createAction(`${USER_SECTION_NAME}/setFlow`);
 export const setStateZone = createAction(`${USER_SECTION_NAME}/setZone`);
+export const setRestaurantDetails = createAction(`${USER_SECTION_NAME}/setRestaurantDetails`);
+export const setRestaurantDetailsPictures = createAction(
+  `${USER_SECTION_NAME}/setRestaurantDetailsPictures`,
+);
 
 export const setLocation = (sessionId, location) => async (dispatch) => {
   await dispatch(setGeoLocation(location));

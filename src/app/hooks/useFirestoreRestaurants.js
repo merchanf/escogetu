@@ -5,6 +5,7 @@ import { routes, config } from '@constants/constants';
 import { fetchRestaurantsFromOptions } from '@services/firestore.service';
 import { logSelectContent } from '@services/googleAnalytics.service';
 import { like } from '@actions/user.actions';
+import { setRestaurantDetails } from '@actions/session.action';
 
 const {
   FIRESTORE_PAGINATION_LIMIT: PAGINATION_LIMIT,
@@ -65,6 +66,10 @@ const useFirestoreRestaurants = () => {
 
         const { lastSnapshot, restaurants } = await fetchRestaurantsFromOptions(options, onError);
 
+        restaurants.forEach((restaurant) => {
+          dispatch(setRestaurantDetails(restaurant));
+        });
+
         setRestaurants((prevRestaurants) =>
           prevRestaurants && Array.isArray(prevRestaurants)
             ? [...restaurants, ...prevRestaurants]
@@ -77,7 +82,7 @@ const useFirestoreRestaurants = () => {
     };
 
     fetchRestaurants();
-  }, [diets, onError, options, restaurants, zone]);
+  }, [diets, dispatch, onError, options, restaurants, zone]);
 
   return { restaurants, loading, swipe, onSwipe, onCardLeftScreen };
 };

@@ -389,30 +389,19 @@ export const addDietsToUser = async (userUid, diets) => {
   return null;
 };
 
-export const fetchRestaurant = async (
-  restaurantId,
-  setRestaurant,
-  setLoading,
-  onError,
-  noRef = false,
-) => {
-  setLoading(true);
+export const fetchRestaurant = async (restaurantId, onError, noRef = false) => {
   try {
     const db = getFirestore();
     const docRef = doc(db, `restaurants/${restaurantId}`);
     const document = await getDoc(docRef);
     if (document.exists()) {
-      const restaurant = await restaurantAdapter(document.id, document.data());
+      const restaurant = restaurantAdapter(document.id, document.data());
       if (noRef && restaurant?.ref) delete restaurant.ref;
-      setRestaurant(restaurant);
-    } else {
-      console.log('No restaurant found');
+      return restaurant;
     }
   } catch (err) {
     console.log(err);
     onError();
-  } finally {
-    setLoading(false);
   }
   return null;
 };

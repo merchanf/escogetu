@@ -17,7 +17,6 @@ const Match = (props) => {
   const { onClose, restaurant } = props;
   const [restaurantDetails, setRestaurantDetails] = useState();
   const [loading, setLoading] = useState(false);
-  const [external, setExternal] = useState(false);
   const history = useHistory();
 
   const onError = useCallback(() => {
@@ -34,20 +33,16 @@ const Match = (props) => {
     const urlParams = new URLSearchParams(window.location.search);
     const restaurantId = urlParams.get('restaurant');
     const fetchRestaurant = async () => {
-      await fetchRestaurantFromFirebase(
-        restaurantId,
-        setRestaurantDetails,
-        setLoading,
-        onError,
-        true,
-      );
+      setLoading(true);
+      const restaurantDetails = await fetchRestaurantFromFirebase(restaurantId, onError, true);
+      setRestaurantDetails(restaurantDetails);
+      setLoading(false);
     };
 
     if (restaurant) {
       setRestaurantDetails(restaurant);
     } else if (!restaurantDetails && restaurantId) {
       fetchRestaurant();
-      setExternal(true);
     }
   }, [restaurantDetails, history, onError, restaurant]);
 
@@ -64,7 +59,7 @@ const Match = (props) => {
       {loading || !restaurantDetails ? (
         <LoadingIcon />
       ) : (
-        <RestaurantDetails {...restaurantDetails} showPictures={external} showMap={!external} />
+        <RestaurantDetails {...restaurantDetails} />
       )}
     </Layout>
   );

@@ -1,8 +1,8 @@
-import React, { useState, useEffect, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import Skeleton from '@mui/material/Skeleton';
 
-import { getPicturesURL } from '@services/firestore.service';
+import useGetFirestorePictures from '@app/hooks/useGetFirestorePictures';
 import colors from '@constants/colors.constants';
 import Card from '@components/Card/Card';
 
@@ -10,23 +10,7 @@ const { deepChampagne } = colors;
 
 const CardWrapper = forwardRef((props, ref) => {
   const { id } = props;
-  const [loading, setLoading] = useState(false);
-  const [pictures, setPictures] = useState();
-  const [lowResPictures, setLowResPictures] = useState();
-
-  useEffect(() => {
-    const getPictures = async () => {
-      setLoading(true);
-      const { pictures, lowResPictures } = await getPicturesURL(id);
-      setPictures(pictures);
-      setLowResPictures(lowResPictures);
-      setLoading(false);
-    };
-
-    if (id && pictures == null) {
-      getPictures();
-    }
-  }, [id, pictures]);
+  const { loading, pictures, lowResPictures } = useGetFirestorePictures(id);
 
   const loadingCard = (
     <Skeleton

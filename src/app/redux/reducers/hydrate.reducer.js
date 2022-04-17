@@ -13,6 +13,7 @@ import {
   setDatabaseInstance,
   setFirebaseStorage,
 } from '@actions/firebase.actions';
+import { setRestaurantDetails, setRestaurantDetailsPictures } from '@actions/session.action';
 import { setHydrating } from '@actions/hydrate.action';
 
 const hydrateReducer = createReducer(HydrateStore, (builder) => {
@@ -83,6 +84,40 @@ const hydrateReducer = createReducer(HydrateStore, (builder) => {
     ...state,
     hydrating: payload,
   }));
+  builder.addCase(setRestaurantDetails, (state, { payload }) => {
+    if (payload?.ref) {
+      delete payload.ref;
+    }
+    return {
+      ...state,
+      application: {
+        ...state.application,
+        restaurants: {
+          ...state.application.restaurants,
+          [payload.placeId]: payload,
+        },
+      },
+    };
+  });
+  builder.addCase(setRestaurantDetailsPictures, (state, { payload }) => {
+    const { placeId, pictures, lowResPictures } = payload;
+    const restaurant = state.application.restaurants[placeId];
+    const newRestaurant = {
+      ...restaurant,
+      pictures,
+      lowResPictures,
+    };
+    return {
+      ...state,
+      application: {
+        ...state.application,
+        restaurants: {
+          ...state.application.restaurants,
+          [placeId]: newRestaurant,
+        },
+      },
+    };
+  });
 });
 
 export const HYDRATE_PARTIAL = {
