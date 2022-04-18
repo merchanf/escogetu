@@ -11,7 +11,7 @@ export const HydrateStore = {
     storage: null,
   },
   application: {
-    restaurants: null,
+    restaurants: {},
   },
   hydrating: true,
 };

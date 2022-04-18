@@ -85,16 +85,14 @@ const hydrateReducer = createReducer(HydrateStore, (builder) => {
     hydrating: payload,
   }));
   builder.addCase(setRestaurantDetails, (state, { payload }) => {
-    if (payload?.ref) {
-      delete payload.ref;
-    }
+    const { ref, ...restaurantDetails } = payload;
     return {
       ...state,
       application: {
         ...state.application,
         restaurants: {
           ...state.application.restaurants,
-          [payload.placeId]: payload,
+          [restaurantDetails.placeId]: restaurantDetails,
         },
       },
     };

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
 import { useHistory } from 'react-router-dom';
 
-import { fetchRestaurant as fetchRestaurantFromFirebase } from '@services/firestore.service';
+import useGetRestaurantDetails from '@hooks/useGetRestaurantDetails';
 import { logScreenView } from '@services/googleAnalytics.service';
 import { RestaurantDetails, Layout, LoadingIcon } from '@components/index';
 import { withIconButton } from '@components/Icons/Icons';
@@ -15,9 +15,21 @@ const CloseIconButton = withIconButton(CloseIcon);
 
 const Match = (props) => {
   const { onClose, restaurant } = props;
-  const [restaurantDetails, setRestaurantDetails] = useState();
-  const [loading, setLoading] = useState(false);
+
+  let placeId;
+  if (restaurant?.placeId) {
+    placeId = restaurant.placeId;
+  } else {
+    const urlParams = new URLSearchParams(window.location.search);
+    placeId = urlParams.get('restaurant');
+  }
+
+  const { loading, restaurantDetails } = useGetRestaurantDetails(placeId);
   const history = useHistory();
+
+  useEffect(() => {
+    console.log('Match.jsx: useEffect', restaurantDetails);
+  }, [restaurantDetails]);
 
   const onError = useCallback(() => {
     const { search } = window.location;
@@ -29,26 +41,9 @@ const Match = (props) => {
     logScreenView('match', onError);
   }, [onError]);
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const restaurantId = urlParams.get('restaurant');
-    const fetchRestaurant = async () => {
-      setLoading(true);
-      const restaurantDetails = await fetchRestaurantFromFirebase(restaurantId, onError, true);
-      setRestaurantDetails(restaurantDetails);
-      setLoading(false);
-    };
-
-    if (restaurant) {
-      setRestaurantDetails(restaurant);
-    } else if (!restaurantDetails && restaurantId) {
-      fetchRestaurant();
-    }
-  }, [restaurantDetails, history, onError, restaurant]);
-
   return (
     <Layout className={styles.Match}>
-      {onClose && (
+      {onClose && !loading && (
         <CloseIconButton
           className={styles.Match__CloseButton}
           onClick={onClose}

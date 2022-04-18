@@ -14,6 +14,7 @@ const CardList = ({ list, onSwipe, onCardLeftScreen, flow }) => {
         ({ placeId, name, details, pictures, lowResPictures, distance, ref: innerRef }, index) => (
           <SwipeCard
             id={placeId}
+            placeId={placeId}
             name={name}
             pictures={details?.pictures || pictures}
             lowResPictures={lowResPictures}
