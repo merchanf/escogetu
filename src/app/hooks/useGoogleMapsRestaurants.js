@@ -4,6 +4,7 @@ import { getNearRestaurants } from '@services/googleMaps.service';
 import { getRestaurantDetails } from '@services/restaurants.service';
 import { like } from '@actions/user.actions';
 import { config } from '@constants/constants';
+import { setRestaurantDetails } from '@actions/session.action';
 
 const { MIN_DETAILED_RESTAURANTS, RADIUS } = config;
 
@@ -73,11 +74,14 @@ const useGoogleMapsRestaurants = () => {
           .slice(0, length)
           .map((restaurantToDetail) => getRestaurantDetails(restaurantToDetail)),
       ).then((detailedRestaurants) => {
+        detailedRestaurants.forEach((restaurant) => {
+          dispatch(setRestaurantDetails(restaurant));
+        });
         setRestaurants([...detailedRestaurants, ...restaurants]);
         setRestaurantPreviews((prevState) => prevState.slice(length));
       });
     }
-  }, [restaurantPreviews, restaurants]);
+  }, [dispatch, restaurantPreviews, restaurants]);
 
   return { restaurants, loading, swipe, onSwipe, onCardLeftScreen };
 };
