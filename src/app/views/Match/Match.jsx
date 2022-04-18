@@ -27,10 +27,6 @@ const Match = (props) => {
   const { loading, restaurantDetails } = useGetRestaurantDetails(placeId);
   const history = useHistory();
 
-  useEffect(() => {
-    console.log('Match.jsx: useEffect', restaurantDetails);
-  }, [restaurantDetails]);
-
   const onError = useCallback(() => {
     const { search } = window.location;
     const path = search ? `${routes.LAUNCHER}${search}` : routes.LAUNCHER;
