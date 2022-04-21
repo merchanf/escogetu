@@ -14,6 +14,7 @@ const STEPS = 2;
 
 const SettingUpBase = (props) => {
   const { sessionId, userUid } = props;
+  const baseUrl = `${window.location.protocol}//${window.location.host}`;
 
   const [step, setStep] = useState(1);
   const history = useHistory();
@@ -27,7 +28,9 @@ const SettingUpBase = (props) => {
 
   return (
     <section className={styles.SettingUp}>
-      <Logo className={styles.SettingUp__Logo} />
+      <a href={baseUrl}>
+        <Logo className={styles.SettingUp__Logo} />
+      </a>
       {step === 1 && <Location sessionId={sessionId} nextStep={goToNextStep} />}
       {step === 2 && <Diets sessionId={sessionId} userUid={userUid} nextStep={goToNextStep} />}
     </section>
