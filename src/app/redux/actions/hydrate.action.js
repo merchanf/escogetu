@@ -25,7 +25,7 @@ export const setSession = createAction(`${USER_SECTION_NAME}/setSession`);
 export const initializeGoogleMaps = (location) => async (dispatch) => {
   dispatch(setGeoLocationLoading(true));
   try {
-    await dispatch(initGoogleMaps(location));
+    await dispatch(initGoogleMaps());
     dispatch(setGeoLocation(location));
   } catch (e) {
     dispatch(setGeoLocationError(e.message));
