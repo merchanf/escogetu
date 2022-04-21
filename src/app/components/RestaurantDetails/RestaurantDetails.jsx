@@ -96,6 +96,19 @@ const RestaurantDetails = ({
   const getCTAs = () => {
     const ctaComponents = [];
 
+    if (menu && ctas.length < 4) {
+      const handleMenu = getCTA(ctas.WEBSITE);
+      ctaComponents.push(
+        <MenuBookIconButton
+          onClick={() => handleMenu(menu)}
+          caption="Menú"
+          key="Menu"
+          size="large"
+          iconStyle={styles.IconStyle}
+        />,
+      );
+    }
+
     if (booking && bookingType) {
       const handleBooking = () => {
         const getBookingCTA = getCTA(bookingType);
@@ -109,6 +122,23 @@ const RestaurantDetails = ({
           key="Reservar"
           size="large"
           disabled={!booking || !bookingType}
+          iconStyle={styles.IconStyle}
+        />,
+      );
+    }
+
+    if (delivery && deliveryType) {
+      const handleDelivery = () => {
+        const getDeliveryCTA = getCTA(deliveryType);
+        getDeliveryCTA(delivery);
+        logDelivery(placeId);
+      };
+      ctaComponents.push(
+        <DeliveryDiningIconButton
+          onClick={() => handleDelivery(delivery)}
+          caption="Domicilio"
+          key="Domicilio"
+          size="large"
           iconStyle={styles.IconStyle}
         />,
       );
@@ -145,36 +175,6 @@ const RestaurantDetails = ({
             iconStyle={styles.IconStyle}
           />
         </div>,
-      );
-    }
-
-    if (delivery && deliveryType) {
-      const handleDelivery = () => {
-        const getDeliveryCTA = getCTA(deliveryType);
-        getDeliveryCTA(delivery);
-        logDelivery(placeId);
-      };
-      ctaComponents.push(
-        <DeliveryDiningIconButton
-          onClick={() => handleDelivery(delivery)}
-          caption="Domicilio"
-          key="Domicilio"
-          size="large"
-          iconStyle={styles.IconStyle}
-        />,
-      );
-    }
-
-    if (menu && ctas.length < 4) {
-      const handleMenu = getCTA(ctas.WEBSITE);
-      ctaComponents.push(
-        <MenuBookIconButton
-          onClick={() => handleMenu(menu)}
-          caption="Menú"
-          key="Menu"
-          size="large"
-          iconStyle={styles.IconStyle}
-        />,
       );
     }
 

@@ -8,7 +8,7 @@
   flex-direction: column;
   overflow-y: auto;
   height: 100%;
-  padding: 6rem 10% 13rem 6%;
+  padding: 6rem 10% 15rem 6%;
   width: 100%;
 
   /* total width */
@@ -181,7 +181,7 @@
   }
 
   @media screen and (max-width: 768px) {
-    padding: 4rem 6% 10rem 3%;
+    padding: 4rem 6% 12rem 3%;
 
     .RestaurantDetails__Details {
       width: 100%;
