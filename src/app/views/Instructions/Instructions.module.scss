@@ -1,21 +1,22 @@
 @import '../../../scss/colors';
 
 .Instructions {
+  display: flex;
   height: 100%;
   width: 100%;
-  justify-items: center;
+  align-items: flex-start;
+  justify-content: center;
 
   &__Body {
     height: 90%;
-    justify-items: center;
     display: grid;
-    grid-template-rows: 2fr 1fr 2fr 15fr 5fr;
+    grid-template-rows: 1fr 1fr 1fr 12fr 3fr;
 
     &__Title {
       color: $oldBurgundy-900;
       font-size: 3.2rem;
       margin: 0;
-      margin-top: 3.2rem;
+      margin-top: 2rem;
       text-align: center;
     }
 
@@ -43,7 +44,7 @@
       width: auto;
 
       img {
-        height: 65vh;
+        height: 60vh;
         width: auto;
       }
     }
