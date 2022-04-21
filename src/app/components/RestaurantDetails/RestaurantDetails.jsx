@@ -96,7 +96,7 @@ const RestaurantDetails = ({
   const getCTAs = () => {
     const ctaComponents = [];
 
-    if (menu && ctas.length < 4) {
+    if (menu) {
       const handleMenu = getCTA(ctas.WEBSITE);
       ctaComponents.push(
         <MenuBookIconButton
