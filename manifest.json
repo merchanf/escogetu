@@ -1,0 +1,22 @@
+{
+  "name": "Escogetu",
+  "short_name": "Escogetu",
+  "dir": "ltr",
+  "lang": "es-CO",
+  "orientation": "portrait",
+  "start_url": "/",
+  "background_color": "#F7D49E",
+  "theme_color": "#EF5350",
+  "display": "standalone",
+  "description": "Escoge donde comer con tus amigos y familiares",
+  "icons": [
+    {
+      "src": "./public/192.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./public/512.png",
+      "sizes": "512x512"
+    }
+  ]
+}
