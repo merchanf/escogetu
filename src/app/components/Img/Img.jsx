@@ -11,7 +11,7 @@ const Img = ({ lowResSrc, src, alt, className, onLoad }) => {
   const imgRef = useRef(null);
 
   useEffect(() => {
-    if (!loading || imgRef.current.complete) {
+    if (!loading || imgRef?.current?.complete) {
       if (onLoad) onLoad();
     }
   }, [loading, onLoad]);
