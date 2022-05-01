@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -8,9 +8,10 @@ import styles from './Img.module.scss';
 const Img = ({ lowResSrc, src, alt, className, onLoad }) => {
   const [loading, setLoading] = useState(true);
   const prevValues = usePrevious({ lowResSrc, src });
+  const imgRef = useRef(null);
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading || imgRef.current.complete) {
       if (onLoad) onLoad();
     }
   }, [loading, onLoad]);
@@ -28,6 +29,7 @@ const Img = ({ lowResSrc, src, alt, className, onLoad }) => {
       <img
         src={src}
         alt={alt}
+        ref={imgRef}
         onLoad={() => setLoading(false)}
         className={classnames({ [styles.Show]: !loading, [styles.Hide]: loading })}
       />
