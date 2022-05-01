@@ -2,17 +2,30 @@ import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
+import usePrevious from '@app/hooks/usePrevious';
 import styles from './Img.module.scss';
 
 const Img = ({ lowResSrc, src, alt, className, onLoad }) => {
   const [lowResLoading, setLowResLoading] = useState(true);
   const [highResLoading, setHighResLoading] = useState(true);
+  const prevValues = usePrevious({ lowResSrc, src });
 
   useEffect(() => {
     if (!lowResLoading && !highResLoading) {
       if (onLoad) onLoad();
     }
   }, [lowResLoading, highResLoading, onLoad]);
+
+  useEffect(() => {
+    if (prevValues?.lowResSrc !== lowResSrc) {
+      setLowResLoading(true);
+    }
+
+    if (prevValues?.src !== src) {
+      setHighResLoading(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lowResSrc, src]);
 
   return (
     <div className={classnames(className, styles.Image)}>
