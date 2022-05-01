@@ -19,6 +19,7 @@ const Img = ({ lowResSrc, src, alt, className, onLoad }) => {
   useEffect(() => {
     if (prevValues?.lowResSrc !== lowResSrc) {
       setLoading(true);
+      imgRef.current.complete = false;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lowResSrc, src]);
