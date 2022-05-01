@@ -17,6 +17,12 @@ const Img = ({ lowResSrc, src, alt, className, onLoad }) => {
   }, [loading, onLoad]);
 
   useEffect(() => {
+    if (imgRef?.current?.complete) {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
     if (prevValues?.lowResSrc !== lowResSrc) {
       setLoading(true);
       imgRef.current = null;
