@@ -6,35 +6,30 @@ import usePrevious from '@app/hooks/usePrevious';
 import styles from './Img.module.scss';
 
 const Img = ({ lowResSrc, src, alt, className, onLoad }) => {
-  const [lowResLoading, setLowResLoading] = useState(true);
-  const [highResLoading, setHighResLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const prevValues = usePrevious({ lowResSrc, src });
 
   useEffect(() => {
-    if (!lowResLoading && !highResLoading) {
+    if (!loading) {
       if (onLoad) onLoad();
     }
-  }, [lowResLoading, highResLoading, onLoad]);
+  }, [loading, onLoad]);
 
   useEffect(() => {
     if (prevValues?.lowResSrc !== lowResSrc) {
-      setLowResLoading(true);
-    }
-
-    if (prevValues?.src !== src) {
-      setHighResLoading(true);
+      setLoading(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lowResSrc, src]);
 
   return (
     <div className={classnames(className, styles.Image)}>
-      <img src={lowResSrc} alt={alt} onLoad={() => setLowResLoading(false)} aria-hidden="true" />
+      <img src={lowResSrc} alt={alt} aria-hidden="true" />
       <img
         src={src}
         alt={alt}
-        onLoad={() => setHighResLoading(false)}
-        className={classnames({ [styles.Show]: !lowResLoading, [styles.Hide]: lowResLoading })}
+        onLoad={() => setLoading(false)}
+        className={classnames({ [styles.Show]: !loading, [styles.Hide]: loading })}
       />
     </div>
   );
