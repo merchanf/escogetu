@@ -27,11 +27,12 @@
 
     &__Button {
       all: unset;
-      height: 20%;
+      height: 10%;
       width: 30%;
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      transform: translateY(-100%);
 
       .Button_Chevron {
         color: $oldBurgundy-500;
