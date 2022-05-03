@@ -14,25 +14,26 @@ import {
   orderBy,
   startAfter,
 } from 'firebase/firestore';
-import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, listAll, getDownloadURL, updateMetadata } from 'firebase/storage';
 
 export const getPicturesURL = async (restaurantId) => {
+  const newMetadata = {
+    cacheControl: 'public, max-age=7200',
+  };
   const storage = getStorage();
   const listRef = ref(storage, `restaurants/${restaurantId}/pictures`);
+
   const res = await listAll(listRef);
-  const lowResPictures = res.items.filter(({ _location }) => _location.path.includes('25x25'));
   const pictures = res.items.filter(({ _location }) => !_location.path.includes('25x25'));
 
-  const lowResPicturesPromises = lowResPictures.map(getDownloadURL);
-  const picturesPromises = pictures.map(getDownloadURL);
+  const picturesPromises = pictures.map((ref) => {
+    updateMetadata(ref, newMetadata);
+    return getDownloadURL(ref);
+  });
 
-  const lowResPicturesURL = await Promise.all(lowResPicturesPromises);
   const picturesURL = await Promise.all(picturesPromises);
 
-  return {
-    lowResPictures: lowResPicturesURL,
-    pictures: picturesURL,
-  };
+  return picturesURL;
 };
 
 const restaurantAdapter = (

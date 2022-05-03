@@ -7,16 +7,14 @@ import { getPicturesURL } from '@services/firestore.service';
 const useGetFirestorePictures = (placeId) => {
   const [loading, setLoading] = useState(false);
   const [pictures, setPictures] = useState();
-  const [lowResPictures, setLowResPictures] = useState();
   const dispatch = useDispatch();
 
   useEffect(() => {
     const getPictures = async () => {
       setLoading(true);
-      const { pictures, lowResPictures } = await getPicturesURL(placeId);
+      const pictures = await getPicturesURL(placeId);
       setPictures(pictures);
-      setLowResPictures(lowResPictures);
-      dispatch(setRestaurantDetailsPictures({ placeId, pictures, lowResPictures }));
+      dispatch(setRestaurantDetailsPictures({ placeId, pictures }));
       setLoading(false);
     };
 
@@ -25,7 +23,7 @@ const useGetFirestorePictures = (placeId) => {
     }
   }, [dispatch, placeId, pictures]);
 
-  return { loading, pictures, lowResPictures };
+  return { loading, pictures };
 };
 
 export default useGetFirestorePictures;

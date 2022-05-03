@@ -1,16 +1,12 @@
 import React, { useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
-import Skeleton from '@mui/material/Skeleton';
 import DirectionsWalkRoundedIcon from '@mui/icons-material/DirectionsWalkRounded';
 
 import { ChevronRightIcon, ChevronLeftIcon } from '@components/Icons/Icons';
-import colors from '@constants/colors.constants';
 import TinderCard from '../TinderCard/TinderCard';
 import Img from '../Img/Img';
 import RestaurantBio from '../RestaurantBio/RestaurantBio';
 import styles from './Card.module.scss';
-
-const { deepChampagne } = colors;
 
 const Card = forwardRef(
   (
@@ -19,7 +15,6 @@ const Card = forwardRef(
   ) => {
     const [selectedPicture, setSelectedPicture] = useState(0);
     const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(true);
 
     const handleRightButton = () => {
       if (selectedPicture + 1 < pictures.length) setSelectedPicture((prevState) => prevState + 1);
@@ -33,24 +28,8 @@ const Card = forwardRef(
       setOpen(true);
     };
 
-    const skeletonStyles = {
-      bgcolor: deepChampagne[100],
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      zIndex: 9999,
-      display: loading ? 'block' : 'none',
-    };
-
     return (
       <>
-        <Skeleton
-          sx={skeletonStyles}
-          animation="wave"
-          variant="rectangular"
-          width="100%"
-          height="100%"
-        />
         <div
           style={{
             display: 'flex',
@@ -85,13 +64,20 @@ const Card = forwardRef(
 
               <RestaurantBio name={name} open={open} setOpen={setOpen} bio={bio} />
 
-              <Img
-                className={styles.Card__Image}
-                src={pictures[selectedPicture]}
-                lowResSrc={lowResPictures[selectedPicture]}
-                alt={`${name} - ${selectedPicture}`}
-                onLoad={() => setLoading(false)}
-              />
+              {lowResPictures ? (
+                <Img
+                  className={styles.Card__Image}
+                  src={pictures[selectedPicture]}
+                  lowResSrc={lowResPictures[selectedPicture]}
+                  alt={`${name} - ${selectedPicture}`}
+                />
+              ) : (
+                <img
+                  className={styles.Card__Image}
+                  src={pictures[selectedPicture]}
+                  alt={`${name} - ${selectedPicture}`}
+                />
+              )}
               <div className={styles.Card__Buttons}>
                 {selectedPicture - 1 >= 0 ? (
                   <button
