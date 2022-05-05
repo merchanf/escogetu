@@ -71,7 +71,6 @@ const HomeViewBase = (props) => {
       history.push(routes.LAUNCHER);
     }
 
-    // if (restaurants == null || loading) return <LoadingIcon />;
     if (!match && restaurants?.length === 0) return <NoRestaurantsAvailable />;
     if (showInstructions)
       return (
