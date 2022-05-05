@@ -114,7 +114,7 @@ const Location = ({ sessionId, nextStep }) => {
       </div>
       {geoLocationLoaded != null && !geoLocationLoaded && (
         <p>
-          No podemos acceder a tu ubicación. Revisa los permisos de tu teléfono o usa otra de las
+          No podemos acceder a tu ubicación. Revisa los permisos de tu dispositivo o usa otra de las
           opciones listadas
         </p>
       )}

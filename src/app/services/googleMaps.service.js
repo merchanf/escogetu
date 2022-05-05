@@ -9,9 +9,12 @@ const isNotARestaurant = (types) => types.includes('lodging') || types.includes(
 const excludeNotRestaurantsFromResults = (results) =>
   results.filter(({ types }) => !isNotARestaurant(types));
 const excludeResultsWithNullPhotos = (results) => results && results.filter(({ photos }) => photos);
+const excludeRestaurantsWithLowerRating = (results) =>
+  results.filter(({ rating, user_ratings_total }) => rating >= 4.4 && user_ratings_total > 100);
 const filterResults = (results) => {
-  const filteredResults = excludeResultsWithNullPhotos(results);
-  return excludeNotRestaurantsFromResults(filteredResults);
+  let filteredResults = excludeResultsWithNullPhotos(results);
+  filteredResults = excludeNotRestaurantsFromResults(filteredResults);
+  return excludeRestaurantsWithLowerRating(filteredResults);
 };
 
 const mapper = (
