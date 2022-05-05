@@ -226,7 +226,7 @@ const RestaurantDetails = ({
   const handleDirections = getCTA(ctas.DIRECTIONS);
 
   const surveyLink =
-    'https://docs.google.com/forms/d/e/1FAIpQLSfEdefHBjdg53Tz66j8MyRrJRAKqM35unY6g_tkCHId9TudEw/viewform?usp=sf_link';
+    'https://docs.google.com/forms/d/e/1FAIpQLSeliUAFtAKQ3DpUwo2rEGfyMymPzFKFhJMGKdg_qBiC2WvHKg/viewform';
 
   return (
     <div className={styles.RestaurantDetails}>
