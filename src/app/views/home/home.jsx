@@ -13,7 +13,7 @@ import {
   NoRestaurantsAvailable,
 } from '@app/components';
 import useWindowDimensions from '@hooks/useWindowDimensions';
-import { env, routes } from '@constants/constants';
+import { env, routes, flows } from '@constants/constants';
 import { CrossIconButton, LikeIconButton } from '@components/Icons/Icons';
 import { Instructions, Match } from '@app/views';
 import { useRestaurants } from '@hooks/useRestaurants';
@@ -23,15 +23,18 @@ import { setMatch } from '@app/redux/actions/user.actions';
 import styles from './home.module.scss';
 
 const HomeViewBase = (props) => {
-  const { sessionId, match, likes, flow, loading } = props;
+  const { sessionId, match, likes, flow, loading: firebaseLoading } = props;
   const { width } = useWindowDimensions();
   const dispatch = useDispatch();
-  const { restaurants, swipe, onSwipe, onCardLeftScreen } = useRestaurants(flow);
+  const { restaurants, loading: gMapsLoading, swipe, onSwipe, onCardLeftScreen } = useRestaurants(
+    flow,
+  );
   const [showInstructions, setShowInstructions] = useState(
     !localStorage.getItem('closeAndNeverShowAgain'),
   );
   const [size, setSize] = useState('medium');
   const history = useHistory();
+  const loading = flow === flows.FIRESTORE ? firebaseLoading : gMapsLoading;
 
   useEffect(() => {
     if (width > 768) setSize('large');
