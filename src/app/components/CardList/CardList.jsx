@@ -1,12 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useStore } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Card, CardWrapper } from '@components/index';
+import { setLoading, setNewBatch } from '@actions/hydrate.action';
 import { flows } from '@constants/constants';
 
 import styles from './CardList.module.scss';
 
 const CardList = ({ list, onSwipe, onCardLeftScreen, flow }) => {
   const SwipeCard = flow === flows.FIRESTORE ? CardWrapper : Card;
+  const dispatch = useDispatch();
+  const {
+    hydrate: {
+      application: { newBatch },
+    },
+  } = useStore().getState();
+  const [loadedCards, setLoadedCards] = useState();
+  const [dispatched, setDispatched] = useState(false);
+
+  useEffect(() => {
+    if (list && newBatch) {
+      dispatch(setLoading(true));
+      setLoadedCards(new Array(list.length).fill(false));
+      setDispatched(false);
+      dispatch(setNewBatch(false));
+    }
+  }, [dispatch, list, newBatch]);
+
+  useEffect(() => {
+    if (loadedCards && loadedCards.every((card) => card) && !dispatched) {
+      dispatch(setLoading(false));
+      setDispatched(true);
+    }
+  }, [dispatch, dispatched, loadedCards]);
+
+  const onLoad = useCallback((index) => {
+    setLoadedCards((prevState) => {
+      prevState[index] = true;
+      return [...prevState];
+    });
+  }, []);
 
   return (
     <div className={styles.Container}>
@@ -24,6 +57,7 @@ const CardList = ({ list, onSwipe, onCardLeftScreen, flow }) => {
             index={index}
             onCardLeftScreen={onCardLeftScreen}
             ref={innerRef}
+            onLoad={onLoad}
           />
         ),
       )}

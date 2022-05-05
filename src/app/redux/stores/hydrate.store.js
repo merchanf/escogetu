@@ -12,6 +12,8 @@ export const HydrateStore = {
   },
   application: {
     restaurants: {},
+    loading: false,
+    newBatch: true,
   },
   hydrating: true,
 };

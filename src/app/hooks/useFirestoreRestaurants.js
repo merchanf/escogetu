@@ -6,6 +6,7 @@ import { fetchRestaurantsFromOptions } from '@services/firestore.service';
 import { logSelectContent } from '@services/googleAnalytics.service';
 import { like } from '@actions/user.actions';
 import { setRestaurantDetails } from '@actions/session.action';
+import { setNewBatch } from '@actions/hydrate.action';
 
 const {
   FIRESTORE_PAGINATION_LIMIT: PAGINATION_LIMIT,
@@ -77,6 +78,7 @@ const useFirestoreRestaurants = () => {
         );
 
         setStartAt(lastSnapshot);
+        dispatch(setNewBatch(true));
         setLoading(false);
       }
     };

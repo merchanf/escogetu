@@ -11,13 +11,12 @@ import { setRestaurantDetailsPictures } from '@actions/session.action';
 const { deepChampagne } = colors;
 
 const CardWrapper = forwardRef((props, ref) => {
-  const { placeId } = props;
+  const { placeId, onLoad, index } = props;
   const [preloadPictures, setPreloadPictures] = useState();
-  const [preloadingFinished, setPreloadingFinished] = useState(false);
   const { loading, pictures } = useGetFirestorePictures(placeId);
   const dispatch = useDispatch();
 
-  const onLoad = (index) => {
+  const handleLoad = (index) => {
     setPreloadPictures((prevState) => {
       prevState[index] = true;
       return [...prevState];
@@ -31,16 +30,16 @@ const CardWrapper = forwardRef((props, ref) => {
       pictures.forEach((picture, index) => {
         const img = new Image();
         img.src = picture;
-        img.onload = onLoad(index);
+        img.onload = handleLoad(index);
       });
     }
   }, [dispatch, loading, pictures, placeId]);
 
   useEffect(() => {
     if (preloadPictures && preloadPictures.every((picture) => picture)) {
-      setPreloadingFinished(true);
+      if (onLoad) onLoad(index);
     }
-  }, [preloadPictures]);
+  }, [index, onLoad, preloadPictures]);
 
   const loadingCard = (
     <Skeleton
@@ -54,15 +53,19 @@ const CardWrapper = forwardRef((props, ref) => {
 
   const tinderCard = <Card {...props} pictures={pictures} ref={ref} />;
 
-  return !preloadingFinished || pictures == null ? loadingCard : tinderCard;
+  return pictures == null ? loadingCard : tinderCard;
 });
 
 CardWrapper.defaultProps = {
   placeId: null,
+  onLoad: null,
+  index: null,
 };
 
 CardWrapper.propTypes = {
   placeId: PropTypes.string,
+  onLoad: PropTypes.func,
+  index: PropTypes.number,
 };
 
 export default CardWrapper;

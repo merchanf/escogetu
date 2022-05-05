@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import cx from 'classnames';
 import PropTypes from 'prop-types';
 import { connect, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -17,20 +18,19 @@ import { CrossIconButton, LikeIconButton } from '@components/Icons/Icons';
 import { Instructions, Match } from '@app/views';
 import { useRestaurants } from '@hooks/useRestaurants';
 import { logScreenView } from '@services/googleAnalytics.service';
-
-import './home.scss';
 import { setMatch } from '@app/redux/actions/user.actions';
 
+import styles from './home.module.scss';
+
 const HomeViewBase = (props) => {
-  const { sessionId, match, likes, flow } = props;
+  const { sessionId, match, likes, flow, loading } = props;
   const { width } = useWindowDimensions();
   const dispatch = useDispatch();
-  const { restaurants, loading, swipe, onSwipe, onCardLeftScreen } = useRestaurants(flow);
+  const { restaurants, swipe, onSwipe, onCardLeftScreen } = useRestaurants(flow);
   const [showInstructions, setShowInstructions] = useState(
     !localStorage.getItem('closeAndNeverShowAgain'),
   );
   const [size, setSize] = useState('medium');
-  const modalRef = useRef(null);
   const history = useHistory();
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const HomeViewBase = (props) => {
       history.push(routes.LAUNCHER);
     }
 
-    if (restaurants == null || loading) return <LoadingIcon />;
+    // if (restaurants == null || loading) return <LoadingIcon />;
     if (!match && restaurants?.length === 0) return <NoRestaurantsAvailable />;
     if (showInstructions)
       return (
@@ -82,8 +82,16 @@ const HomeViewBase = (props) => {
       return match ? (
         <Match restaurant={likes[match]} onClose={onCloseMatch} showMap />
       ) : (
-        <div className="Home" ref={modalRef}>
-          <div className="Home__Body">
+        <div className={styles.Home}>
+          <div
+            className={cx({
+              [styles.Show]: restaurants == null || loading,
+              [styles.Hide]: restaurants != null && !loading,
+            })}
+          >
+            <LoadingIcon />
+          </div>
+          <div className={styles.Home__Body}>
             <CardList
               list={restaurants}
               onSwipe={onSwipe}
@@ -91,7 +99,7 @@ const HomeViewBase = (props) => {
               flow={flow}
             />
           </div>
-          <div className="Home__Buttons">
+          <div className={styles.Home__Buttons}>
             <CrossIconButton onClick={() => swipe('left')} size={size} />
             <ShareButton sessionId={sessionId} />
             <LikeIconButton onClick={() => swipe('right')} size={size} />
@@ -107,12 +115,18 @@ const HomeViewBase = (props) => {
   return render();
 };
 
-const mapStateToProps = ({ user: { userUid, sessionId, match, likes, flow } }) => ({
+const mapStateToProps = ({
+  user: { userUid, sessionId, match, likes, flow },
+  hydrate: {
+    application: { loading },
+  },
+}) => ({
   userUid,
   sessionId,
   match,
   likes,
   flow,
+  loading,
 });
 
 HomeViewBase.defaultProps = {
