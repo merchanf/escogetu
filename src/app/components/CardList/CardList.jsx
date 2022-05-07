@@ -12,7 +12,7 @@ const CardList = ({ list, onSwipe, onCardLeftScreen, flow }) => {
   const dispatch = useDispatch();
   const {
     hydrate: {
-      application: { newBatch },
+      application: { newBatch, noMoreRestaurants },
     },
   } = useStore().getState();
   const [loadedCards, setLoadedCards] = useState();
@@ -25,7 +25,7 @@ const CardList = ({ list, onSwipe, onCardLeftScreen, flow }) => {
       setDispatched(false);
       dispatch(setNewBatch(false));
     }
-  }, [dispatch, list, newBatch]);
+  }, [dispatch, list, newBatch, noMoreRestaurants]);
 
   useEffect(() => {
     if (loadedCards && loadedCards.every((card) => card) && !dispatched) {
@@ -36,8 +36,11 @@ const CardList = ({ list, onSwipe, onCardLeftScreen, flow }) => {
 
   const onLoad = useCallback((index) => {
     setLoadedCards((prevState) => {
-      prevState[index] = true;
-      return [...prevState];
+      if (prevState) {
+        prevState[index] = true;
+        return [...prevState];
+      }
+      return prevState;
     });
   }, []);
 

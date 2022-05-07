@@ -109,6 +109,7 @@ export const fetchRestaurantsFromOptions = async (options, onError) => {
 
   let querySnapshot;
   let restaurants = [];
+  let noMoreRestaurants;
   try {
     const db = getFirestore();
     const restaurantsRef = collection(db, 'restaurants');
@@ -118,6 +119,9 @@ export const fetchRestaurantsFromOptions = async (options, onError) => {
       restaurants = querySnapshot.docs
         .reverse()
         .map((doc) => restaurantAdapter(doc.id, doc.data()));
+      noMoreRestaurants = false;
+    } else {
+      noMoreRestaurants = true;
     }
   } catch (err) {
     console.log(err);
@@ -131,6 +135,8 @@ export const fetchRestaurantsFromOptions = async (options, onError) => {
   if (restaurants) {
     returnObj.restaurants = restaurants;
   }
+
+  returnObj.noMoreRestaurants = noMoreRestaurants;
 
   return returnObj;
 };

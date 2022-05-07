@@ -14,7 +14,12 @@ import {
   setFirebaseStorage,
 } from '@actions/firebase.actions';
 import { setRestaurantDetails, setRestaurantDetailsPictures } from '@actions/session.action';
-import { setHydrating, setLoading, setNewBatch } from '@actions/hydrate.action';
+import {
+  setHydrating,
+  setLoading,
+  setNewBatch,
+  setNoMoreRestaurants,
+} from '@actions/hydrate.action';
 
 const hydrateReducer = createReducer(HydrateStore, (builder) => {
   builder.addCase(setGoogleMapsLoading, (state, { payload }) => ({
@@ -131,6 +136,15 @@ const hydrateReducer = createReducer(HydrateStore, (builder) => {
       application: {
         ...state.application,
         newBatch: payload,
+      },
+    };
+  });
+  builder.addCase(setNoMoreRestaurants, (state, { payload }) => {
+    return {
+      ...state,
+      application: {
+        ...state.application,
+        noMoreRestaurants: payload,
       },
     };
   });

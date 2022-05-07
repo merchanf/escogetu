@@ -23,7 +23,7 @@ import { setMatch } from '@app/redux/actions/user.actions';
 import styles from './home.module.scss';
 
 const HomeViewBase = (props) => {
-  const { sessionId, match, likes, flow, loading: firebaseLoading } = props;
+  const { sessionId, match, likes, flow, loading: firebaseLoading, noMoreRestaurants } = props;
   const { width } = useWindowDimensions();
   const dispatch = useDispatch();
   const { restaurants, loading: gMapsLoading, swipe, onSwipe, onCardLeftScreen } = useRestaurants(
@@ -71,7 +71,9 @@ const HomeViewBase = (props) => {
       history.push(routes.LAUNCHER);
     }
 
-    if (!match && restaurants?.length === 0) return <NoRestaurantsAvailable />;
+    const showNoRestaurantsScreen =
+      flow === flows.FIRESTORE ? noMoreRestaurants : !match && restaurants?.length === 0;
+    if (showNoRestaurantsScreen) return <NoRestaurantsAvailable />;
     if (showInstructions)
       return (
         <Instructions
@@ -81,14 +83,16 @@ const HomeViewBase = (props) => {
       );
 
     if (restaurants) {
+      const showLoadingScreen = (!noMoreRestaurants && restaurants == null) || loading;
+
       return match ? (
         <Match restaurant={likes[match]} onClose={onCloseMatch} showMap />
       ) : (
         <div className={styles.Home}>
           <div
             className={cx({
-              [styles.Show]: restaurants == null || loading,
-              [styles.Hide]: restaurants != null && !loading,
+              [styles.Show]: showLoadingScreen,
+              [styles.Hide]: !showLoadingScreen,
             })}
           >
             <LoadingIcon />
@@ -120,7 +124,7 @@ const HomeViewBase = (props) => {
 const mapStateToProps = ({
   user: { userUid, sessionId, match, likes, flow },
   hydrate: {
-    application: { loading },
+    application: { loading, noMoreRestaurants },
   },
 }) => ({
   userUid,
@@ -129,6 +133,7 @@ const mapStateToProps = ({
   likes,
   flow,
   loading,
+  noMoreRestaurants,
 });
 
 HomeViewBase.defaultProps = {
@@ -144,6 +149,7 @@ HomeViewBase.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   likes: PropTypes.object.isRequired,
   flow: PropTypes.string,
+  noMoreRestaurants: PropTypes.bool.isRequired,
 };
 
 const HomeView = connect(mapStateToProps)(HomeViewBase);

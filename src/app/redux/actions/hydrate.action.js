@@ -21,6 +21,7 @@ export const setUserUid = createAction(`${USER_SECTION_NAME}/setUserUid`);
 export const setSession = createAction(`${USER_SECTION_NAME}/setSession`);
 export const setLoading = createAction(`${USER_SECTION_NAME}/setLoading`);
 export const setNewBatch = createAction(`${USER_SECTION_NAME}/setNewBatch`);
+export const setNoMoreRestaurants = createAction(`${USER_SECTION_NAME}/setNoMoreRestaurants`);
 
 export const initializeGoogleMaps = (location) => async (dispatch) => {
   dispatch(setGeoLocationLoading(true));

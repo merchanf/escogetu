@@ -14,6 +14,7 @@ export const HydrateStore = {
     restaurants: {},
     loading: false,
     newBatch: true,
+    noMoreRestaurants: false,
   },
   hydrating: true,
 };
