@@ -10,7 +10,7 @@ const excludeNotRestaurantsFromResults = (results) =>
   results.filter(({ types }) => !isNotARestaurant(types));
 const excludeResultsWithNullPhotos = (results) => results && results.filter(({ photos }) => photos);
 const excludeRestaurantsWithLowerRating = (results) =>
-  results.filter(({ rating, user_ratings_total }) => rating >= 4.4 && user_ratings_total > 100);
+  results.filter(({ rating, user_ratings_total }) => rating >= 4 && user_ratings_total > 50);
 const filterResults = (results) => {
   let filteredResults = excludeResultsWithNullPhotos(results);
   filteredResults = excludeNotRestaurantsFromResults(filteredResults);
