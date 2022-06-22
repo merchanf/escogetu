@@ -1,12 +1,9 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import Layout from '@components/Layout/Layout';
 import EmptyFries from './emptyfries.webp';
 import styles from './NoRestaurantsAvailable.module.scss';
 
 const NoRestaurantsAvailable = () => {
-  const history = useHistory();
-
   return (
     <Layout>
       <main className={styles.NoRestaurantsAvailable}>
