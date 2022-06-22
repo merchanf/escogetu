@@ -12,7 +12,7 @@ const NoRestaurantsAvailable = () => {
       <main className={styles.NoRestaurantsAvailable}>
         <img src={EmptyFries} alt="Empty fries package" />
         <p> No hay más restaurantes disponibles :( </p>
-        <button type="button" onClick={() => history.push('/')}>
+        <button type="button" onClick={() => window.open(window.location.href, '_self')}>
           Ir a inicio
         </button>
       </main>
