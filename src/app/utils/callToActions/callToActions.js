@@ -60,7 +60,7 @@ const ctaFunctions = {
     if (isIos() || !isMobilePhone()) {
       window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`);
     } else {
-      window.open(`geo:${lat},${lng}`);
+      window.open(`geo:0,0?q=${lat},${lng}`);
     }
   },
   [DISTANCE]: (address) => {
@@ -72,5 +72,6 @@ export const getCTA = (cta) => {
   if (ctaFunctions[cta]) {
     return ctaFunctions[cta];
   }
+  // eslint-disable-next-line no-console
   return () => console.log('cta', cta);
 };
