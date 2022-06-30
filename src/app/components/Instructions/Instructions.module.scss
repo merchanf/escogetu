@@ -1,0 +1,183 @@
+@import '../../../scss/colors';
+
+.Instructions {
+  background-color: rgba(0, 0, 0, 0.65);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+
+  &__Layout {
+    position: relative;
+    height: 100%;
+
+    &__NextPicture {
+      align-items: flex-end;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: absolute;
+      right: 6.5rem;
+      top: 50%;
+      transform: translateY(-30rem);
+
+      &__Text {
+        color: $white;
+        transform: translateX(2rem);
+        text-align: center;
+        width: 15rem;
+      }
+
+      &__Icon {
+        transform: scale(3) rotate(-90deg);
+        margin-top: 2.4rem;
+      }
+    }
+
+    &__Share {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: absolute;
+      right: 25%;
+      bottom: 7%;
+      transform: translate(calc(50% + 2rem));
+
+      &__Text {
+        color: $white;
+        text-align: center;
+        width: 15rem;
+        transform: translate(-30%, -2rem);
+      }
+
+      &__Icon {
+        transform: scale(3);
+      }
+    }
+
+    &__Wrapper {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      grid-template-rows: 1fr;
+      justify-content: center;
+      align-content: center;
+      height: 100%;
+
+      &__Column {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      &__NextPicture {
+        position: relative;
+        top: 0;
+        left: 0;
+        color: $white;
+
+        &__Icon {
+          transform: scale(2.5);
+          margin-bottom: 2.4rem;
+        }
+      }
+
+      &__Share {
+        &__Icon {
+          transform: scale(2.5);
+          margin-bottom: 2.4rem;
+        }
+      }
+
+      &__DottedSpaced {
+        overflow: hidden;
+        position: relative;
+        text-align: center;
+        padding: 0.1rem;
+        margin-bottom: 2rem;
+        height: 100%;
+
+        &:before {
+          content: '';
+          position: absolute;
+          border: 0.5rem dashed $white;
+          border-top: 0;
+          border-left: 0;
+          border-bottom: 0;
+          top: -0.3rem;
+          bottom: -0.3rem;
+          left: -0.3rem;
+          right: -0.4rem;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 320px) {
+  .Instructions {
+    &__Layout {
+      &__NextPicture {
+        transform: translateY(-29rem);
+      }
+
+      &__Share {
+        transform: translate(calc(90% + -1rem));
+
+        &__Text {
+          transform: translate(-5rem, -2rem);
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 540px) {
+  .Instructions {
+    &__Layout {
+      &__NextPicture {
+        transform: translateY(-29rem);
+      }
+
+      &__Share {
+        transform: translate(calc(75% + -3rem));
+
+        &__Text {
+          transform: translate(-5rem, -2rem);
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .Instructions {
+    &__Layout {
+      &__NextPicture {
+        transform: translateY(-32rem);
+      }
+
+      &__Share {
+        bottom: 10%;
+        transform: translate(35%);
+
+        &__Text {
+          transform: translate(0, -2rem);
+        }
+      }
+    }
+  }
+}
+
+.IconText {
+  & p {
+    color: white;
+  }
+}
+
+.IconText__Icon {
+  transform: scale(2.5);
+  margin-bottom: 2.4rem;
+}

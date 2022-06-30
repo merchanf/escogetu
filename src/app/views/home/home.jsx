@@ -11,11 +11,12 @@ import {
   FeedbackButton,
   LoadingIcon,
   NoRestaurantsAvailable,
+  Instructions,
 } from '@app/components';
 import useWindowDimensions from '@hooks/useWindowDimensions';
 import { env, routes, flows } from '@constants/constants';
 import { CrossIconButton, LikeIconButton } from '@components/Icons/Icons';
-import { Instructions, Match } from '@app/views';
+import { Match } from '@app/views';
 import { useRestaurants } from '@hooks/useRestaurants';
 import { logScreenView } from '@services/googleAnalytics.service';
 import { setMatch } from '@app/redux/actions/user.actions';
@@ -29,9 +30,7 @@ const HomeViewBase = (props) => {
   const { restaurants, loading: gMapsLoading, swipe, onSwipe, onCardLeftScreen } = useRestaurants(
     flow,
   );
-  const [showInstructions, setShowInstructions] = useState(
-    !localStorage.getItem('closeAndNeverShowAgain'),
-  );
+
   const [size, setSize] = useState('medium');
   const history = useHistory();
   const loading = flow === flows.FIRESTORE ? firebaseLoading : gMapsLoading;
@@ -41,17 +40,8 @@ const HomeViewBase = (props) => {
     else setSize('medium');
   }, [width]);
 
-  const onCloseInstructions = () => {
-    setShowInstructions(false);
-  };
-
   const onCloseMatch = () => {
     dispatch(setMatch(null));
-  };
-
-  const onCloseAndNeverShowAgain = () => {
-    setShowInstructions(false);
-    localStorage.setItem('closeAndNeverShowAgain', true);
   };
 
   const onError = useCallback(() => {
@@ -74,13 +64,6 @@ const HomeViewBase = (props) => {
     const showNoRestaurantsScreen =
       flow === flows.FIRESTORE ? noMoreRestaurants : !match && restaurants?.length === 0;
     if (showNoRestaurantsScreen) return <NoRestaurantsAvailable />;
-    if (showInstructions)
-      return (
-        <Instructions
-          onClose={onCloseInstructions}
-          onCloseAndNeverShowAgain={onCloseAndNeverShowAgain}
-        />
-      );
 
     if (restaurants) {
       const showLoadingScreen = (!noMoreRestaurants && restaurants == null) || loading;
@@ -88,30 +71,33 @@ const HomeViewBase = (props) => {
       return match ? (
         <Match restaurant={likes[match]} onClose={onCloseMatch} showMap />
       ) : (
-        <div className={styles.Home}>
-          <div
-            className={cx({
-              [styles.Show]: showLoadingScreen,
-              [styles.Hide]: !showLoadingScreen,
-            })}
-          >
-            <LoadingIcon />
+        <>
+          <Instructions />
+          <div className={styles.Home}>
+            <div
+              className={cx({
+                [styles.Show]: showLoadingScreen,
+                [styles.Hide]: !showLoadingScreen,
+              })}
+            >
+              <LoadingIcon />
+            </div>
+            <div className={styles.Home__Body}>
+              <CardList
+                list={restaurants}
+                onSwipe={onSwipe}
+                onCardLeftScreen={onCardLeftScreen}
+                flow={flow}
+              />
+            </div>
+            <div className={styles.Home__Buttons}>
+              <CrossIconButton onClick={() => swipe('left')} size={size} />
+              <ShareButton sessionId={sessionId} />
+              <LikeIconButton onClick={() => swipe('right')} size={size} />
+            </div>
+            <FeedbackButton projectId={env.FEEDBACK_ID} />
           </div>
-          <div className={styles.Home__Body}>
-            <CardList
-              list={restaurants}
-              onSwipe={onSwipe}
-              onCardLeftScreen={onCardLeftScreen}
-              flow={flow}
-            />
-          </div>
-          <div className={styles.Home__Buttons}>
-            <CrossIconButton onClick={() => swipe('left')} size={size} />
-            <ShareButton sessionId={sessionId} />
-            <LikeIconButton onClick={() => swipe('right')} size={size} />
-          </div>
-          <FeedbackButton projectId={env.FEEDBACK_ID} />
-        </div>
+        </>
       );
     }
 

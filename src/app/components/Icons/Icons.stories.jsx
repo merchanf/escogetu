@@ -27,6 +27,12 @@ export const CrossCutterlyIcon = () => <icons.CrossCutterlyIcon />;
 
 export const BittedHeartIcon = () => <icons.BittedHeartIcon />;
 
+export const SwipeLeft = () => <icons.SwipeLeftIcon />;
+
+export const SwipeRight = () => <icons.SwipeRightIcon />;
+
+export const CurvedArrow = () => <icons.CurvedArrow />;
+
 export const LinkIcon = () => <icons.CopyIcon />;
 
 export const LikeButtonRed = () => <LikeButton color="red" />;

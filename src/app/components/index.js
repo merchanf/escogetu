@@ -5,6 +5,7 @@ import CardList from './CardList/CardList';
 import CircularProgress from './CircularProgress/CircularProgress';
 import FeedbackButton from './FeedbackButton/FeedbackButton';
 import GooglePlacesAutocomplete from './GooglePlacesAutocomplete/GooglePlacesAutocomplete';
+import Instructions from './Instructions/Instructions';
 import Layout from './Layout/Layout';
 import MultiSelect from './MultiSelect/MultiSelect';
 import RestaurantDetails from './RestaurantDetails/RestaurantDetails';
@@ -22,6 +23,7 @@ export {
   CircularProgress,
   FeedbackButton,
   GooglePlacesAutocomplete,
+  Instructions,
   Layout,
   LoadingIcon,
   MultiSelect,

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './Layout.module.scss';
 
 const Layout = ({ className, children }) => {
-  return <div className={classnames(styles.Layout, className)}>{children}</div>;
+  return <div className={classnames(className, styles.Layout)}>{children}</div>;
 };
 
 Layout.defaultProps = {
