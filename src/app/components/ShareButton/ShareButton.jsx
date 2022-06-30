@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ShareDialog from '@components/ShareDialog/ShareDialog';
 import { isMobilePhone } from '@utils/utils';
-import { ShareIconButton } from '@components/Icons/Icons';
+import { AddUserIconButton } from '@components/Icons/Icons';
 import { logShareEvent } from '@services/googleAnalytics.service';
 
 const ShareButton = ({ sessionId }) => {
@@ -26,7 +26,7 @@ const ShareButton = ({ sessionId }) => {
   return (
     <>
       <ShareDialog onClose={() => setOpen(false)} url={shareData.url} open={open} text={text} />
-      <ShareIconButton onClick={openShareModal} size="small" color="blue" />
+      <AddUserIconButton onClick={openShareModal} size="small" color="blue" />
     </>
   );
 };

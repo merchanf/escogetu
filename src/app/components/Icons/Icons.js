@@ -1,3 +1,4 @@
+import AddUserIcon from './AddUserIcon';
 import BittedHeartIcon from './BittedHeartIcon';
 import CallIcon from './CallIcon';
 import ChevronLeftIcon from './ChevronLeftIcon';
@@ -19,21 +20,28 @@ import withTextIcon from './withTextIcon/withTextIcon';
 import withTextIconButton from './withTextIconButton/withTextIconButton';
 
 const LikeIconButton = withIconButton(BittedHeartIcon);
+const LikeIconButtonWithText = withTextIconButton(LikeIconButton);
 const ShareIconButton = withIconButton(ShareIcon);
+const AddUserIconButton = withIconButton(AddUserIcon);
 const CrossIconButton = withIconButton(CrossCutterlyIcon);
+const CrossIconButtonWithText = withTextIconButton(CrossCutterlyIcon);
 
 export {
+  AddUserIcon,
+  AddUserIconButton,
   BittedHeartIcon,
   CallIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   CopyIcon,
   CrossCutterlyIcon,
+  CrossIconButtonWithText,
   CrossIcon,
   CrossIconButton,
   CurvedArrow,
   LikeIcon,
   LikeIconButton,
+  LikeIconButtonWithText,
   LinkIcon,
   PinIcon,
   ShareIcon,

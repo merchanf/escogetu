@@ -15,7 +15,7 @@ import {
 } from '@app/components';
 import useWindowDimensions from '@hooks/useWindowDimensions';
 import { env, routes, flows } from '@constants/constants';
-import { CrossIconButton, LikeIconButton } from '@components/Icons/Icons';
+import { CrossIconButtonWithText, LikeIconButtonWithText } from '@components/Icons/Icons';
 import { Match } from '@app/views';
 import { useRestaurants } from '@hooks/useRestaurants';
 import { logScreenView } from '@services/googleAnalytics.service';
@@ -91,9 +91,17 @@ const HomeViewBase = (props) => {
               />
             </div>
             <div className={styles.Home__Buttons}>
-              <CrossIconButton onClick={() => swipe('left')} size={size} />
+              <CrossIconButtonWithText
+                onClick={() => swipe('left')}
+                size={size}
+                caption="No Me gusta"
+              />
               <ShareButton sessionId={sessionId} />
-              <LikeIconButton onClick={() => swipe('right')} size={size} />
+              <LikeIconButtonWithText
+                onClick={() => swipe('right')}
+                size={size}
+                caption="¡Me gusta!"
+              />
             </div>
             <FeedbackButton projectId={env.FEEDBACK_ID} />
           </div>
