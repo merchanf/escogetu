@@ -3,14 +3,7 @@ import Icon from './Icon/Icon';
 
 const SwipeLeftIcon = (props) => {
   const svg = (
-    <svg
-      focusable={false}
-      width="100%"
-      height="100%"
-      viewBox="0 0 96 96"
-      role="img"
-      aria-labelledby="Like Icon"
-    >
+    <svg focusable={false} width="100%" height="100%" viewBox="0 0 96 96" role="img">
       <path
         style={{ fill: '#FFFFFF' }}
         d="M90.5,81.6c1.5-1.4,2-3.5,1.3-5.4c-0.2-0.6-0.5-1.1-0.9-1.5c-0.4-0.5-1-0.9-1.5-1.3c1.5-1.5,2.1-3.8,1.4-5.8

@@ -3,14 +3,7 @@ import Icon from './Icon/Icon';
 
 const ShareIcon = (props) => {
   const svg = (
-    <svg
-      focusable={false}
-      width="100%"
-      height="100%"
-      viewBox="0 0 96 96"
-      role="img"
-      aria-labelledby="Like Icon"
-    >
+    <svg focusable={false} width="100%" height="100%" viewBox="0 0 96 96" role="img">
       <g>
         <path d="M89,16c0,7.2-5.8,13-13,13s-13-5.8-13-13c0-7.2,5.8-13,13-13S89,8.8,89,16z" />
         <path

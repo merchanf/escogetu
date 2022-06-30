@@ -3,14 +3,7 @@ import Icon from './Icon/Icon';
 
 const WhatsappIcon = (props) => {
   const svg = (
-    <svg
-      focusable={false}
-      width="100%"
-      height="100%"
-      viewBox="0 0 96 96"
-      role="img"
-      aria-labelledby="Whatsapp Icon"
-    >
+    <svg focusable={false} width="100%" height="100%" viewBox="0 0 96 96" role="img">
       <path
         fill="#E5E5E5"
         d="M2.3,95.7c-0.5,0-1.1-0.2-1.4-0.6c-0.5-0.5-0.7-1.3-0.5-2l6.2-22.7c-3.9-7-5.9-14.9-5.9-22.9

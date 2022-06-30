@@ -3,14 +3,7 @@ import Icon from './Icon/Icon';
 
 const LinkIcon = (props) => {
   const svg = (
-    <svg
-      focusable={false}
-      width="100%"
-      height="100%"
-      viewBox="0 0 96 96"
-      role="img"
-      aria-labelledby="Whatsapp Icon"
-    >
+    <svg focusable={false} width="100%" height="100%" viewBox="0 0 96 96" role="img">
       <g>
         <path
           d="M35.6,24.1c-11.3,11.7-8.8,31.1,4.1,39.7c0.4,0.3,1,0.2,1.4-0.1c2.7-2.7,5-5.2,7.1-8.5c0.3-0.5,0.1-1.2-0.4-1.4

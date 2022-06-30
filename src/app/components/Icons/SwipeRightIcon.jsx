@@ -3,14 +3,7 @@ import Icon from './Icon/Icon';
 
 const SwipeRightIcon = (props) => {
   const svg = (
-    <svg
-      focusable={false}
-      width="100%"
-      height="100%"
-      viewBox="0 0 96 96"
-      role="img"
-      aria-labelledby="Like Icon"
-    >
+    <svg focusable={false} width="100%" height="100%" viewBox="0 0 96 96" role="img">
       <path
         style={{ fill: '#F7D49E' }}
         d="M91.6,8.3c-0.2-0.7-0.2-1.4,0.1-2c-2.1,0.4-4.2-1-4.6-3.1C87,2.6,87,1.9,87.3,1.3c-0.9-0.1-1.8-0.1-2.8,0.1

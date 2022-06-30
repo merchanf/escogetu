@@ -3,14 +3,7 @@ import Icon from './Icon/Icon';
 
 const TelegramIcon = (props) => {
   const svg = (
-    <svg
-      focusable={false}
-      width="100%"
-      height="100%"
-      viewBox="0 0 96 96"
-      role="img"
-      aria-labelledby="Like Icon"
-    >
+    <svg focusable={false} width="100%" height="100%" viewBox="0 0 96 96" role="img">
       <circle fill="#039BE5" cx="48" cy="48" r="48" />
       <path
         fill="#FFFFFF"

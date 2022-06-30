@@ -3,14 +3,7 @@ import Icon from './Icon/Icon';
 
 const CrossCutterlyIcon = (props) => {
   const svg = (
-    <svg
-      focusable={false}
-      width="100%"
-      height="100%"
-      viewBox="0 0 96 96"
-      role="img"
-      aria-labelledby="Like Icon"
-    >
+    <svg focusable={false} width="100%" height="100%" viewBox="0 0 96 96" role="img">
       <path
         d="M92.4,78c-6.6-5.6-26.2-22-35.2-30c4.9-4.5,11.6-11.1,18.3-17.5c7.6-7.4,14.7-14.3,18-17.1C95.1,12.1,96,10,96,7.9
 			c0-2.7-1.4-5.1-3.8-6.4c-2.3-1.3-5.1-1.2-7.4,0.2C77.5,6.2,48,27.4,48,32c0,1.3-0.1,2.9-0.5,4.7c-2.2-3.8-3.5-7.2-3.5-8.7

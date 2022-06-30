@@ -3,14 +3,7 @@ import Icon from './Icon/Icon';
 
 const ChevronLeftIcon = (props) => {
   const svg = (
-    <svg
-      focusable={false}
-      width="100%"
-      height="100%"
-      viewBox="0 0 96 96"
-      role="img"
-      aria-labelledby="Whatsapp Icon"
-    >
+    <svg focusable={false} width="100%" height="100%" viewBox="0 0 96 96" role="img">
       <g>
         <circle style={{ fill: '#F2F2F2' }} cx="48" cy="48" r="48" />
         <path
