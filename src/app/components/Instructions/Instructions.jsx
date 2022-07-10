@@ -58,7 +58,7 @@ const Instructions = ({ className }) => {
             </label>
           </div>
           <button type="button" className={styles.Instructions__Layout__Close}>
-            <CrossIcon className={styles.Instructions__Layout__Close__Icon} />
+            <CrossIcon className={styles.Instructions__Layout__Close__Icon} size="small" />
           </button>
           <div className={styles.Instructions__Layout__NextPicture}>
             <p className={styles.Instructions__Layout__NextPicture__Text}>¡Quiero ver más fotos!</p>
