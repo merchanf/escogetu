@@ -17,13 +17,14 @@ const SwipeLeftIconText = withTextIcon(SwipeLeftIcon);
 const SwipeRightIconText = withTextIcon(SwipeRightIcon);
 
 const Instructions = ({ className }) => {
-  const shouldShowInstructions = localStorage.getItem('instructionsShownV2.0');
+  const INSTRUCTIONS_LOCALSTORAGE_KEY = 'instructionsShownV2.0';
+  const shouldShowInstructions = localStorage.getItem(INSTRUCTIONS_LOCALSTORAGE_KEY);
   const [isOpen, setIsOpen] = useState(!shouldShowInstructions);
   const [isChecked, setIsChecked] = useState(false);
 
   const onClick = () => {
     if (isChecked) {
-      localStorage.setItem('instructionsShown', 'true');
+      localStorage.setItem(INSTRUCTIONS_LOCALSTORAGE_KEY, 'true');
     }
     setIsOpen(false);
   };
