@@ -7,7 +7,7 @@ import { flows } from '@constants/constants';
 
 import styles from './CardList.module.scss';
 
-const CardList = ({ list, onSwipe, onCardLeftScreen, flow, userUid }) => {
+const CardList = ({ list, onSwipe, onCardLeftScreen, flow, userUid, sessionId }) => {
   const SwipeCard = flow === flows.FIRESTORE ? CardWrapper : Card;
   const dispatch = useDispatch();
   const {
@@ -71,7 +71,6 @@ const CardList = ({ list, onSwipe, onCardLeftScreen, flow, userUid }) => {
 
 CardList.defaultProps = {
   flow: '',
-  userUid: '',
 };
 
 CardList.propTypes = {
@@ -79,7 +78,8 @@ CardList.propTypes = {
   onSwipe: PropTypes.func.isRequired,
   onCardLeftScreen: PropTypes.func.isRequired,
   flow: PropTypes.string,
-  userUid: PropTypes.string,
+  userUid: PropTypes.string.isRequired,
+  sessionId: PropTypes.string.isRequired,
 };
 
 export default CardList;

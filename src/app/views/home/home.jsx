@@ -138,6 +138,7 @@ const HomeViewBase = (props) => {
                 onCardLeftScreen={onCardLeftScreen}
                 flow={flow}
                 userUid={userUid}
+                sessionId={sessionId}
               />
             </div>
             <div className={styles.Home__Buttons}>

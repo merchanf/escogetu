@@ -24,6 +24,7 @@ const Card = forwardRef(
       lowResPictures,
       bio,
       userUid,
+      sessionId,
     },
     ref,
   ) => {
@@ -32,14 +33,14 @@ const Card = forwardRef(
 
     const handleRightButton = () => {
       if (selectedPicture + 1 < pictures.length) {
-        registerNextPictureEvent(id, userUid, selectedPicture + 1);
+        registerNextPictureEvent(id, userUid, sessionId, selectedPicture + 1);
         setSelectedPicture((prevState) => prevState + 1);
       }
     };
 
     const handleLeftButton = () => {
       if (selectedPicture - 1 >= 0) {
-        registerPreviousPictureEvent(id, userUid, selectedPicture - 1);
+        registerPreviousPictureEvent(id, userUid, sessionId, selectedPicture - 1);
         setSelectedPicture((prevState) => prevState - 1);
       }
     };
@@ -147,6 +148,7 @@ Card.defaultProps = {
   lowResPictures: null,
   distance: null,
   pictures: null,
+  sessionId: null,
 };
 
 Card.propTypes = {
@@ -160,6 +162,7 @@ Card.propTypes = {
   lowResPictures: PropTypes.arrayOf(PropTypes.string),
   bio: PropTypes.string,
   userUid: PropTypes.string.isRequired,
+  sessionId: PropTypes.string,
 };
 
 export default Card;
