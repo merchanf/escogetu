@@ -13,6 +13,9 @@ export const setGeoLocationError = createAction(`${USER_SECTION_NAME}/setGeoLoca
 export const setStateFlow = createAction(`${USER_SECTION_NAME}/setFlow`);
 export const setStateZone = createAction(`${USER_SECTION_NAME}/setZone`);
 export const setRestaurantDetails = createAction(`${USER_SECTION_NAME}/setRestaurantDetails`);
+export const setInstructionsAlreadyShown = createAction(
+  `${USER_SECTION_NAME}/setInstructionsAlreadyShown`,
+);
 export const setRestaurantDetailsPictures = createAction(
   `${USER_SECTION_NAME}/setRestaurantDetailsPictures`,
 );

@@ -109,6 +109,7 @@ export const getRestaurantDetailsWithRestaurant = async (restaurant) =>
     };
     const service = new window.google.maps.places.PlacesService(document.getElementById('map'));
     service.getDetails(request, (details) => {
+      if (!details) return;
       resolve({
         ...restaurant,
         ...restaurantAdapter(restaurant.placeId, details, restaurant.pictures),

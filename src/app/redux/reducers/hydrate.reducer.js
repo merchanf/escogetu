@@ -13,7 +13,11 @@ import {
   setDatabaseInstance,
   setFirebaseStorage,
 } from '@actions/firebase.actions';
-import { setRestaurantDetails, setRestaurantDetailsPictures } from '@actions/session.action';
+import {
+  setRestaurantDetails,
+  setRestaurantDetailsPictures,
+  setInstructionsAlreadyShown,
+} from '@actions/session.action';
 import {
   setHydrating,
   setLoading,
@@ -145,6 +149,15 @@ const hydrateReducer = createReducer(HydrateStore, (builder) => {
       application: {
         ...state.application,
         noMoreRestaurants: payload,
+      },
+    };
+  });
+  builder.addCase(setInstructionsAlreadyShown, (state, { payload }) => {
+    return {
+      ...state,
+      application: {
+        ...state.application,
+        instructionsAlreadyShown: payload,
       },
     };
   });

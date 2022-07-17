@@ -23,6 +23,12 @@ import { withTextIconButton, withIconButton } from '@components/Icons/Icons';
 import colors from '@constants/colors.constants';
 import { ctas, getCTA, isMobilePhone } from '@utils/utils';
 import { logDelivery, logBooking, logShareEvent } from '@services/googleAnalytics.service';
+import {
+  registerBookingEvent,
+  registerDeliveryEvent,
+  registerShareEvent,
+  registerMenuEvent,
+} from '@services/firestoreAnalytics.service';
 
 import styles from './RestaurantDetails.module.scss';
 
@@ -88,6 +94,8 @@ const RestaurantDetails = ({
   phoneNumber,
   pictures,
   rating,
+  sessionId,
+  userUid,
   website,
 }) => {
   const [open, setOpen] = useState(false);
@@ -97,7 +105,10 @@ const RestaurantDetails = ({
     const ctaComponents = [];
 
     if (menu) {
-      const handleMenu = getCTA(ctas.WEBSITE);
+      const handleMenu = () => {
+        registerMenuEvent(placeId, userUid, sessionId);
+        return getCTA(ctas.WEBSITE);
+      };
       ctaComponents.push(
         <MenuBookIconButton
           onClick={() => handleMenu(menu)}
@@ -111,6 +122,7 @@ const RestaurantDetails = ({
 
     if (booking && bookingType) {
       const handleBooking = () => {
+        registerBookingEvent(placeId, userUid, sessionId);
         const getBookingCTA = getCTA(bookingType);
         getBookingCTA(booking);
         logBooking(placeId);
@@ -129,6 +141,7 @@ const RestaurantDetails = ({
 
     if (delivery && deliveryType) {
       const handleDelivery = () => {
+        registerDeliveryEvent(placeId, userUid, sessionId);
         const getDeliveryCTA = getCTA(deliveryType);
         getDeliveryCTA(delivery);
         logDelivery(placeId);
@@ -160,6 +173,7 @@ const RestaurantDetails = ({
 
       const openShareModal = async () => {
         logShareEvent('restaurant', placeId, 'link');
+        registerShareEvent(placeId, userUid, sessionId);
         if (isMobilePhone() && navigator?.share) await navigator.share(shareData);
         else setOpen(true);
       };
@@ -358,6 +372,8 @@ RestaurantDetails.defaultProps = {
   apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   pictures: [],
   placeId: null,
+  sessionId: null,
+  userUid: null,
 };
 
 RestaurantDetails.propTypes = {
@@ -386,6 +402,8 @@ RestaurantDetails.propTypes = {
   pricing: PropTypes.number,
   pictures: PropTypes.arrayOf(PropTypes.string),
   placeId: PropTypes.string,
+  sessionId: PropTypes.string,
+  userUid: PropTypes.string,
 };
 
 export default RestaurantDetails;

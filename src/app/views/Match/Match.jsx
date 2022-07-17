@@ -14,7 +14,7 @@ import styles from './Match.module.scss';
 const CloseIconButton = withIconButton(CloseIcon);
 
 const Match = (props) => {
-  const { onClose, restaurant } = props;
+  const { onClose, restaurant, userUid, sessionId } = props;
 
   let placeId;
   if (restaurant?.placeId) {
@@ -50,7 +50,7 @@ const Match = (props) => {
       {loading || !restaurantDetails ? (
         <LoadingIcon />
       ) : (
-        <RestaurantDetails {...restaurantDetails} />
+        <RestaurantDetails {...restaurantDetails} userUid={userUid} sessionId={sessionId} />
       )}
     </Layout>
   );
@@ -61,12 +61,16 @@ Match.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   restaurant: PropTypes.object,
   showMap: PropTypes.bool,
+  userUid: PropTypes.string,
+  sessionId: PropTypes.string,
 };
 
 Match.defaultProps = {
   onClose: null,
   restaurant: null,
   showMap: true,
+  userUid: null,
+  sessionId: null,
 };
 
 export default Match;

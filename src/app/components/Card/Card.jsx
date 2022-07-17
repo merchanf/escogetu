@@ -1,7 +1,10 @@
 import React, { useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import DirectionsWalkRoundedIcon from '@mui/icons-material/DirectionsWalkRounded';
-
+import {
+  registerNextPictureEvent,
+  registerPreviousPictureEvent,
+} from '@services/firestoreAnalytics.service';
 import { ChevronRightIcon, ChevronLeftIcon } from '@components/Icons/Icons';
 import TinderCard from '../TinderCard/TinderCard';
 import Img from '../Img/Img';
@@ -10,18 +13,35 @@ import styles from './Card.module.scss';
 
 const Card = forwardRef(
   (
-    { distance, id, index, name, onCardLeftScreen, onSwipe, pictures, lowResPictures, bio },
+    {
+      distance,
+      id,
+      index,
+      name,
+      onCardLeftScreen,
+      onSwipe,
+      pictures,
+      lowResPictures,
+      bio,
+      userUid,
+    },
     ref,
   ) => {
     const [selectedPicture, setSelectedPicture] = useState(0);
     const [open, setOpen] = useState(false);
 
     const handleRightButton = () => {
-      if (selectedPicture + 1 < pictures.length) setSelectedPicture((prevState) => prevState + 1);
+      if (selectedPicture + 1 < pictures.length) {
+        registerNextPictureEvent(id, userUid, selectedPicture + 1);
+        setSelectedPicture((prevState) => prevState + 1);
+      }
     };
 
     const handleLeftButton = () => {
-      if (selectedPicture - 1 >= 0) setSelectedPicture((prevState) => prevState - 1);
+      if (selectedPicture - 1 >= 0) {
+        registerPreviousPictureEvent(id, userUid, selectedPicture - 1);
+        setSelectedPicture((prevState) => prevState - 1);
+      }
     };
 
     const handleOpen = () => {
@@ -139,6 +159,7 @@ Card.propTypes = {
   pictures: PropTypes.arrayOf(PropTypes.string),
   lowResPictures: PropTypes.arrayOf(PropTypes.string),
   bio: PropTypes.string,
+  userUid: PropTypes.string.isRequired,
 };
 
 export default Card;

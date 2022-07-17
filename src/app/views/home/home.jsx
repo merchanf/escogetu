@@ -19,12 +19,25 @@ import { CrossIconButtonWithText, LikeIconButtonWithText } from '@components/Ico
 import { Match } from '@app/views';
 import { useRestaurants } from '@hooks/useRestaurants';
 import { logScreenView } from '@services/googleAnalytics.service';
+import {
+  registerLikeEvent,
+  registerDislikeEvent,
+  registerImpressionEvent,
+} from '@services/firestoreAnalytics.service';
 import { setMatch } from '@app/redux/actions/user.actions';
 
 import styles from './home.module.scss';
 
 const HomeViewBase = (props) => {
-  const { sessionId, match, likes, flow, loading: firebaseLoading, noMoreRestaurants } = props;
+  const {
+    sessionId,
+    match,
+    likes,
+    flow,
+    loading: firebaseLoading,
+    noMoreRestaurants,
+    userUid,
+  } = props;
   const { width } = useWindowDimensions();
   const dispatch = useDispatch();
   const { restaurants, loading: gMapsLoading, swipe, onSwipe, onCardLeftScreen } = useRestaurants(
@@ -40,9 +53,38 @@ const HomeViewBase = (props) => {
     else setSize('medium');
   }, [width]);
 
+  useEffect(() => {
+    if (restaurants && restaurants.length > 0) {
+      const restaurantId = restaurants.slice(-1)[0].placeId;
+      registerImpressionEvent(restaurantId, userUid, sessionId);
+    }
+  }, [restaurants, sessionId, userUid]);
+
   const onCloseMatch = () => {
     dispatch(setMatch(null));
   };
+
+  const onDislike = useCallback(() => {
+    swipe('left');
+  }, [swipe]);
+
+  const onLike = useCallback(() => {
+    swipe('right');
+  }, [swipe]);
+
+  const handleSwipe = useCallback(
+    (direction, id) => {
+      const restaurantId = restaurants.slice(-1)[0].placeId;
+      if (direction === 'left') {
+        registerDislikeEvent(restaurantId, userUid, sessionId);
+      }
+      if (direction === 'right') {
+        registerLikeEvent(restaurantId, userUid, sessionId);
+      }
+      onSwipe(direction, id);
+    },
+    [onSwipe, restaurants, sessionId, userUid],
+  );
 
   const onError = useCallback(() => {
     const { search } = window.location;
@@ -63,13 +105,20 @@ const HomeViewBase = (props) => {
 
     const showNoRestaurantsScreen =
       flow === flows.FIRESTORE ? noMoreRestaurants : !match && restaurants?.length === 0;
-    if (showNoRestaurantsScreen) return <NoRestaurantsAvailable />;
+    if (showNoRestaurantsScreen)
+      return <NoRestaurantsAvailable userUid={userUid} sessionId={sessionId} />;
 
     if (restaurants) {
       const showLoadingScreen = (!noMoreRestaurants && restaurants == null) || loading;
 
       return match ? (
-        <Match restaurant={likes[match]} onClose={onCloseMatch} showMap />
+        <Match
+          restaurant={likes[match]}
+          onClose={onCloseMatch}
+          showMap
+          userUid={userUid}
+          sessionId={sessionId}
+        />
       ) : (
         <>
           <Instructions />
@@ -85,23 +134,16 @@ const HomeViewBase = (props) => {
             <div className={styles.Home__Body}>
               <CardList
                 list={restaurants}
-                onSwipe={onSwipe}
+                onSwipe={handleSwipe}
                 onCardLeftScreen={onCardLeftScreen}
                 flow={flow}
+                userUid={userUid}
               />
             </div>
             <div className={styles.Home__Buttons}>
-              <CrossIconButtonWithText
-                onClick={() => swipe('left')}
-                size={size}
-                caption="No Me gusta"
-              />
+              <CrossIconButtonWithText onClick={onDislike} size={size} caption="No Me gusta" />
               <ShareButton sessionId={sessionId} />
-              <LikeIconButtonWithText
-                onClick={() => swipe('right')}
-                size={size}
-                caption="¡Me gusta!"
-              />
+              <LikeIconButtonWithText onClick={onLike} size={size} caption="¡Me gusta!" />
             </div>
             <FeedbackButton projectId={env.FEEDBACK_ID} />
           </div>
