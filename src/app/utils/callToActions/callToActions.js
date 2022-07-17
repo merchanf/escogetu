@@ -1,7 +1,7 @@
 import { isIos, isMobilePhone } from '../utils';
 
 export const ctas = {
-  PHONE_NUMBER: 'Phone number',
+  PHONE_NUMBER: 'Phone Number',
   WHATSAPP: 'WhatsApp',
   EMAIL: 'Email',
   FACEBOOK: 'facebook',
