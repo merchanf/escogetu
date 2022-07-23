@@ -4,6 +4,7 @@ import CardWrapper from './CardWrapper/CardWrapper';
 import CardList from './CardList/CardList';
 import CircularProgress from './CircularProgress/CircularProgress';
 import FeedbackButton from './FeedbackButton/FeedbackButton';
+import Gallery from './Gallery/Gallery';
 import GooglePlacesAutocomplete from './GooglePlacesAutocomplete/GooglePlacesAutocomplete';
 import Instructions from './Instructions/Instructions';
 import Layout from './Layout/Layout';
@@ -22,6 +23,7 @@ export {
   CardWrapper,
   CircularProgress,
   FeedbackButton,
+  Gallery,
   GooglePlacesAutocomplete,
   Instructions,
   Layout,

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 import Rating from '@material-ui/lab/Rating';
 import { withStyles } from '@material-ui/core/styles';
@@ -18,7 +16,7 @@ import CallIcon from '@mui/icons-material/Call';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
-import { ShareDialog } from '@components/index';
+import { ShareDialog, Gallery } from '@components/index';
 import { withTextIconButton, withIconButton } from '@components/Icons/Icons';
 import colors from '@constants/colors.constants';
 import { ctas, getCTA, isMobilePhone } from '@utils/utils';
@@ -33,28 +31,6 @@ import {
 import styles from './RestaurantDetails.module.scss';
 
 const { oldBurgundy } = colors;
-
-const carouselProps = {
-  showArrows: true,
-  showStatus: false,
-  showIndicators: false,
-  centerMode: true,
-  centerSlidePercentage: 80,
-  infiniteLoop: true,
-  showThumbs: false,
-  useKeyboardArrows: true,
-  autoPlay: true,
-  stopOnHover: true,
-  swipeable: true,
-  dynamicHeight: true,
-  emulateTouch: true,
-  autoFocus: false,
-  thumbWidth: 100,
-  selectedItem: 0,
-  interval: 3500,
-  transitionTime: 1000,
-  swipeScrollTolerance: 5,
-};
 
 const StyledRating = withStyles({
   icon: {
@@ -248,7 +224,7 @@ const RestaurantDetails = ({
       <h2>
         Queremos mejorar para ti, ¿Nos ayudas con esta
         <a href={surveyLink} target="_blank" rel="noopener noreferrer">
-          breve encuesta
+          {'breve encuesta '}
           <OpenInNewIcon style={{ marginLeft: '8px', transform: 'scale(1.2)' }} />
         </a>
         <span role="img" aria-label="Cool Face emoji">
@@ -256,19 +232,7 @@ const RestaurantDetails = ({
         </span>
         ?
       </h2>
-
-      {pictures && pictures.length > 0 && (
-        <div className={styles.RestaurantDetails__Carousel}>
-          <Carousel {...carouselProps}>
-            {pictures.map((src, index) => (
-              <div key={index} className={styles.RestaurantDetails__Carousel__Picture}>
-                <img src={src} alt={src} />
-              </div>
-            ))}
-          </Carousel>
-        </div>
-      )}
-
+      <Gallery pictures={pictures} />
       <div className={styles.RestaurantDetails__Details}>
         <div className={styles.RestaurantDetails__Details__Ratings} />
         <div className={styles.RestaurantDetails__Details__ContactInfo}>
@@ -353,13 +317,11 @@ const RestaurantDetails = ({
 };
 
 RestaurantDetails.defaultProps = {
-  bio: '',
   booking: null,
   bookingType: null,
   cuisines: null,
   delivery: null,
   deliveryType: null,
-  diets: null,
   dishes: null,
   facebook: null,
   instagram: null,
@@ -367,7 +329,6 @@ RestaurantDetails.defaultProps = {
   rating: null,
   pricing: null,
   phoneNumber: null,
-  reservationLink: null,
   website: null,
   apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   pictures: [],
@@ -377,13 +338,13 @@ RestaurantDetails.defaultProps = {
 };
 
 RestaurantDetails.propTypes = {
-  bio: PropTypes.string,
+  // bio: PropTypes.string,
   booking: PropTypes.string,
   bookingType: PropTypes.string,
   cuisines: PropTypes.arrayOf(PropTypes.string),
   delivery: PropTypes.string,
   deliveryType: PropTypes.string,
-  diets: PropTypes.arrayOf(PropTypes.string),
+  // diets: PropTypes.arrayOf(PropTypes.string),
   dishes: PropTypes.arrayOf(PropTypes.string),
   facebook: PropTypes.string,
   instagram: PropTypes.string,
@@ -395,7 +356,6 @@ RestaurantDetails.propTypes = {
   }).isRequired,
   apiKey: PropTypes.string,
   phoneNumber: PropTypes.string,
-  reservationLink: PropTypes.string,
   website: PropTypes.string,
   address: PropTypes.string.isRequired,
   rating: PropTypes.number,
